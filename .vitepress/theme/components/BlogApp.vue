@@ -42,8 +42,8 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
-import { mainStore } from "@/store";
-import { calculateScroll, specialDayGray } from "@/utils/helper";
+import { mainStore } from "../store";
+import { calculateScroll, specialDayGray } from "../utils/helper";
 
 const route = useRoute();
 const store = mainStore();
