@@ -44,6 +44,7 @@
 import { storeToRefs } from "pinia";
 import { mainStore } from "../store";
 import { calculateScroll, specialDayGray } from "../utils/helper";
+import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const store = mainStore();
