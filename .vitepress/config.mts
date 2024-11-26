@@ -1,17 +1,31 @@
 import { defineConfig } from 'vitepress'
 
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  // 添加 head 配置，与其他顶级配置项平级
+  head: [['link', { rel: 'stylesheet', href: 'https://at.alicdn.com/t/c/font_4755537_qyoxle9ja6h.css' }]],
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          charset: false
+        }
+      }
+    }
+  },
   title: "liu",
-  description: "liu’s life",
+  description: "个人知识分享站",
   // 相对于项目根目录的 markdown 文件所在的文件夹
   srcDir: './src',
-  cleanUrls:true,
+  cleanUrls: true,
+
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
+      { text: '主页', link: '/' },
+      { text: 'Examples', link: '/markdown-examples' },
+      { text: 'Test', link: '/_posts/2024/1118' }
     ],
 
     sidebar: [
@@ -19,13 +33,15 @@ export default defineConfig({
         text: 'Examples',
         items: [
           { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
+          { text: 'Runtime API Examples', link: '/api-examples' },
+          { text: 'Test', link: '/_posts/2024/1118' }
         ]
       }
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+      { icon: 'github', link: 'https://github.com/liujunxiang0076' }
     ]
-  }
+  },
+
 })
