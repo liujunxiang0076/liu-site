@@ -9,7 +9,7 @@ const { page, frontmatter } = useData()
 
   <Nav />
   <h1>Custom Layout!</h1>
-
+  
   <div v-if="page.isNotFound">
     Custom 404 page!
   </div>
