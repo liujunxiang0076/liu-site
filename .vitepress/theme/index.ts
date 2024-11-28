@@ -6,6 +6,8 @@ import DefaultTheme from 'vitepress/theme'
 // 导入icon组件
 import Icon from './components/Icon.vue'
 import App from './MyApp.vue'
+// 全局样式
+import "./style/main.scss";
 import { createPinia } from "pinia";
 import { routeChange } from "./utils/initTools.mjs";
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
