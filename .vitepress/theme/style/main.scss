@@ -1,0 +1,248 @@
+@import "./font.scss"; /* 导入字体相关的样式 */
+@import "./animation.scss"; /* 导入动画相关的样式 */
+
+/* 全局颜色变量定义 */
+:root {
+  /* 定义一系列颜色变量，用于整个网站的颜色统一管理 */
+  --main-color: #425aef;
+  --main-color-bg: #4259ef0d;
+  --main-site-background: #f7f9fe;
+  --main-card-background: #fff;
+  --main-card-second-background: #f7f7f9;
+  --main-font-color: #363636;
+  --main-font-second-color: #3c3c43cc;
+  --main-card-border: #e3e8f7;
+  --main-border-shadow: #2c2d300c;
+  --main-scrollbar-bar: rgba(60, 60, 67, 0.4);
+  --main-mask-background: rgba(255, 255, 255, 0.95);
+  --main-mask-Inverse-background: rgba(0, 0, 0, 0.08);
+  --main-mask-second-background: rgba(255, 255, 255, 0.45);
+  --main-color-opacity: rgba(255, 255, 255, 0.15);
+  --main-dark-opacity: rgba(255, 255, 255, 0.15);
+  --main-dark-shadow: #0000006e;
+  --main-info-color: #50bfff;
+  --main-info-color-gray: #50bfff60;
+  --main-warning-color: #ffa500;
+  --main-warning-color-gray: #f7ba2a60;
+  --main-success-color: #13ce66;
+  --main-success-color-gray: #13ce6660;
+  --main-error-color: #ff3842;
+  --main-error-color-gray: #ff38423b;
+  --main-color-blue: #0084ff;
+  --main-color-white: #ffffff40;
+  --main-color-gray: #999;
+  --main-color-red: #ff3842;
+  --main-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+/* 暗色主题变量定义 */
+html.dark {
+  /* 当 html 元素带有 .dark 类时，定义暗色主题的颜色变量 */
+  --main-color: #dfac46;
+  --main-color-bg: #f2b94b23;
+  --main-site-background: #18171d;
+  --main-card-background: #1b1c20;
+  --main-card-second-background: #21232a;
+  --main-font-color: #f7f7fa;
+  --main-font-second-color: #a1a2b8;
+  --main-card-border: #3d3d3f;
+  --main-border-shadow: #00000050;
+  --main-scrollbar-bar: rgba(200, 200, 223, 0.4);
+  --main-mask-background: rgba(0, 0, 0, 0.95);
+  --main-mask-Inverse-background: rgba(255, 255, 255, 0.08);
+  --main-mask-second-background: rgba(0, 0, 0, 0.45);
+  --main-color-opacity: rgba(0, 0, 0, 0.15);
+}
+
+// 字体
+html {
+  &.hmos {
+    --main-font-family: "HarmonyOS_Regular", sans-serif; /* 定义 HarmonyOS 字体 */
+  }
+  &.lxgw {
+    --main-font-family: "LXGW WenKai Screen", sans-serif; /* 定义 LXGW 字体 */
+  }
+  .iconfont {
+    font-size: 1rem; /* 设置图标字体大小 */
+  }
+  button {
+    font-family: var(--main-font-family); /* 按钮使用主字体 */
+  }
+}
+
+/* 壁纸背景定义 */
+html {
+  &.image {
+    --main-card-border: #3d3d3f63;
+    --main-font-second-color: #c6c6c6;
+    --main-card-background: #1b1c20de;
+    --main-card-second-background: #21232ab5;
+    .main-nav {
+      -webkit-backdrop-filter: blur(20px); /* 添加 -webkit- 前缀 */
+      backdrop-filter: blur(20px);
+      &.top {
+        -webkit-backdrop-filter: blur(0); /* 添加 -webkit- 前缀 */
+        backdrop-filter: blur(0);
+      }
+      @media (max-width: 768px) {
+        &.down {
+          .nav-center {
+            background-color: #1b1c20 !important;
+          }
+        }
+      }
+    }
+    .loading {
+      -webkit-backdrop-filter: blur(20px); /* 添加 -webkit- 前缀 */
+      backdrop-filter: blur(20px);
+    }
+    .tags-cloud {
+      .all-tags {
+        &::after {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+/* 全局基础样式 */
+* {
+  // -webkit-user-drag: none;
+  box-sizing: border-box; /* 所有元素的盒模型为 border-box */
+}
+
+/* 仅在支持 -webkit-user-drag 属性的浏览器上应用样式 */
+@supports (-webkit-user-drag: none) {
+  * {
+    -webkit-user-drag: none; /* 禁止用户拖拽页面元素 */
+  }
+}
+
+html {
+  -webkit-user-select: none; /* 添加 -webkit- 前缀以支持 Safari 和 iOS */
+  user-select: none; /* 标准属性 */
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%; /* 为 WebKit 内核的浏览器添加前缀 */
+  text-size-adjust: 100%; /* 添加标准属性以支持其他浏览器 */
+
+  // 特殊情况
+  &.dark {
+    // 代码高亮
+    pre {
+      code {
+        .line {
+          span {
+            color: var(--shiki-dark) !important;
+          }
+        }
+      }
+    }
+  }
+  // 全站置灰
+  &.gray {
+    filter: grayscale(100%);
+  }
+}
+
+/* 页面主体样式 */
+body {
+  margin: 0; /* 移除默认外边距 */
+  padding: 0; /* 移除默认内边距 */
+  color: var(--main-font-color); /* 使用主字体颜色 */
+  background-color: var(--main-site-background); /* 使用主背景颜色 */
+  animation: show forwards 0.5s;
+  overflow-x: hidden;
+  transition: color 0.3s, background-color 0.3s;
+}
+
+/* 链接样式 */
+a {
+  text-decoration: none; /* 移除下划线 */
+  color: var(--main-font-color); /* 使用主字体颜色 */
+  transition: all 0.3s;
+  .iconfont {
+    transition: all 0.3s;
+  }
+  &:hover {
+    color: var(--main-color);
+  }
+}
+/* 应用容器样式 */
+#app {
+  width: 100vw; /* 宽度为视口宽度 */
+  width: 100dvw; /* 宽度为文档宽度 */
+  // height: 100vh;
+  transition: filter 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  // 滚动条
+  .simplebar-scrollbar {
+    &::before {
+      right: 0;
+      left: 4px;
+      background: var(--main-scrolling-bar);
+      transition: background 0.3s, left 0.3s;
+      cursor: pointer;
+    }
+    &:hover {
+      &::before {
+        left: 2px;
+        background: var(--main-color);
+      }
+    }
+  }
+  // 全局模糊
+  &.blur {
+    filter: blur(20px);
+  }
+}
+
+/* 通用卡片样式 */
+.s-card {
+  padding: 0.8rem; /* 内边距 */
+  border-radius: 16px; /* 圆角边框 */
+  background-color: var(--main-card-background); /* 使用主卡片背景颜色 */
+  border: 1px solid var(--main-card-border);
+  box-shadow: 0 8px 16px -4px var(--main-border-shadow);
+  transition: all 0.3s;
+  cursor: pointer;
+  &:hover {
+    &.hover {
+      border-color: var(--main-color);
+      box-shadow: 0 8px 16px -4px var(--main-color-bg);
+    }
+  }
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px; /* 滚动条宽度 */
+  height: 6px; /* 滚动条高度 */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--main-scrollbar-bar);
+  border-radius: 8px;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--main-color);
+  }
+}
+
+/* 选中文本样式 */
+::selection {
+  background-color: var(--main-color); /* 选中文本背景颜色 */
+  color: #efefef; /* 选中文本字体颜色 */
+}
+
+/* fancybox 样式 */
+.fancybox__container {
+  .fancybox__progress {
+    background: var(--main-color) !important;
+  }
+  .fancybox__thumb {
+    &::after {
+      border-width: 2px !important;
+      border-color: var(--main-color) !important;
+    }
+  }
+}
