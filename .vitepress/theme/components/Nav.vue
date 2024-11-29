@@ -228,7 +228,7 @@ const theme = reactive({
         .more-card {
           position: absolute;
           left: 0;
-          top: 46px;
+          top: 48px;
           opacity: 0;
           visibility: hidden;
           transform-origin: left top;
