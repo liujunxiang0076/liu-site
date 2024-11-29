@@ -7,7 +7,11 @@
           <div class="more-menu nav-btn" title="更多内容">
             <i class="iconfont icon-more" style="font-size: 24px" />
             <div class="more-card s-card">
-              <div v-for="(item, index) in theme.navMore" :key="index" class="more-item">
+              <div
+                v-for="(item, index) in theme.navMore"
+                :key="index"
+                class="more-item"
+              >
                 <span class="more-name">{{ item.name }}</span>
                 <div class="more-list">
                   <a
@@ -24,9 +28,9 @@
               </div>
             </div>
           </div>
-          <!-- <div class="site-name" @click="router.go('/')">
+          <div class="site-name">
             {{ site.title }}
-          </div> -->
+          </div>
         </div>
         <!-- 导航栏菜单 -->
         <div class="nav-center">
@@ -118,24 +122,26 @@
 </template>
 
 <script setup>
+import { useData } from "vitepress";
 import { reactive } from "vue";
-
+/* 内置 API 来让您访问应用程序数据 */
+const { site, frontmatter, page } = useData();
 const theme = reactive({
   navMore: [
     {
       index: 1,
       name: "分组一",
       list: [
-        { icon: "icon11", name: "name11",url:"" },
-        { icon: "icon12", name: "name12",url:"" },
+        { icon: "icon11", name: "name11", url: "" },
+        { icon: "icon12", name: "name12", url: "" },
       ],
     },
     {
       index: 2,
       name: "分组二",
       list: [
-        { icon: "icon21", name: "name21",url:"" },
-        { icon: "icon22", name: "name22",url:"" },
+        { icon: "icon21", name: "name21", url: "" },
+        { icon: "icon22", name: "name22", url: "" },
       ],
     },
   ],
@@ -297,7 +303,7 @@ const theme = reactive({
         transition: transform 0.3s;
         cursor: pointer;
         &::after {
-          content: "\e032";
+          content: "\e600";
           font-family: "iconfont";
           display: flex;
           align-items: center;
