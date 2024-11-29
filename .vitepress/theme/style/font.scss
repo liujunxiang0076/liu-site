@@ -3,6 +3,16 @@
   font-display: swap;
   src: url("/fonts/title.ttf");
 }
+/* iconfont图标 Unicode */
+@font-face {
+  font-family: "iconfont"; /* Project id 4755537 */
+  src: url("//at.alicdn.com/t/c/font_4755537_0mkagigfnwl.woff2?t=1732847226510")
+      format("woff2"),
+    url("//at.alicdn.com/t/c/font_4755537_0mkagigfnwl.woff?t=1732847226510")
+      format("woff"),
+    url("//at.alicdn.com/t/c/font_4755537_0mkagigfnwl.ttf?t=1732847226510")
+      format("truetype");
+}
 
 html,
 body,
