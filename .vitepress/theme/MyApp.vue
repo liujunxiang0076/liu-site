@@ -1,23 +1,18 @@
-<script setup>
-import { useData } from 'vitepress'
-import Nav from './components/Nav.vue'
-
-const { page, frontmatter } = useData()
-</script>
-
 <template>
-
   <Nav />
   <h1>Custom Layout!</h1>
-  
-  <div v-if="page.isNotFound">
-    Custom 404 page!
-  </div>
-  <div v-if="frontmatter.layout === 'home'">
-    Custom home page!
-  </div>
+
+  <div v-if="page.isNotFound">Custom 404 page!</div>
+  <div v-if="frontmatter.layout === 'home'">Custom home page!</div>
   <Content v-else />
 </template>
+
+<script setup>
+import { useData } from "vitepress";
+import Nav from "./components/Nav.vue";
+
+const { page, frontmatter } = useData();
+</script>
 
 <style lang="scss" scoped>
 .mian-layout {
@@ -44,9 +39,7 @@ const { page, frontmatter } = useData()
   left: 20px;
   bottom: 20px;
   z-index: 1002;
-  transition:
-    opacity 0.3s,
-    transform 0.3s;
+  transition: opacity 0.3s, transform 0.3s;
   &.hidden {
     opacity: 0;
     transform: translateY(100px);
