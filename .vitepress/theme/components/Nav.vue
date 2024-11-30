@@ -125,27 +125,28 @@
 import { useData } from "vitepress";
 import { reactive } from "vue";
 /* 内置 API 来让您访问应用程序数据 */
-const { site, frontmatter, page } = useData();
-const theme = reactive({
-  navMore: [
-    {
-      index: 1,
-      name: "分组一",
-      list: [
-        { icon: "icon11", name: "name11", url: "" },
-        { icon: "icon12", name: "name12", url: "" },
-      ],
-    },
-    {
-      index: 2,
-      name: "分组二",
-      list: [
-        { icon: "icon21", name: "name21", url: "" },
-        { icon: "icon22", name: "name22", url: "" },
-      ],
-    },
-  ],
-});
+const { theme, site, frontmatter, page } = useData();
+/* 测试 */
+// const theme = reactive({
+//   navMore: [
+//     {
+//       index: 1,
+//       name: "分组一",
+//       list: [
+//         { icon: "icon11", name: "name11", url: "" },
+//         { icon: "icon12", name: "name12", url: "" },
+//       ],
+//     },
+//     {
+//       index: 2,
+//       name: "分组二",
+//       list: [
+//         { icon: "icon21", name: "name21", url: "" },
+//         { icon: "icon22", name: "name22", url: "" },
+//       ],
+//     },
+//   ],
+// });
 </script>
 
 <style lang="scss" scoped>
