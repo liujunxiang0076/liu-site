@@ -134,9 +134,7 @@
 // fadeDown
 .fadeDown-enter-active,
 .fadeDown-leave-active {
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .fadeDown-enter-from,
