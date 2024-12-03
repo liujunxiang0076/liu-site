@@ -9,7 +9,7 @@ export const themeConfig = {
         // 站点logo
         logo: '/images/logo/logo.webp',
         // 站点地址
-        site: 'https://blog.imsyy.top',
+        site: 'https://b.liujuxiang0076.site',
         // 语言
         lang: 'zh-CN',
         // 作者
@@ -17,7 +17,9 @@ export const themeConfig = {
             name: 'liu',
             cover: '/images/logo/logo.webp',
             email: 'liujunxiang0076@foxmail.com',
-            link: ''
+            link: 'https://b.liujuxiang0076.site',
+            // github地址
+            github: 'https://github.com/liujunxiang0076',
         }
     },
     // 备案信息
@@ -35,22 +37,22 @@ export const themeConfig = {
             ['link', { rel: 'icon', href: '/favicon.ico' }],
             // RSS
             [
-              "link",
-              {
-                rel: "alternate",
-                type: "application/rss+xml",
-                title: "RSS",
-                href: "https://b.liujunxiang0076.site/rss.xml",
-              },
+                "link",
+                {
+                    rel: "alternate",
+                    type: "application/rss+xml",
+                    title: "RSS",
+                    href: "https://b.liujunxiang0076.site/rss.xml",
+                },
             ],
             // 预载 CDN
             [
-              "link",
-              {
-                crossorigin: "",
-                rel: "preconnect",
-                href: "https://s1.hdslb.com",
-              },
+                "link",
+                {
+                    crossorigin: "",
+                    rel: "preconnect",
+                    href: "https://s1.hdslb.com",
+                },
             ],
             [
                 'link',
@@ -152,7 +154,7 @@ export const themeConfig = {
                 { text: '畅所欲言', link: 'src/_pages/message', icon: 'chat' },
                 { text: '致谢名单', link: 'src/_pages/thanks', icon: 'reward' },
                 { text: '关于本站', link: 'src/_pages/about', icon: 'about' }
-                
+
             ]
         }
     ],

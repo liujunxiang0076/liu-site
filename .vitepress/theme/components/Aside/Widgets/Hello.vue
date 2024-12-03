@@ -14,10 +14,10 @@
         <span class="desc">{{ theme.siteMeta.description }}</span>
       </div>
       <div class="link">
-        <a href="https://github.com/imsyy/" target="_blank" class="social-link">
+        <a href="https://github.com/liujunxiang0076" target="_blank" class="social-link">
           <i class="iconfont icon-github"></i>
         </a>
-        <a href="mailto:one@imsyy.top" target="_blank" class="social-link">
+        <a href="mailto:liujunxiang0076@foxmail.com" target="_blank" class="social-link">
           <i class="iconfont icon-email"></i>
         </a>
       </div>
@@ -28,7 +28,10 @@
 <script setup>
 import { getGreetings } from "@/utils/helper";
 
-const { site, theme } = useData();
+const { site, theme,siteMeta } = useData();
+
+
+
 
 // 问候数据
 const helloClick = ref(0);
