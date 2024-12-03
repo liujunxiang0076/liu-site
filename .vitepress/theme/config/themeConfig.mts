@@ -83,7 +83,8 @@ export const themeConfig = {
                 {
                     crossorigin: 'anonymous',
                     rel: 'stylesheet',
-                    href: 'https://cdn2.codesign.qq.com/icons/g5ZpEgx3z4VO6j2/latest/iconfont.css'
+                    // href: 'https://cdn2.codesign.qq.com/icons/g5ZpEgx3z4VO6j2/latest/iconfont.css'
+                    href: 'https://cdn2.codesign.qq.com/icons/L6jgWq4YNB2G8jp/latest/iconfont.css'
                 }
             ],
             // Embed code
@@ -131,26 +132,26 @@ export const themeConfig = {
             items: [
                 {
                     text: '技术分享',
-                    link: '/pages/categories/技术分享',
+                    link: 'src/_pages/categories/技术分享',
                     icon: 'technical'
                 },
-                { text: '我的项目', link: '/pages/project', icon: 'code' },
-                { text: '效率工具', link: '/pages/tools', icon: 'tools' }
+                { text: '我的项目', link: 'src/_pages/project', icon: 'code' },
+                { text: '效率工具', link: 'src/_pages/tools', icon: 'tools' }
             ]
         },
         {
             text: '友链',
             items: [
-                { text: '友链鱼塘', link: '/pages/friends', icon: 'fish' },
-                { text: '友情链接', link: '/pages/link', icon: 'people' }
+                { text: '友链鱼塘', link: 'src/_pages/friends', icon: 'fish' },
+                { text: '友情链接', link: 'src/_pages/link', icon: 'people' }
             ]
         },
         {
             text: '我的',
             items: [
-                { text: '畅所欲言', link: '/pages/message', icon: 'chat' },
-                { text: '致谢名单', link: '/pages/thanks', icon: 'reward' },
-                { text: '关于本站', link: '/pages/about', icon: 'contacts' }
+                { text: '畅所欲言', link: 'src/_pages/message', icon: 'chat' },
+                { text: '致谢名单', link: 'src/_pages/thanks', icon: 'reward' },
+                { text: '关于本站', link: 'src/_pages/about', icon: 'about' }
             ]
         }
     ],

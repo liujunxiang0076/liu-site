@@ -292,7 +292,8 @@ const { site, theme, frontmatter, page } = useData();
         transition: transform 0.3s;
         cursor: pointer;
         &::after {
-          content: "\e032";
+          // content: "\e032";
+          content: "\e020";
           font-family: "iconfont";
           display: flex;
           align-items: center;

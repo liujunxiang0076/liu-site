@@ -3,20 +3,20 @@
     <h1 class="title">你好，欢迎来到{{ theme.siteMeta.title }}</h1>
     <div class="subtitle">
       <Transition name="fade" mode="out-in">
-        <span :key="hitokotoData?.hitokoto" class="text">
+        <!-- <span :key="hitokotoData?.hitokoto" class="text">
           {{
             hitokotoData?.hitokoto
               ? hitokotoData?.hitokoto
               : theme.siteMeta.description
           }}
-        </span>
-        <!-- <span :key="badsoupData?.badsoup" class="text">
+        </span> -->
+        <span :key="badsoupData?.badsoup" class="text">
           {{
             badsoupData?.badsoup
               ? badsoupData?.badsoup
               : theme.siteMeta.description
           }}
-        </span> -->
+        </span>
       </Transition>
     </div>
     <Transition name="fade" mode="out-in">

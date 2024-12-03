@@ -9,14 +9,14 @@
       <a
         v-for="(item, tag, index) in theme.tagsData"
         :key="index"
-        :href="`/pages/tags/${tag}`"
+        :href="`src/_pages/tags/${tag}`"
         class="tags"
       >
         <span class="name">{{ tag }}</span>
         <sup class="num">{{ item.count }}</sup>
       </a>
     </div>
-    <a href="/pages/tags" class="more-tags">查看全部</a>
+    <a href="src/_pages/tags" class="more-tags">查看全部</a>
   </div>
 </template>
 
