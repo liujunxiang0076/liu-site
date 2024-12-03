@@ -35,7 +35,7 @@
         </div>
     </Teleport>
     <!-- 右键菜单 -->
-    <RightMenu ref="rightMenuRef" />
+    <!-- <RightMenu ref="rightMenuRef" /> -->
     <!-- 全局消息 -->
     <Message />
 </template>

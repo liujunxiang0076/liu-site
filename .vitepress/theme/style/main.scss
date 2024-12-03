@@ -1,5 +1,5 @@
-@import "./font.scss"; /* 导入字体相关的样式 */
-@import "./animation.scss"; /* 导入动画相关的样式 */
+@use "./font.scss"; /* 导入字体相关的样式 */
+@use "./animation.scss"; /* 导入动画相关的样式 */
 
 /* 全局颜色变量定义 */
 :root {
