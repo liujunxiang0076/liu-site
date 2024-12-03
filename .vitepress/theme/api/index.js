@@ -8,6 +8,15 @@ export const getHitokoto = async () => {
   return hitokoto;
 };
 
+/* 
+  获取毒鸡汤
+*/
+export const geBadsoup = async () => {
+  const result =await fetch("https://api.7ed.net/soup/api");
+  const badsoup = await result.json();
+  return badsoup;
+}
+
 /**
  * 获取给定网址的站点图标和描述
  * @param {string} url - 站点 URL

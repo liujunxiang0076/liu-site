@@ -4,12 +4,27 @@
     <div class="subtitle">
       <Transition name="fade" mode="out-in">
         <span :key="hitokotoData?.hitokoto" class="text">
-          {{ hitokotoData?.hitokoto ? hitokotoData?.hitokoto : theme.siteMeta.description }}
+          {{
+            hitokotoData?.hitokoto
+              ? hitokotoData?.hitokoto
+              : theme.siteMeta.description
+          }}
         </span>
+        <!-- <span :key="badsoupData?.badsoup" class="text">
+          {{
+            badsoupData?.badsoup
+              ? badsoupData?.badsoup
+              : theme.siteMeta.description
+          }}
+        </span> -->
       </Transition>
     </div>
     <Transition name="fade" mode="out-in">
-      <i v-if="height === 'full'" class="iconfont icon-up" @click="scrollToHome" />
+      <i
+        v-if="height === 'full'"
+        class="iconfont icon-up"
+        @click="scrollToHome"
+      />
     </Transition>
   </div>
   <div
@@ -42,7 +57,7 @@
 
 <script setup>
 import { mainStore } from "@/store";
-import { getHitokoto } from "@/api";
+import { getHitokoto, geBadsoup } from "@/api";
 
 const store = mainStore();
 const { theme } = useData();
@@ -97,6 +112,22 @@ const getHitokotoData = async () => {
   }
 };
 
+// 毒鸡汤
+const badsoupData = ref(null);
+const badsoupTimeOut = ref(null);
+// 获取毒鸡汤数据
+const geBadsouptoData = async () => {
+  try {
+    const result = await geBadsoup();
+    const { code, badsoup } = result;
+    badsoupData.value = { code, badsoup };
+    // console.log(badsoupData.value);
+  } catch (error) {
+    $message.error("毒鸡汤获取失败");
+    console.error("毒鸡汤获取失败：", error);
+  }
+};
+
 // 滚动至首页
 const scrollToHome = () => {
   const bannerDom = document.getElementById("main-banner");
@@ -111,13 +142,16 @@ watch(
   () => store.bannerType,
   (val) => {
     bannerType.value = val;
-  },
+  }
 );
 
 onMounted(() => {
   if (props.type === "text") {
     hitokotoTimeOut.value = setTimeout(() => {
       getHitokotoData();
+    }, 2000);
+    badsoupTimeOut.value = setTimeout(() => {
+      geBadsouptoData();
     }, 2000);
   }
   // 更改 banner 类型
@@ -126,6 +160,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   clearTimeout(hitokotoTimeOut.value);
+  clearTimeout(badsoupTimeOut.value);
 });
 </script>
 
