@@ -121,9 +121,9 @@ export const themeConfig = {
         {
             text: '文库',
             items: [
-                { text: '文章列表', link: '/pages/archives', icon: 'article' },
-                { text: '全部分类', link: '/pages/categories', icon: 'folder' },
-                { text: '全部标签', link: '/pages/tags', icon: 'hashtag' }
+                { text: '文章列表', link: 'src/_pages/archives', icon: 'article' },
+                { text: '全部分类', link: 'src/_pages/categories', icon: 'folder' },
+                { text: '全部标签', link: 'src/_pages/tags', icon: 'hashtag' }
             ]
         },
         {
