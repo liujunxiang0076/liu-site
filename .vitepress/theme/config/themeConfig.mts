@@ -61,22 +61,22 @@ export const themeConfig = {
                 }
             ],
             // HarmonyOS font
-            [
-                'link',
-                {
-                    crossorigin: 'anonymous',
-                    rel: 'stylesheet',
-                    href: 'https://s1.hdslb.com/bfs/static/jinkela/long/font/regular.css'
-                }
-            ],
-            [
-                'link',
-                {
-                    crossorigin: 'anonymous',
-                    rel: 'stylesheet',
-                    href: 'https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.css'
-                }
-            ],
+            // [
+            //     'link',
+            //     {
+            //         crossorigin: 'anonymous',
+            //         rel: 'stylesheet',
+            //         href: 'https://s1.hdslb.com/bfs/static/jinkela/long/font/regular.css'
+            //     }
+            // ],
+            // [
+            //     'link',
+            //     {
+            //         crossorigin: 'anonymous',
+            //         rel: 'stylesheet',
+            //         href: 'https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.css'
+            //     }
+            // ],
             // iconfont
             [
                 'link',
@@ -106,14 +106,14 @@ export const themeConfig = {
                 }
             ],
             // 预载 DocSearch
-            [
-                'link',
-                {
-                    href: 'https://X5EBEZB53I-dsn.algolia.net',
-                    rel: 'preconnect',
-                    crossorigin: ''
-                }
-            ]
+            // [
+            //     'link',
+            //     {
+            //         href: 'https://X5EBEZB53I-dsn.algolia.net',
+            //         rel: 'preconnect',
+            //         crossorigin: ''
+            //     }
+            // ]
         ]
     },
     // 导航栏菜单
