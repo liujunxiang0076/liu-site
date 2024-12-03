@@ -34,24 +34,24 @@ export const themeConfig = {
             // favicon
             ['link', { rel: 'icon', href: '/favicon.ico' }],
             // RSS
-            // [
-            //   "link",
-            //   {
-            //     rel: "alternate",
-            //     type: "application/rss+xml",
-            //     title: "RSS",
-            //     href: "https://blog.imsyy.top/rss.xml",
-            //   },
-            // ],
+            [
+              "link",
+              {
+                rel: "alternate",
+                type: "application/rss+xml",
+                title: "RSS",
+                href: "https://b.liujunxiang0076.site/rss.xml",
+              },
+            ],
             // 预载 CDN
-            // [
-            //   "link",
-            //   {
-            //     crossorigin: "",
-            //     rel: "preconnect",
-            //     href: "https://s1.hdslb.com",
-            //   },
-            // ],
+            [
+              "link",
+              {
+                crossorigin: "",
+                rel: "preconnect",
+                href: "https://s1.hdslb.com",
+              },
+            ],
             [
                 'link',
                 {
@@ -61,22 +61,22 @@ export const themeConfig = {
                 }
             ],
             // HarmonyOS font
-            // [
-            //     'link',
-            //     {
-            //         crossorigin: 'anonymous',
-            //         rel: 'stylesheet',
-            //         href: 'https://s1.hdslb.com/bfs/static/jinkela/long/font/regular.css'
-            //     }
-            // ],
-            // [
-            //     'link',
-            //     {
-            //         crossorigin: 'anonymous',
-            //         rel: 'stylesheet',
-            //         href: 'https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.css'
-            //     }
-            // ],
+            [
+                'link',
+                {
+                    crossorigin: 'anonymous',
+                    rel: 'stylesheet',
+                    href: 'https://s1.hdslb.com/bfs/static/jinkela/long/font/regular.css'
+                }
+            ],
+            [
+                'link',
+                {
+                    crossorigin: 'anonymous',
+                    rel: 'stylesheet',
+                    href: 'https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.css'
+                }
+            ],
             // iconfont
             [
                 'link',
@@ -107,14 +107,14 @@ export const themeConfig = {
                 }
             ],
             // 预载 DocSearch
-            // [
-            //     'link',
-            //     {
-            //         href: 'https://X5EBEZB53I-dsn.algolia.net',
-            //         rel: 'preconnect',
-            //         crossorigin: ''
-            //     }
-            // ]
+            [
+                'link',
+                {
+                    href: 'https://X5EBEZB53I-dsn.algolia.net',
+                    rel: 'preconnect',
+                    crossorigin: ''
+                }
+            ]
         ],
     },
     // 导航栏菜单
@@ -152,6 +152,7 @@ export const themeConfig = {
                 { text: '畅所欲言', link: 'src/_pages/message', icon: 'chat' },
                 { text: '致谢名单', link: 'src/_pages/thanks', icon: 'reward' },
                 { text: '关于本站', link: 'src/_pages/about', icon: 'about' }
+                
             ]
         }
     ],
@@ -170,6 +171,11 @@ export const themeConfig = {
                     icon: 'email',
                     name: '图床',
                     url: 'https://imgbed.liujunxiang0076.site/'
+                },
+                {
+                    icon: 'test',
+                    name: 'Test',
+                    url: 'src/_pages/test',
                 },
 
             ]

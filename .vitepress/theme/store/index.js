@@ -24,7 +24,7 @@ export const mainStore = defineStore("main", {
       // 中控台显示
       controlShow: false,
       // 搜索框显示
-      searchShow: false,
+      searchShow: true,
       // 个性化配置显示
       showSeetings: false,
       // 播放器数据
