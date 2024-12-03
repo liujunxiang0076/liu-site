@@ -14,7 +14,7 @@ export const themeConfig = {
         lang: 'zh-CN',
         // 作者
         author: {
-            name: 'Admin',
+            name: 'liu',
             cover: '/images/logo/logo.webp',
             email: 'liujunxiang0076@foxmail.com',
             link: ''

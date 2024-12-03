@@ -6,28 +6,28 @@
         <a :href="theme.siteMeta.author.link" class="author link" target="_blank">
           {{ theme.siteMeta.author.name }}
         </a>
-        <a class="icp link" href="https://beian.miit.gov.cn/" target="_blank">
+        <!-- <a class="icp link" href="https://beian.miit.gov.cn/" target="_blank">
           <i class="iconfont icon-safe" />
           {{ theme.icp }}
-        </a>
-        <a
+        </a> -->
+        <!-- <a
           class="upyun link"
           href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"
           target="_blank"
         >
           <i class="iconfont icon-upyun" />
           又拍云
-        </a>
+        </a> -->
       </div>
       <div class="meta">
         <a class="power link" href="https://vitepress.dev/" target="_blank">
           <span class="by">Powered by</span>
           <span class="name">VitePress</span>
         </a>
-        <a class="theme link" href="https://github.com/imsyy/vitepress-theme-curve" target="_blank">
+        <!-- <a class="theme link" href="https://github.com/imsyy/vitepress-theme-curve" target="_blank">
           <span class="name">主题</span>
-        </a>
-        <a class="rss link" href="https://blog.imsyy.top/rss.xml" target="_blank">
+        </a> -->
+        <a class="rss link" href="https://b.liujunxiang0076.site/rss.xml" target="_blank">
           <i class="iconfont icon-rss" />
           <span class="name">订阅</span>
         </a>
