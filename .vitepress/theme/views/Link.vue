@@ -31,17 +31,17 @@
       </div> -->
     </Banner>
     <!-- 友链数据 -->
-    <LinkList :listData="linkData" :useFriendsLink="true" />
+    <LinkList :listData="friendChainData" :useFriendsLink="true" />
   </div>
 </template>
 
 <script setup>
 import { smoothScrolling } from "@/utils/helper";
-import linkData from "@/assets/linkData.mjs";
+import friendChainData from "@/config/friendChainConfig.mts";
 
 // 全部友链
 const allLinkData = computed(() => {
-  return linkData.flatMap((item) => item.typeList);
+  return friendChainData.flatMap((item) => item.typeList);
 });
 
 // 随机跳转

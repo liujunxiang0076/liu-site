@@ -165,6 +165,11 @@ export const themeConfig = {
                     name: '图床',
                     url: 'https://imgbed.liujunxiang0076.site/'
                 },
+                {
+                    icon: 'email',
+                    name: '图床',
+                    url: 'https://imgbed.liujunxiang0076.site/'
+                },
 
             ]
         },
