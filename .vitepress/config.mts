@@ -1,12 +1,20 @@
-import { defineConfig } from 'vitepress';
+import { defineConfig } from "vitepress";
+import { createRssFile } from "./theme/utils/generateRSS.mjs";
+import { withPwa } from "@vite-pwa/vitepress";
+import {
+  getAllPosts,
+  getAllType,
+  getAllCategories,
+  getAllArchives,
+} from "./theme/utils/getPostData.mjs";
+import { jumpRedirect } from "./theme/utils/commonTools.mjs";
+import { getThemeConfig } from "./init.mjs";
+import markdownConfig from "./theme/utils/markdownConfig.mjs";
+import AutoImport from "unplugin-auto-import/vite";
+import Components from "unplugin-vue-components/vite";
+import path from "path";
+import { HeadConfig } from "vitepress";
 
-import { withPwa } from '@vite-pwa/vitepress';
-
-// 获取配置
-import { getThemeConfig } from './init.mjs';
-import AutoImport from 'unplugin-auto-import/vite';
-import Components from 'unplugin-vue-components/vite';
-import path from 'path';
 // 获取主题配置
 const themeConfig = await getThemeConfig();
 
@@ -21,16 +29,16 @@ export default withPwa(
     // 最后更新时间戳
     lastUpdated: true,
     // 主题
-    // appearance: "dark",
+    appearance: true,
     // Head
-    head: themeConfig.inject.header,
+    head: themeConfig.inject.header as HeadConfig[],
     // sitemap
     sitemap: {
       hostname: themeConfig.siteMeta.site,
     },
-
+    // 解构主题配置
     themeConfig: {
-      ...themeConfig
+      ...themeConfig,
     },
     // vite
     vite: {
@@ -66,14 +74,14 @@ export default withPwa(
       //   port: 9877,
       // },
       // 构建
-      // build: {
-      //   minify: "terser",
-      //   terserOptions: {
-      //     compress: {
-      //       pure_funcs: ["console.log"],
-      //     },
-      //   },
-      // },
+      build: {
+        minify: "terser",
+        terserOptions: {
+          compress: {
+            pure_funcs: ["console.log"],
+          },
+        },
+      },
     }
   })
 );

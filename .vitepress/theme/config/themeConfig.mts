@@ -16,7 +16,7 @@ export const themeConfig = {
         author: {
             name: 'Admin',
             cover: '/images/logo/logo.webp',
-            email: '',
+            email: 'liujunxiang0076@foxmail.com',
             link: ''
         }
     },
@@ -114,7 +114,7 @@ export const themeConfig = {
             //         crossorigin: ''
             //     }
             // ]
-        ]
+        ],
     },
     // 导航栏菜单
     nav: [
