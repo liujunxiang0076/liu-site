@@ -33,6 +33,7 @@
     "docs:preview": "vitepress preview"
   },
   "dependencies": {
+    "@algolia/client-search": "^5.15.0",
     "@types/node": "^22.10.1",
     "@vite-pwa/vitepress": "^0.5.3",
     "@vueuse/core": "^11.3.0",
