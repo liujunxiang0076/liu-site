@@ -106,9 +106,9 @@ export default withPwa(
         },
       },
       // 服务器
-      // server: {
-      //   port: 9877,
-      // },
+      server: {
+        port: 2912,
+      },
       // 构建
       build: {
         minify: "terser",

@@ -92,14 +92,14 @@ export const themeConfig = {
             // Embed code
             // 7ED Services
             ['link', { rel: 'preconnect', href: 'https://use.sevencdn.com' }],
-            // [
-            //     'link',
-            //     {
-            //         rel: 'preconnect',
-            //         href: 'https://fonts.gstatic.com',
-            //         crossorigin: ''
-            //     }
-            // ],
+            [
+                'link',
+                {
+                    rel: 'preconnect',
+                    href: 'https://fonts.gstatic.com',
+                    crossorigin: ''
+                }
+            ],
             [
                 'link',
                 {
@@ -124,9 +124,9 @@ export const themeConfig = {
         {
             text: '文库',
             items: [
-                { text: '文章列表', link: 'src/_pages/archives', icon: 'article' },
-                { text: '全部分类', link: 'src/_pages/categories', icon: 'folder' },
-                { text: '全部标签', link: 'src/_pages/tags', icon: 'hashtag' }
+                { text: '文章列表', link: 'src/pages/archives', icon: 'article' },
+                { text: '全部分类', link: 'src/pages/categories', icon: 'folder' },
+                { text: '全部标签', link: 'src/pages/tags', icon: 'hashtag' }
             ]
         },
         {
@@ -134,26 +134,26 @@ export const themeConfig = {
             items: [
                 {
                     text: '技术分享',
-                    link: 'src/_pages/categories/技术分享',
+                    link: 'src/pages/categories/技术分享',
                     icon: 'technical'
                 },
-                { text: '我的项目', link: 'src/_pages/project', icon: 'code' },
-                { text: '效率工具', link: 'src/_pages/tools', icon: 'tools' }
+                { text: '我的项目', link: 'src/pages/project', icon: 'code' },
+                { text: '效率工具', link: 'src/pages/tools', icon: 'tools' }
             ]
         },
         {
             text: '友链',
             items: [
-                { text: '友链鱼塘', link: 'src/_pages/friends', icon: 'fish' },
-                { text: '友情链接', link: 'src/_pages/link', icon: 'people' }
+                { text: '友链鱼塘', link: 'src/pages/friends', icon: 'fish' },
+                { text: '友情链接', link: 'src/pages/link', icon: 'people' }
             ]
         },
         {
             text: '我的',
             items: [
-                { text: '畅所欲言', link: 'src/_pages/message', icon: 'chat' },
-                { text: '致谢名单', link: 'src/_pages/thanks', icon: 'reward' },
-                { text: '关于本站', link: 'src/_pages/about', icon: 'about' }
+                { text: '畅所欲言', link: 'src/pages/message', icon: 'chat' },
+                { text: '致谢名单', link: 'src/pages/thanks', icon: 'reward' },
+                { text: '关于本站', link: 'src/pages/about', icon: 'about' }
 
             ]
         }
@@ -177,7 +177,7 @@ export const themeConfig = {
                 {
                     icon: 'test',
                     name: 'Test',
-                    url: 'src/_pages/test',
+                    url: 'src/pages/test',
                 },
 
             ]
@@ -378,7 +378,7 @@ export const themeConfig = {
     // 搜索
     // https://www.algolia.com/
     search: {
-        enable: true,
+        enable: false,
         appId: 'ZMYVMX7LVX',
         apiKey: 'a1ab67fb0a7f1887f5d62085acee0c7d'
     },
