@@ -212,7 +212,7 @@
         color: var(--main-font-color);
         cursor: pointer;
         &::after {
-          content: "\e01c";
+          content: "\e011";
           transition: color 0.3s;
         }
         &::before {
@@ -462,7 +462,7 @@
         transition: color 0.3s, border-color 0.3s, background-color 0.3s;
         cursor: pointer;
         &::before {
-          content: "\e057";
+          content: "\e044";
           font-family: "iconfont";
           margin-right: 6px;
           font-size: 18px;

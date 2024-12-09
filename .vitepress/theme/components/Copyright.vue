@@ -99,7 +99,7 @@ const route = useRoute();
     opacity: 0.4;
   }
   &::after {
-    content: "\e021";
+    content: "\e01c";
     position: absolute;
     top: -4rem;
     right: -4rem;

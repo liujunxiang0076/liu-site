@@ -37,7 +37,7 @@ const checkboxClick = () => {
       border 0.3s,
       background-color 0.3s;
     &::after {
-      content: "\e04e";
+      content: "\e043";
       position: absolute;
       font-family: "iconfont";
       font-size: 12px;
