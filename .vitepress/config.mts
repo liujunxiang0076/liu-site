@@ -111,6 +111,7 @@ export default withPwa(
       },
       // 构建
       build: {
+        chunkSizeWarningLimit: 1600,
         minify: "terser",
         terserOptions: {
           compress: {
