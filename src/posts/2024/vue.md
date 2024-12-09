@@ -95,76 +95,76 @@ import MyComponent from '@/components/MyComponent.vue';
 <u>官方文档</u>：[unplugin-vue-components | Unplugin](https://unplugin.unjs.io/showcase/unplugin-vue-components.html)
 
 1. 安装
-   `npm`:
+`npm`:
 
-   ```bash
-   npm install unplugin-vue-components -D
-   ```
+```bash
+npm install unplugin-vue-components -D
+```
 
-   `pnpm`:
+`pnpm`:
 
-   ```bash
-   pnpm add unplugin-vue-components -D
-   ```
+```bash
+pnpm add unplugin-vue-components -D
+```
 
-   `yarn`:
+`yarn`:
 
-   ```bash
-   yarn add unplugin-vue-components --dev
-   ```
+```bash
+yarn add unplugin-vue-components --dev
+```
 
 2. 配置
-   ```javascript
-   import { defineConfig } from 'vite';
-   import Components from 'unplugin-vue-components/vite';
+```javascript
+import { defineConfig } from 'vite';
+import Components from 'unplugin-vue-components/vite';
    
-   export default defineConfig({
-     plugins: [
-       Components({
-         // 指定组件位置，默认是src/components
-         dirs: ['src/components'],
-         // 配置文件生成位置
-         dts: 'src/components.d.ts'
-       })
-     ]
-   });
-   ```
+export default defineConfig({
+  plugins: [
+    Components({
+      // 指定组件位置，默认是src/components
+      dirs: ['src/components'],
+      // 配置文件生成位置
+      dts: 'src/components.d.ts'
+    })
+  ]
+});
+```
 
 ### ②.unplugin-auto-import
 
 官方文档：[unplugin-auto-import | Unplugin](https://unplugin.unjs.io/showcase/unplugin-auto-import.html)
 
 1. 安装
-   npm：
+npm：
 
-   ```bash
-   npm i -D unplugin-auto-import
-   ```
+```bash
+npm i -D unplugin-auto-import
+```
 
-   pnpm：
-   ```bash
-   pnpm i -D unplugin-auto-import
-   ```
+pnpm：
+```bash
+pnpm i -D unplugin-auto-import
+```
 
 2. 配置
    在你的Vite配置文件（`vite.config.js`或`vite.config.ts`）中，导入并配置`unplugin-auto-import`插件。
 
-   ```javascript
-   import AutoImport from 'unplugin-auto-import/vite';
+```javascript
+import AutoImport from 'unplugin-auto-import/vite';
    
-   export default defineConfig({
-     plugins: [
-       AutoImport({
-         imports: [
-           'vue', // 包含Vue的自动导入
-           // 其他需要自动导入的库或框架
-         ],
-         //dts: true, // 如果使用TypeScript，设置为true以生成类型声明文件
-         dts: 'src/auto-imports.d.ts'
-       }),
-     ],
-   });
-   ```
+export default defineConfig({
+  plugins: [
+    AutoImport({
+      imports: [
+        'vue', // 包含Vue的自动导入
+        // 其他需要自动导入的库或框架
+      ],
+    //dts: true, // 如果使用TypeScript，设置为true以生成类型声明文件
+    dts: 'src/auto-imports.d.ts'
+    }),
+  ],
+});
+```
 
    
 
@@ -174,55 +174,55 @@ import MyComponent from '@/components/MyComponent.vue';
 ## defineProps 父传子
 
 - 父 ——App.vue
-  ```vue
-  <template>
-  	<person :list="personList" />
-  </template>
+```vue
+<template>
+  <person :list="personList" />
+</template>
   
-  <script lany="ts" setup name="App">
-      import Person from './components/Person.vue'
-      import {reactive} from 'vue'
-      import {type Persons}from '@/types'
+<script lany="ts" setup name="App">
+  import Person from './components/Person.vue'
+  import {reactive} from 'vue'
+  import {type Persons}from '@/types'
       
-      let personList=reactive<Persons>([
-          {id:'1',name:'zhangsan',age:1},
-          {id:'2',name:'lisi',age:2},
-      ])
+  let personList=reactive<Persons>([
+    {id:'1',name:'zhangsan',age:1},
+    {id:'2',name:'lisi',age:2},
+  ])
       
-  </script>
-  ```
+</script>
+```
 
   
 
 - 子——Person.vue
-  ```vue
-  <template>
-  	<ul>
-          <li v-for='(item,index) in list' :key='item.id'>
-      		{{item.name}} —— {{item.age}}
-      	</li>
-      </ul>
-  </template>
+```vue
+<template>
+  <ul>
+    <li v-for='(item,index) in list' :key='item.id'>
+      {{item.name}} —— {{item.age}}
+    </li>
+  </ul>
+</template>
   
-  <script lang="ts" setup name="Person">
-  	import {withDefaults}from 'vue'
-      import {type Persons} from '@/types'
-    	
-      //只接受list
-      //defineProps(['list'])
+<script lang="ts" setup name="Person">
+import {withDefaults}from 'vue'
+import {type Persons} from '@/types'
       
-      //接收list + 限制类型
-      //defineProps<{list:Persons}>()
+  //只接受list
+  //defineProps(['list'])
       
-      //接受list + 限制类型 + 限制必要性
-      //defineProps<{list?:Persons}>()
+  //接收list + 限制类型
+  //defineProps<{list:Persons}>()
       
-      //接受list + 限制类型 + 限制必要性 + 指定默认值
-      withDefaults(defineProps<{list?:Persons}>(),{
-          list:()=>[{id:'99',name:'wangwu',age:'99'}]
-      })
-  </script>
-  ```
+  //接受list + 限制类型 + 限制必要性
+  //defineProps<{list?:Persons}>()
+      
+  //接受list + 限制类型 + 限制必要性 + 指定默认值
+  withDefaults(defineProps<{list?:Persons}>(),{
+    list:()=>[{id:'99',name:'wangwu',age:'99'}]
+  })
+</script>
+```
 
   
 
@@ -297,39 +297,39 @@ export default {
 
 - `onBeforeMount()`：在组件挂载之前调用，此时模板已经编译成渲染函数，但尚未挂载到DOM。
 
-  ```javascript
-  import { onBeforeMount } from 'vue';
-  
-  export default {
-    setup() {
-      //在组件挂载之前调用，此时组件模板已经渲染，但还没有插入 DOM。
-      onBeforeMount(() => {
-        console.log('组件即将挂载到 DOM');
-      });
-  
-      // ...
-    }
-  };
-  ```
+```javascript
+import { onBeforeMount } from 'vue';
+
+export default {
+  setup() {
+    //在组件挂载之前调用，此时组件模板已经渲染，但还没有插入 DOM。
+    onBeforeMount(() => {
+      console.log('组件即将挂载到 DOM');
+    });
+
+    // ...
+  }
+};
+```
 
   
 
 - `onMounted()`：在组件挂载之后调用，此时组件已经渲染到DOM中，可以执行DOM相关的操作。
 
-  ```javascript
-  import { onMounted } from 'vue';
-  
-  export default {
-    setup() {
-      //在组件挂载之后调用，此时组件已经插入 DOM。
-      onMounted(() => {
-        console.log('组件已经挂载到 DOM');
-      });
-  
-      // ...
-    }
-  };
-  ```
+```javascript
+import { onMounted } from 'vue';
+
+export default {
+  setup() {
+    //在组件挂载之后调用，此时组件已经插入 DOM。
+    onMounted(() => {
+      console.log('组件已经挂载到 DOM');
+    });
+
+    // ...
+  }
+};
+```
 
   
 
@@ -337,39 +337,39 @@ export default {
 
 - `onBeforeUpdate()`：在组件即将因为响应式数据变化而重新渲染前调用，可以访问当前的DOM状态。
 
-  ```javascript
-  import { onBeforeUpdate } from 'vue';
+```javascript
+import { onBeforeUpdate } from 'vue';
   
-  export default {
-    setup() {
-      //在组件更新之前调用，此时响应式数据已经变化，但组件还没有重新渲染。
-      onBeforeUpdate(() => {
-        console.log('组件数据即将更新');
-      });
+export default {
+  setup() {
+    //在组件更新之前调用，此时响应式数据已经变化，但组件还没有重新渲染。
+    onBeforeUpdate(() => {
+      console.log('组件数据即将更新');
+    });
   
-      // ...
-    }
-  };
-  ```
+    // ...
+  }
+};
+```
 
   
 
 - `onUpdated()`：在组件因为响应式数据变化而重新渲染后调用，可以执行更新后的副作用操作。
 
-  ```javascript
-  import { onUpdated } from 'vue';
+```javascript
+import { onUpdated } from 'vue';
   
-  export default {
-    setup() {
-      //在组件更新之后调用，此时组件已经重新渲染。
-      onUpdated(() => {
-        console.log('组件数据已经更新');
-      });
+export default {
+  setup() {
+    //在组件更新之后调用，此时组件已经重新渲染。
+    onUpdated(() => {
+      console.log('组件数据已经更新');
+    });
   
-      // ...
-    }
-  };
-  ```
+    // ...
+  }
+};
+```
 
   
 
@@ -377,39 +377,39 @@ export default {
 
 - `onBeforeUnmount()`：在组件即将被卸载前调用，可以执行清理操作，如取消事件监听器、清除定时器等。
 
-  ```javascript
-  import { onBeforeUnmount } from 'vue';
+```javascript
+import { onBeforeUnmount } from 'vue';
   
   export default {
     setup() {
-      //在组件卸载之前调用，此时组件还在页面上，但即将被移除。
+    //在组件卸载之前调用，此时组件还在页面上，但即将被移除。
       onBeforeUnmount(() => {
         console.log('组件即将被卸载');
       });
   
-      // ...
-    }
-  };
-  ```
+    // ...
+  }
+};
+```
 
   
 
 - `onUnmounted()`：在组件已卸载后调用，此时组件的所有指令都已解绑，所有事件监听器都已被移除，所有的子实例也都被销毁。
 
-  ```javascript
-  import { onUnmounted } from 'vue';
-  
-  export default {
-    setup() {
-      //在组件卸载之后调用，此时组件已经从页面上移除。
-      onUnmounted(() => {
-        console.log('组件已经被卸载');
-      });
-  
-      // ...
-    }
-  };
-  ```
+```javascript
+import { onUnmounted } from 'vue';
+
+export default {
+  setup() {
+    //在组件卸载之后调用，此时组件已经从页面上移除。
+    onUnmounted(() => {
+      console.log('组件已经被卸载');
+    });
+
+    // ...
+  }
+};
+```
 
 vue2与vue3的生命周期区别
 
@@ -432,125 +432,122 @@ vue2与vue3的生命周期区别
 ## 路由
 
 1. 安装`vue-router`
-   `pnpm`：
+`pnpm`：
 
-   ```bash
-   pnpm add vue-router
-   ```
+```bash
+pnpm add vue-router
+```
 
    其他方式安装
 
 2. 创建路由和路由配置
    创建一个路由配置文件，通常是 `router/index.js`
 
-   ```javascript
-   import { createRouter, createWebHistory } from 'vue-router';
-   import Home from '../views/Home.vue';
-   import About from '../views/About.vue';
-   
-   const routes = [
-     {
-       path: '/',
-       name: 'Home',
-       component: Home,
-     },
-     {
-       path: '/about',
-       name: 'About',
-       component: About,
-     },
-     // 其他路由...
-   ];
-   
-   const router = createRouter({
-     history: createWebHistory(),
-     routes,
-   });
-   
-   export default router;
-   ```
+```javascript
+import { createRouter, createWebHistory } from 'vue-router';
+import Home from '../views/Home.vue';
+import About from '../views/About.vue';
+
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home,
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About,
+  },
+  // 其他路由...
+];
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+});
+
+export default router;
+```
 
 3. 在 Vue 应用中使用路由
    在你的 Vue 应用的入口文件（通常是 `main.js` 或 `main.ts`）中，导入并使用路由：
 
-   ```javascript
-   import { createApp } from 'vue';
-   import App from './App.vue';
-   import router from './router';
-   
-   const app = createApp(App);
-   
-   app.use(router);
-   
-   app.mount('#app');
-   ```
+```javascript
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+
+const app = createApp(App);
+
+app.use(router);
+
+app.mount('#app');
+```
 
 4. 在组件中使用路由
    **使用 `<router-link>` 创建导航链接**
    在 Vue 组件的模板中，使用 `<router-link>` 来创建导航链接：
 
-   ```vue
-   <template>
-     <div>
-       <router-link to="/">Home</router-link> |
-       <router-link to="/about">About</router-link>
-     </div>
-   </template>
-   ```
+```vue
+<template>
+  <div>
+    <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link>
+  </div>
+</template>
+```
 
    **使用 `useRouter` 和 `useRoute`**
    在 Vue 组件中，你可以使用 `useRouter` 和 `useRoute` 来访问路由实例和当前路由：
-   ```javascript
-   import { useRouter, useRoute } from 'vue-router';
-   
-   export default {
-     setup() {
-       const router = useRouter();
-       const route = useRoute();
-   
-       // 使用 router 进行导航
-       function goBack() {
-         router.back();
-       }
-   
-       // 访问当前路由信息
-       console.log(route.params);
-   
-       return {
-         goBack,
-       };
-     },
-   };
+```javascript
+import { useRouter, useRoute } from 'vue-router';
+
+export default {
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+
+    // 使用 router 进行导航
+    function goBack() {
+      router.back();
+    }
+
+    // 访问当前路由信息
+    console.log(route.params);
+
+    return {
+      goBack,
+    };
+  },
+};
+```
 
 5. 路由守卫
    `vue-router` 允许你定义路由守卫，这些守卫可以在路由变化之前或之后执行逻辑：
 
-   ```javascript
-   router.beforeEach((to, from, next) => {
-     // 检查用户是否登录
-     if (to.name !== 'Login' && !isAuthenticated) {
-       next({ name: 'Login' });
-     } else {
-       next();
-     }
-   });
-   ```
+```javascript
+router.beforeEach((to, from, next) => {
+  // 检查用户是否登录
+  if (to.name !== 'Login' && !isAuthenticated) {
+    next({ name: 'Login' });
+  } else {
+    next();
+  }
+});
+```
 
 6. 懒加载路由
    为了优化性能，你可以使用动态导入来懒加载路由对应的组件：
 
-   ```javascript
-   const routes = [
-     {
-       path: '/about',
-       name: 'About',
-       component: () => import('../views/About.vue'),
-     },
-     // 其他路由...
-   ];
-   ```
-
-   
-
-
+```javascript
+const routes = [
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import('../views/About.vue'),
+  },
+  // 其他路由...
+];
+```
 
