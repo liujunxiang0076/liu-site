@@ -5,9 +5,10 @@ categories: [技术]
 date: 2024-12-06
 description: 这个一篇个人学习vue3的笔记
 articleGPT: 这是一篇初始化文章，旨在告诉用户一些使用说明和须知。
+cover: https://imgbed.liujunxiang0076.site/file/1733710364573_vue-logo_600x370.webp
 references:
   - title: 
-    url: https://imgbed.liujunxiang0076.site/file/1733474141827_vue-logo.png
+    url: 
 ---
 
 ## 配置
