@@ -1,7 +1,7 @@
 ---
 title: 【哔哩哔哩】尚硅谷Vue3入门到实战笔记
 tags: [笔记,bilibili]
-categories: [技术]
+categories: [技术分享]
 date: 2024-12-09
 description: 尚硅谷vue3+TypeScript前端开发教程笔记
 articleGPT: Hey，朋友们，我最近深入探索了Vue 3的奇妙世界，记录下了不少心得体会。这不仅仅是一篇简单的学习笔记，它是我与Vue 3亲密接触的见证，记录了我从基础到进阶的每一步。如果你也对Vue 3充满好奇，那就让我们一起翻开这篇笔记，开启前端开发的新篇章吧！
