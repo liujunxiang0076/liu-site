@@ -88,7 +88,6 @@ const showCover = () => themeConfig.value?.cover?.showCover?.enable
 // 获取封面图片 按优先级获取：cover > defaultCover > false
 const getCover = ({ cover: itemCover }) => {
   const { cover } = themeConfig.value ?? {}
-  
   if (!cover?.showCover?.enable) return false
   if (itemCover) return itemCover
   
