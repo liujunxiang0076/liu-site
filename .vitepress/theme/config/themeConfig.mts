@@ -386,9 +386,9 @@ export const themeConfig = {
     rewardData: {
         enable: true,
         // 微信二维码
-        wechat: 'https://imgbed.liujunxiang0076.site/file/1733124687565_mm_facetoface_collect_qrcode_1687848542225.jpg',
+        wechat: 'https://imgbed.liujunxiang0076.site/file/1733733748214_wx_reward_qrcode.jpg',
         // 支付宝二维码
-        alipay: 'https://imgbed.liujunxiang0076.site/file/1733124685335_1733123992326.jpg'
+        alipay: 'https://imgbed.liujunxiang0076.site/file/1733733888467_zfb_reward_qrcode.jpg'
     },
     // 图片灯箱
     fancybox: {
