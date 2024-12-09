@@ -184,7 +184,7 @@ export const themeConfig = {
         },
 
     ],
-    // 封面配置
+    // 文章封面配置
     cover: {
         // 是否开启双栏布局
         twoColumns: false,
@@ -195,7 +195,7 @@ export const themeConfig = {
             // 封面布局方式: left | right | both
             coverLayout: 'both',
             // 默认封面(随机展示)
-            defaultCover: ['https://example.com/1.avif', 'https://example.com/2.avif', 'https://example.com/3.avif']
+            defaultCover: ['https://imgbed.liujunxiang0076.site/file/1733709262232_wallpaper1733462866817.jpg', 'https://imgbed.liujunxiang0076.site/file/1733709269864_wallpaper1733462836045.jpg', 'https://imgbed.liujunxiang0076.site/file/1733709263706_wallpaper1733462431413.jpg']
         }
     },
     // 页脚信息
