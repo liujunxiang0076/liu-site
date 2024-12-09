@@ -5,8 +5,8 @@
       <!-- 介绍 -->
       <div class="about-item hello">
         <span class="text1">你好，很高兴认识你👋</span>
-        <span class="text2 title2">我是 無名</span>
-        <span class="text3">是一名 前端开发工程师、独立开发者、博主</span>
+        <span class="text2 title2">我是 liu</span>
+        <span class="text3">是一名 工程师</span>
       </div>
       <!-- 追求 -->
       <div class="about-item pursuit">
@@ -49,7 +49,7 @@
         </div>
         <img
           class="career-img"
-          src="https://pic.efefee.cn/uploads/2024/02/22/65d71db18bcf9.png"
+          src="https://imgbed.liujunxiang0076.site/file/1733710884726_wallpaper1733710565967.jpg"
           alt="career"
         />
       </div>
@@ -58,18 +58,18 @@
       <!-- 性格 -->
       <div class="about-item character" style="--color: #4298b4">
         <span class="tip">性格</span>
-        <span class="title2">物流师</span>
-        <span class="title2" style="color: var(--color)">ISTJ-A / ISTJ-T</span>
+        <span class="title2">提倡者</span>
+        <span class="title2" style="color: var(--color)">INFJ-A / INFJ-T</span>
         <span class="more">
           在
           <a href="https://www.16personalities.com/ch/" target="_blank">16personalities</a>
           了解更多关于
-          <a href="https://www.16personalities.com/ch/istj-%E4%BA%BA%E6%A0%BC" target="_blank">
+          <a href="https://www.16personalities.com/ch/infj-%E4%BA%BA%E6%A0%BC" target="_blank">
             物流师
           </a>
         </span>
         <img
-          src="https://pic.efefee.cn/uploads/2024/02/22/65d6bc7ae72ae.png"
+          src="https://imgbed.liujunxiang0076.site/file/1733712422834_提倡者(INFJ).svg"
           alt="male"
           class="male"
         />
@@ -144,16 +144,16 @@
           class="about-item map image"
           style="background-image: url(https://pic.efefee.cn/uploads/2024/04/15/661cbccc56af5.webp)"
         >
-          <span class="position">我现在住在 <strong>中国，河南省</strong></span>
+          <span class="position">我现在住在 <strong>中国，江苏省</strong></span>
         </div>
         <div class="about-item info">
           <div class="info-item">
             <span class="info-name">生于</span>
-            <span class="info-num" style="--color: #43a6c6">2001</span>
+            <span class="info-num" style="--color: #43a6c6">2002</span>
           </div>
           <div class="info-item">
             <span class="info-name">现在职业</span>
-            <span class="info-num" style="--color: #dfac46">前端开发工程师</span>
+            <span class="info-num" style="--color: #dfac46">工程师</span>
           </div>
         </div>
       </div>
