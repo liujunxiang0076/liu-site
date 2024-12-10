@@ -27,19 +27,16 @@ references:
 
 - 内存减少`54%`。
 
-  
 ## 1.2.【 源码的升级】
 
 - 使用`Proxy`代替`defineProperty`实现响应式。
 
 - 重写虚拟`DOM`的实现和`Tree-Shaking`。
 
-  
 ## 1.3. 【拥抱TypeScript】
 
 - `Vue3`可以更好的支持`TypeScript`。
 
-  
 ## 1.4. 【新的特性】
 
 1. `Composition API`（组合`API`）：
@@ -1952,7 +1949,7 @@ export const useTalkStore = defineStore('talk',()=>{
 
 <img src="https://r2.liujunxiang0076.site/2024/12/9/image-20231119185900990.png" alt="image-20231119185900990" style="zoom:60%;"/>
 
-## 6.1 [props]
+## 6.1【props】
 
 概述：`props`是使用频率最高的一种通信方式，常用与 ：**父 ↔ 子**。
 
@@ -2003,7 +2000,7 @@ export const useTalkStore = defineStore('talk',()=>{
 </script>
 ```
 
-## 6.2 [自定义事件]
+## 6.2【自定义事件】
 
 1. 概述：自定义事件常用于：**子 => 父。**
 2. 注意区分好：原生事件、自定义事件。
@@ -2031,7 +2028,7 @@ export const useTalkStore = defineStore('talk',()=>{
 this.$emit('send-toy', 具体数据)
 ```
 
-## 6.3 [mitt]
+## 6.3【mitt】
 
 概述：与消息订阅与发布（`pubsub`）功能类似，可以实现任意组件间通信。
 
@@ -2109,7 +2106,7 @@ function sendToy(){
 
 **注意这个重要的内置关系，总线依赖着这个内置关系**
 
-## 6.4 [v-model]
+## 6.4【v-model】
 
 1. 概述：实现 **父↔子** 之间相互通信。
 
@@ -2215,7 +2212,7 @@ function sendToy(){
 
    对于自定义事件，`$event`就是触发事件时，所传递的对象====>不能`.target`
 
-## 6.5.[$attrs]
+## 6.5【$attrs】
 
 1. 概述：`$attrs`用于实现**当前组件的父组件**，向**当前组件的子组件**通信（**祖→孙**）。
 
