@@ -1,9 +1,9 @@
 ---
 title: 深入探索SQL的高级用法：提升数据库效能的秘诀
-tags: [笔记]
-categories: [技术分享,SQL]
+tags: [笔记,SQL]
+categories: [技术分享]
 date: 2024-12-12
-description: 关于SQL中，高级用法记录
+description: 在 SQL 中，掌握高级用法可以极大地提升数据处理的效率和深度。以下是一些关于 SQL 高级用法的精炼记录，以供参考和应用：
 articleGPT: 在数据库管理的世界里，SQL（Structured Query Language）是连接数据和用户的桥梁。虽然基础的CRUD操作（创建、读取、更新、删除）是大多数数据库交互的核心，但SQL的高级用法能够显著提升数据操作的效率和效能。本文将深入探讨SQL的高级用法，帮助数据库专业人士和开发者解锁更高级的数据操作技巧。
 cover: https://imgbed.liujunxiang0076.site/file/1733987873721_PixPin_2024-12-12_15-17-38.png
 references:
