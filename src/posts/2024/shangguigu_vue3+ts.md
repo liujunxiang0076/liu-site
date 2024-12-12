@@ -19,7 +19,7 @@ references:
 - 截止2023年10月，最新的公开版本为：`3.3.4`
 
 
-## 1.1. 【性能的提升】
+## 1.1【性能的提升】
 
 - 打包大小减少`41%`。
 
@@ -27,17 +27,17 @@ references:
 
 - 内存减少`54%`。
 
-## 1.2.【 源码的升级】
+## 1.2【源码的升级】
 
 - 使用`Proxy`代替`defineProperty`实现响应式。
 
 - 重写虚拟`DOM`的实现和`Tree-Shaking`。
 
-## 1.3. 【拥抱TypeScript】
+## 1.3【拥抱TypeScript】
 
 - `Vue3`可以更好的支持`TypeScript`。
 
-## 1.4. 【新的特性】
+## 1.4【新的特性】
 
 1. `Composition API`（组合`API`）：
    - `setup`
@@ -64,7 +64,7 @@ references:
 
 # 2. 创建Vue3工程
 
-## 2.1. 【基于 vue-cli 创建】
+## 2.1【基于 vue-cli 创建】
 点击查看[官方文档](https://cli.vuejs.org/zh/guide/creating-a-project.html#vue-create)
 
 > 备注：目前`vue-cli`已处于维护模式，官方推荐基于 `Vite` 创建项目。
@@ -91,7 +91,7 @@ npm run serve
 
 ---
 
-## 2.2. 【基于 vite 创建】(推荐)
+## 2.2【基于 vite 创建】(推荐)
 `vite` 是新一代前端构建工具，官网地址：[https://vitejs.cn](https://vitejs.cn/)，`vite`的优势如下：
 
 - 轻量快速的热重载（`HMR`），能实现极速的服务启动。
@@ -160,7 +160,7 @@ npm create vue@latest
 - `Vite` 项目中，`index.html` 是项目的入口文件，在项目最外层。
 - 加载`index.html`后，`Vite` 解析 `<script type="module" src="xxx">` 指向的`JavaScript`。
 - `Vue3`**中是通过 **`createApp` 函数创建一个应用实例。
-## 2.3. 【一个简单的效果】
+## 2.3【一个简单的效果】
 
 `Vue3`向下兼容`Vue2`语法，且`Vue3`中的模板中可以没有根标签
 
@@ -202,7 +202,7 @@ npm create vue@latest
 
 
 # 3. Vue3核心语法
-## 3.1.  【OptionsAPI 与 CompositionAPI】
+## 3.1【OptionsAPI 与 CompositionAPI】
 
 - `Vue2`的`API`设计是`Options`（配置）风格的。
 - `Vue3`的`API`设计是`Composition`（组合）风格的。
@@ -222,7 +222,7 @@ npm create vue@latest
 
 > 说明：以上四张动图原创作者：大帅老猿
 
-## 3.2. 【拉开序幕的 setup】
+## 3.2【拉开序幕的 setup】
 ### setup 概述
 `setup`是`Vue3`中一个新的配置项，值是一个函数，它是 `Composition API` **“表演的舞台**_**”**_，组件中所用到的：数据、方法、计算属性、监视......等等，均配置在`setup`中。
 
@@ -340,7 +340,7 @@ export default defineConfig({
 ```
 
 3. 第三步：`<script setup lang="ts" name="Person">`
-## 3.3. 【ref 创建：基本类型的响应式数据】
+## 3.3【ref 创建：基本类型的响应式数据】
 
 - **作用：**定义响应式变量。
 - **语法：**`let xxx = ref(初始值)`。
@@ -386,7 +386,7 @@ export default defineConfig({
   }
 </script>
 ```
-## 3.4. 【reactive 创建：对象类型的响应式数据】
+## 3.4【reactive 创建：对象类型的响应式数据】
 
 - **作用：**定义一个**响应式对象**（基本类型不要用它，要用`ref`，否则报错）
 - **语法：**`let 响应式对象= reactive(源对象)`。
@@ -438,7 +438,7 @@ function test(){
 }
 </script>
 ```
-## 3.5. 【ref 创建：对象类型的响应式数据】
+## 3.5【ref 创建：对象类型的响应式数据】
 
 - 其实`ref`接收的数据可以是：**基本类型**、**对象类型**。
 - 若`ref`接收的是对象类型，内部其实也是调用了`reactive`函数。
@@ -490,7 +490,7 @@ function test(){
 }
 </script>
 ```
-## 3.6. 【ref 对比 reactive】
+## 3.6【ref 对比 reactive】
 宏观角度看：
 
 > 1. `ref`用来定义：**基本类型数据**、**对象类型数据**；
@@ -511,7 +511,7 @@ function test(){
 > 2. 若需要一个响应式对象，层级不深，`ref`、`reactive`都可以。
 > 3. 若需要一个响应式对象，且层级较深，推荐使用`reactive`。
 
-## 3.7. 【toRefs 与 toRef】
+## 3.7【toRefs 与 toRef】
 
 - 作用：将一个响应式对象中的每一个属性，转换为`ref`对象。并且改变解构的值，也会影响到原响应式对象的值。
 - 备注：`toRefs`与`toRef`功能一致，但`toRefs`可以批量转换。
@@ -553,7 +553,7 @@ function test(){
   }
 </script>
 ```
-## 3.8. 【computed】
+## 3.8【computed】
 
 作用：根据已有数据计算出新数据（和`Vue2`中的`computed`作用一致）。
 
@@ -609,7 +609,7 @@ function test(){
   } 
 </script>
 ```
-## 3.9.【watch】
+## 3.9【watch】
 
 - 作用：监视数据的变化（和`Vue2`中的`watch`作用一致）
 - 特点：`Vue3`中的`watch`只能监视以下**四种数据**：
@@ -893,7 +893,7 @@ function test(){
 
 </script>
 ```
-## 3.10. 【watchEffect】
+## 3.10【watchEffect】
 
 * 官网：立即运行一个函数，同时响应式地追踪其依赖，并在依赖更改时重新执行该函数。
 
@@ -960,7 +960,7 @@ function test(){
 
   
 
-## 3.11. 【标签的 ref 属性】
+## 3.11【标签的 ref 属性】
 
 作用：用于注册模板引用。
 
@@ -1043,7 +1043,7 @@ function test(){
 
 
 
-## 3.12. 【props】
+## 3.12【props】
 
 > ```js
 > // 定义一个接口，限制每个Person对象的格式
@@ -1110,7 +1110,7 @@ function test(){
 > ```
 >
 
-## 3.13. 【生命周期】
+## 3.13【生命周期】
 
 * 概念：`Vue`组件实例在创建时要经历一系列的初始化步骤，在此过程中`Vue`会在合适的时机，调用特定的函数，从而让开发者有机会在特定阶段运行自己的代码，这些特定的函数统称为：生命周期钩子
 
@@ -1190,7 +1190,7 @@ function test(){
   })
 </script>
 ```
-## 3.14. 【自定义hook】
+## 3.14【自定义hook】
 
 - 什么是`hook`？—— 本质是一个函数，把`setup`函数中使用的`Composition API`进行了封装，类似于`vue2.x`中的`mixin`。
 
@@ -1288,11 +1288,11 @@ export default function(){
 
 # 4. 路由
 
-## 4.1. 【对路由的理解】
+## 4.1【对路由的理解】
 
 <img src="https://r2.liujunxiang0076.site/2024/12/9/image-20231018144351536.png" alt="image-20231018144351536" style="zoom:20%;border-radius:40px"/>
 
-## 4.2. 【基本切换效果】
+## 4.2【基本切换效果】
 
 - `Vue3`中要使用`vue-router`的最新版本，目前是`4`版本。
 
@@ -1350,7 +1350,7 @@ app.mount('#app')
 </script>
 ```
 
-## 4.3. 【两个注意点】
+## 4.3【两个注意点】
 
 > 1. 路由组件通常存放在`pages` 或 `views`文件夹，一般组件通常存放在`components`文件夹。
 >
@@ -1359,7 +1359,7 @@ app.mount('#app')
 - 路由组件：靠路由规则渲染出来的。`route:[{path:/demo,component:demo}]`
 - 一般组件：亲手写出来的标签。`<demo/>`
 
-## 4.4.【路由器工作模式】
+## 4.4【路由器工作模式】
 
 1. `history`模式
 
@@ -1395,7 +1395,7 @@ app.mount('#app')
 > })
 > ```
 
-## 4.5. 【to的两种写法】
+## 4.5【to的两种写法】
 
 ```vue
 <!-- 第一种：to的字符串写法 -->
@@ -1405,7 +1405,7 @@ app.mount('#app')
 <router-link active-class="active" :to="{path:'/home'}">Home</router-link>
 ```
 
-## 4.6. 【命名路由】
+## 4.6【命名路由】
 
 作用：可以简化路由跳转及传参（后面就讲）。
 
@@ -1447,7 +1447,7 @@ routes:[
 
 
 
-## 4.7. 【嵌套路由】
+## 4.7【嵌套路由】
 
 1. 编写`News`的子路由：`Detail.vue`
 
@@ -1511,7 +1511,7 @@ export default router
 
    
 
-## 4.8. 【路由传参】
+## 4.8【路由传参】
 
 ### query参数
 
@@ -1584,7 +1584,7 @@ console.log(route.params)
 >
 > 备注2：传递`params`参数时，需要提前在规则中占位。
 
-## 4.9. 【路由的props配置】
+## 4.9【路由的props配置】
 
 作用：让路由组件更方便的收到参数（可以将路由参数作为`props`传给组件）
 
@@ -1607,7 +1607,7 @@ console.log(route.params)
 }
 ```
 
-## 4.10. 【 replace属性】
+## 4.10【replace属性】
 
   1. 作用：控制路由跳转时操作浏览器历史记录的模式。
 
@@ -1622,7 +1622,7 @@ console.log(route.params)
 <RouterLink replace .......>News</RouterLink>
 ```
 
-## 4.11. 【编程式导航】
+## 4.11【编程式导航】
 
 路由组件的两个重要的属性：`$route`和`$router`变成了两个`hooks`
 
@@ -1638,7 +1638,7 @@ console.log(router.push)
 console.log(router.replace)
 ```
 
-## 4.12. 【重定向】
+## 4.12【重定向】
 
 1. 作用：将特定的路径，重新定向到已有路由。
 
@@ -1771,7 +1771,7 @@ export const useTalkStore = defineStore('talk',{
 
    
 
-## 5.4.【修改数据】(三种方式)
+## 5.4【修改数据】(三种方式)
 
 1. 第一种修改方式，直接修改
 
@@ -1825,7 +1825,7 @@ countStore.incrementOdd(n.value)
 ```
 
 
-## 5.5.【storeToRefs】
+## 5.5【storeToRefs】
 
 - 借助`storeToRefs`将`store`中的数据转为`ref`对象，方便在模板中使用。
 - 注意：`pinia`提供的`storeToRefs`只会将数据做转换，而`Vue`的`toRefs`会转换`store`中数据。
@@ -1850,7 +1850,7 @@ countStore.incrementOdd(n.value)
 
 ```
 
-## 5.6.【getters】
+## 5.6【getters】
 
   1. 概念：当`state`中的数据，需要经过处理后再使用时，可以使用`getters`配置。
 
@@ -1892,7 +1892,7 @@ let {sum,school,bigSum,upperSchool} = storeToRefs(countStore)
 
 ​     
 
-## 5.7.【$subscribe】
+## 5.7【$subscribe】
 
 通过 store 的 `$subscribe()` 方法侦听 `state` 及其变化
 
@@ -1905,7 +1905,7 @@ talkStore.$subscribe((mutate,state)=>{
 
 
 
-## 5.8. 【store组合式写法】
+## 5.8【store组合式写法】
 
 ```ts
 import {defineStore} from 'pinia'
@@ -2280,7 +2280,7 @@ function sendToy(){
 </script>
 ```
 
-## 6.6. 【$refs、$parent】
+## 6.6【$refs、$parent】
 
 1. 概述：
 
@@ -2303,7 +2303,7 @@ function sendToy(){
 
   
 
-## 6.7. 【provide、inject】
+## 6.7【provide、inject】
 
 1. 概述：实现**祖孙组件**直接通信
 
@@ -2370,15 +2370,13 @@ function sendToy(){
 ```
 
 
-## 6.8. 【pinia】
+## 6.8【pinia】
 
 参考之前`pinia`部分的讲解
 
-## 6.9. 【slot】
+## 6.9【slot】
 
 ### 1. 默认插槽
-
-
 
 ```vue
 父组件中：
@@ -2457,9 +2455,9 @@ function sendToy(){
       </script>
 ```
 
-# 7. 其它 API
+# 7. 其它API
 
-## 7.1.【shallowRef 与 shallowReactive 】
+## 7.1【shallowRef & shallowReactive 】
 
 ### `shallowRef`
 
@@ -2491,7 +2489,7 @@ const myObj = shallowReactive({ ... });
 
 
 
-## 7.2.【readonly 与 shallowReadonly】
+## 7.2【readonly & shallowReadonly】
 
 ### **`readonly`**
 
@@ -2532,7 +2530,7 @@ const shallowReadOnlyCopy = shallowReadonly(original);
 
      
 
-## 7.3.【toRaw 与 markRaw】
+## 7.3【toRaw 与 markRaw】
 
 ### `toRaw`
 
@@ -2589,7 +2587,7 @@ let citys = markRaw([
 let citys2 = reactive(citys)
 ```
 
-## 7.4.【customRef】
+## 7.4【customRef】
 
 作用：创建一个自定义的`ref`，并对其依赖项跟踪和更新触发进行逻辑控制。
 
@@ -2650,7 +2648,7 @@ let { msg } = useMsgRef('你好', 2000)
 
 # 8. Vue3新组件
 
-## 8.1. 【Teleport】
+## 8.1【Teleport】
 
 - 什么是Teleport？—— Teleport 是一种能够将我们的**组件html结构**移动到指定位置的技术。
 
@@ -2664,7 +2662,7 @@ let { msg } = useMsgRef('你好', 2000)
 </teleport>
 ```
 
-## 8.2. 【Suspense】
+## 8.2【Suspense】
 
 -  等待异步组件时渲染一些额外内容，让应用有更好的用户体验 
 -  使用步骤： 
@@ -2713,7 +2711,7 @@ console.log(content)
 </template>
 ```
 
-## 8.3.【全局API转移到应用对象】
+## 8.3【全局API转移到应用对象】
 
 - `app.component`  注册全局组件
 - `app.config`     配置对象
