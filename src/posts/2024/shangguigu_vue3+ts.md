@@ -5,7 +5,7 @@ categories: [技术分享]
 date: 2024-12-09
 description: 尚硅谷vue3+TypeScript前端开发教程笔记
 articleGPT: Hey，朋友们，我最近深入探索了Vue 3的奇妙世界，记录下了不少心得体会。这不仅仅是一篇简单的学习笔记，它是我与Vue 3亲密接触的见证，记录了我从基础到进阶的每一步。如果你也对Vue 3充满好奇，那就让我们一起翻开这篇笔记，开启前端开发的新篇章吧！
-cover: false
+cover: https://imgbed.liujunxiang0076.site/file/1733992765265_PixPin_2024-12-12_16-39-12.png
 references:
   - title: 【尚硅谷Vue3入门到实战，最新版vue3+TypeScript前端开发教程】 
     url: https://www.bilibili.com/video/BV1Za4y1r7KE/?share_source=copy_web&vd_source=722dd03d451d5ff40b21a6e244036fb0
