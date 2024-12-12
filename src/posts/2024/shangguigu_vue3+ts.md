@@ -1,6 +1,6 @@
 ---
 title: 【哔哩哔哩】尚硅谷Vue3入门到实战笔记
-tags: [笔记,bilibili]
+tags: [笔记,bilibili,vue3]
 categories: [技术分享]
 date: 2024-12-09
 description: 尚硅谷vue3+TypeScript前端开发教程笔记
