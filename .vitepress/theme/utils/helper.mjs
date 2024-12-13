@@ -262,11 +262,13 @@ export const specialDayGray = () => {
   const currentDate = `${month}-${day}`;
   // 查找纪念日
   const specialDay = specialDays.find((day) => day.date === currentDate);
+  // console.log(`output->specialDay`,specialDay)
+  console.log(`output->$message`,$message)
   if (specialDay) {
-    document.documentElement.classList.add("gray");
+    // document.documentElement.classList.add("gray");
     if (typeof $message !== "undefined") {
       $message.info(`今天是${specialDay.name}，特此默哀`, {
-        duration: 8000,
+        duration: 3500,
         close: true,
       });
     }
