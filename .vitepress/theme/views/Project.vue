@@ -8,7 +8,7 @@
       image="https://imgbed.liujunxiang0076.site/file/1733710886048_wallpaper1733710597948.jpg"
     >
       <template #footer-slot>
-        <a class="to-github" href="https://github.com/imsyy/" target="_blank">
+        <a class="to-github" href="https://github.com/liujunxiang0076/" target="_blank">
           <i class="iconfont icon-github"></i>
           <span>前往 Github</span>
         </a>
