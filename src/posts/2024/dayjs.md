@@ -8,7 +8,7 @@ articleGPT: 在JavaScript开发中，日期和时间的处理是一个常见但�
 cover: https://imgbed.liujunxiang0076.site/file/1734080694047_image.png
 ---
 
-
+项目地址：[iamkun/dayjs: ⏰ Day.js 2kB immutable date-time library alternative to Moment.js with the same modern API](https://github.com/iamkun/dayjs)
 
 ### Day.js的特点：
 
