@@ -2,7 +2,7 @@
 title: 探索轻量级日期处理库：Day.js的全面指南
 tags: [笔记,工具库]
 categories: [技术分享]
-date: 2024-12-12
+date: 2024-12-13
 description: Day.js是一个轻量级的JavaScript日期库，它提供了与Moment.js兼容的现代API，用于解析、验证、操作和显示日期及时间。它的核心库只关注日期时间的计算，不包含任何时间格式的解析或本地化功能，这使得Day.js在体积上非常小巧，同时保持了高性能。
 articleGPT: 在JavaScript开发中，日期和时间的处理是一个常见但复杂的任务。传统的Date对象虽然提供了基本功能，但使用起来并不方便。Day.js作为一个轻量级的日期处理库，以其简洁的API和小巧的体积而著称，成为了开发者的新宠。本文将详细介绍Day.js的基本用法、高级功能和实际应用场景，帮助你在项目中高效地处理日期和时间。
 cover: https://imgbed.liujunxiang0076.site/file/1734080694047_image.png
