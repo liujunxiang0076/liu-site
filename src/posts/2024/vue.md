@@ -1,7 +1,7 @@
 ---
 title: vue3学习
 tags: [笔记]
-categories: [技术]
+categories: [技术分享]
 date: 2024-12-06
 description: 这个一篇个人学习vue3的笔记
 articleGPT: 这是一篇初始化文章，旨在告诉用户一些使用说明和须知。
