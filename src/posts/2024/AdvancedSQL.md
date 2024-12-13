@@ -108,9 +108,125 @@ SELECT
 FROM Employees;
 ```
 
+## 2.日期时间处理函数
+
+### `DATEADD()`
+
+`DATEADD` 是 SQL Server 中的一个函数，用于将指定的时间间隔添加到指定的日期和时间。这个函数在处理日期和时间的计算时非常有用，比如计算未来或过去的某个日期。
+
+#### 基本语法
+
+```sql
+DATEADD(datepart, number, date)
+```
+
+- `datepart`：必需的，指定要添加时间间隔的日期部分。例如：`year`、`month`、`day`、`hour`、`minute` 等。
+- `number`：必需的，指定要添加（或减去，如果是负数）的时间间隔数量。
+- `date`：必需的，指定要添加时间间隔的日期和时间表达式。
+
+#### 参数说明
+
+- `datepart` 参数指定了日期的哪一部分将被修改。例如，如果您想要添加天数，可以使用 `day` 作为 `datepart`。
+- `number` 参数是一个整数，表示要添加（或减去）的时间间隔的数量。如果是正数，则添加；如果是负数，则减去。
+- `date` 参数是一个有效的日期和时间表达式，表示要在其上执行计算的日期和时间。
+
+#### 示例
+
+以下是一些使用 `DATEADD` 函数的示例：
+
+1. **添加天数**：
+
+```sql
+SELECT DATEADD(day, 10, GETDATE()) AS TenDaysLater;
+```
+
+这将获取当前日期加上 10 天的日期。
+
+2. **减去月份**：
+
+```sql
+SELECT DATEADD(month, -3, GETDATE()) AS ThreeMonthsAgo;
+```
+
+这将获取当前日期减去 3 个月的日期。
+
+3. **添加年份**：
+
+```sql
+SELECT DATEADD(year, 5, '2024-01-01') AS FiveYearsLater;
+```
+
+这将获取 2024 年 1 月 1 日加上 5 年的日期。
+
+4. **添加小时**：
+
+```sql
+SELECT DATEADD(hour, 24, '2024-01-01 10:00:00') AS TwentyFourHoursLater;
+```
+
+这将获取 2024 年 1 月 1 日 10 点加上 24 小时的日期和时间。
+
+5. **添加分钟**：
+
+```sql
+SELECT DATEADD(minute, 30, GETDATE()) AS ThirtyMinutesLater;
+```
+
+这将获取当前时间加上 30 分钟的时间。
+
+#### 注意事项
+
+- `DATEADD` 函数可以处理日期和时间类型的数据，但不能直接用于字符串。如果需要对字符串执行日期计算，应先使用 `CONVERT` 或 `CAST` 函数将其转换为日期或时间类型。
+- 当添加的月份数导致日期超出当前月份的天数时（例如，1 月 31 日加上 1 个月），`DATEADD` 会自动调整日期到下个月的相应日期（2 月 28 日或 29 日，取决于是否是闰年）。
+- `DATEADD` 函数在处理时间间隔时，会考虑日期和时间的边界条件，如月份的天数、闰年等。
 
 
 
+---
+
+
+
+### DATEDIFF()
+
+`DATEDIFF` 函数是 SQL 中的一个常用函数，用于计算两个日期或日期时间值之间的差异。不同数据库系统中的 `DATEDIFF` 函数在功能和语法上可能有所不同，但它们的基本用途是一致的。以下是 `DATEDIFF` 函数的一些详细讲解：
+
+#### 基本语法
+
+在 SQL Server 中，`DATEDIFF` 函数的基本语法如下：
+
+```sql
+DATEDIFF(datepart, startdate, enddate)
+```
+
+- `datepart`：指定计算差值的单位，如 `year`、`month`、`day`、`hour`、`minute` 等。
+- `startdate`：计算的起始日期。
+- `enddate`：计算的结束日期。
+
+#### 使用场景
+
+`DATEDIFF` 函数常用于以下场景：
+
+- 计算年龄：通过比较出生日期和当前日期来计算年龄。
+- 活动周期分析：确定两个事件之间的时间间隔。
+- 时间跨度计算：计算项目持续时间或任务完成时间。
+
+#### 示例
+
+在 SQL Server 中，计算两个日期之间的天数差：
+
+```sql
+SELECT DATEDIFF(day, '2024-11-01', '2024-11-28') AS DayDifference;
+```
+
+这将返回 27，表示两个日期之间相差 27 天。
+
+#### 跨数据库差异
+
+- SQL Server 支持多种时间单位的差值计算。
+- MySQL 的 `DATEDIFF` 功能较为简单，仅支持以天为单位计算两个日期的差值。
+- Oracle 和 PostgreSQL 也有类似的函数，但可能在语法和功能上有所不同。
+
+`DATEDIFF` 函数是一个强大的工具，它使得日期相关的计算变得简单快捷。在使用时，需要根据您所使用的数据库系统来确定正确的语法和功能。
 
 # 二、SqlServer
 
@@ -247,3 +363,124 @@ GO
 - 如果表达式为空（`NULL`），`ISNUMERIC()` 函数将返回 `NULL`，而不是 `FALSE`。
 
 `ISNUMERIC()` 函数是 SQL Server 中用于检查一个表达式是否为数字的函数，通过对字符串进行解析，该函数返回一个布尔值，表示给定的表达式是否可以被解析为有效的数值。在使用该函数时，我们需要注意它的判断规则，并且注意对包含特殊字符的字符串进行判断时的结果。
+
+## 3.获取相关特定日期
+
+### 创建日期表(按需更改为表)
+
+```sql
+-- 步骤1：创建日期表
+DECLARE
+	@DateTable TABLE (
+		DateId INT IDENTITY ( 1, 1 ) PRIMARY KEY,
+		DateValue DATE,
+		YEAR INT,
+		MONTH INT,
+		DAY INT,
+		Weekday INT,
+		Weekday_CN VARCHAR ( 50 ),
+		Weeknum INT,
+		StartOfweek_EN DATE,
+		EndOfweek_EN DATE,
+		StartOfweek_CN DATE,
+		EndOfweek_CN DATE 
+	);
+-- 步骤2：设置日期范围
+DECLARE
+	@StartDate DATE;
+DECLARE
+	@EndDate DATE;
+
+SET @StartDate = '2024-01-01';
+
+SET @EndDate = '2099-12-31';
+-- 步骤3：生成日期列表
+DECLARE
+	@CurrentDate DATE;
+
+SET @CurrentDate = @StartDate;
+WHILE
+		@CurrentDate <= @EndDate BEGIN-- 步骤4：插入日期数据
+			
+			SET DATEFIRST 1 INSERT INTO @DateTable ( DateValue, YEAR, MONTH, DAY, Weekday, Weekday_CN, Weeknum, StartOfweek_EN, EndOfweek_EN, StartOfweek_CN, EndOfweek_CN )
+		VALUES
+			(
+				@CurrentDate,
+				YEAR ( @CurrentDate ),
+				MONTH ( @CurrentDate ),
+				DAY ( @CurrentDate ),
+				DATEPART( WEEKDAY, 
+				@CurrentDate ),
+			CASE
+					
+					WHEN DATEPART( WEEKDAY, @CurrentDate ) = 7 THEN
+					'周日' 
+					WHEN DATEPART( WEEKDAY, @CurrentDate ) = 1 THEN
+					'周一' 
+					WHEN DATEPART( WEEKDAY, @CurrentDate ) = 2 THEN
+					'周二' 
+					WHEN DATEPART( WEEKDAY, @CurrentDate ) = 3 THEN
+					'周三' 
+					WHEN DATEPART( WEEKDAY, @CurrentDate ) = 4 THEN
+					'周四' 
+					WHEN DATEPART( WEEKDAY, @CurrentDate ) = 5 THEN
+					'周五' 
+					WHEN DATEPART( WEEKDAY, @CurrentDate ) = 6 THEN
+					'周六' 
+				END,
+				DATEPART( WEEK, @CurrentDate ),
+				DATEADD( WEEK, DATEDIFF( WEEK, 0, @CurrentDate ), - 1 ),
+				DATEADD( DAY, 6, DATEADD( WEEK, DATEDIFF( WEEK, 0, @CurrentDate ), - 1 ) ),
+				DATEADD( WEEK, DATEDIFF( WEEK, 0, @CurrentDate ), 0 ),
+				DATEADD( DAY, 6, DATEADD( WEEK, DATEDIFF( WEEK, 0, @CurrentDate ), 0 ) ) 
+			);
+		
+		SET @CurrentDate = DATEADD( DAY, 1, @CurrentDate );
+		
+	END SELECT
+		* 
+FROM
+	@DateTable
+```
+
+
+
+### 获取当月开始日期
+
+```sql
+-- 当前月份的第一天
+SELECT DATEADD(DAY, 1 - DAY(GETDATE()), GETDATE()) AS FirstDayOfMonth;
+```
+
+### 获取当月结束日期
+
+```sql
+-- 当前月份的最后一天
+SELECT EOMONTH(GETDATE()) AS LastDayOfMonth;
+```
+
+
+
+## 4.查询表相关信息
+
+```sql
+SELECT 
+    TABLE_CATALOG, -- 列所属的表所在的目录名
+    TABLE_SCHEMA, -- 列所属的表所在的模式（数据库）名
+    TABLE_NAME, -- 列所属的表的名称
+    COLUMN_NAME, -- 列的名称
+    ORDINAL_POSITION, -- 列在表中的顺序位置
+    COLUMN_DEFAULT, -- 列的默认值
+    IS_NULLABLE, -- 列是否允许为空（'YES' 或 'NO'）
+    DATA_TYPE, -- 列的数据类型
+    CHARACTER_MAXIMUM_LENGTH, -- 字符数据类型列的最大长度
+    CHARACTER_OCTET_LENGTH, -- 列的最大字节数
+    NUMERIC_PRECISION, -- 数值类型列的精度
+    NUMERIC_SCALE, -- 数值类型列的小数位数
+    DATETIME_PRECISION, -- 日期时间类型列的精度
+    CHARACTER_SET_NAME, -- 列的字符集名称
+    COLLATION_NAME -- 列的排序规则名称
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'pls_line';
+```
+
