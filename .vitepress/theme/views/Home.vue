@@ -18,7 +18,7 @@
             showCategories
               ? `/pages/categories/${showCategories}`
               : showTags
-                ? `/pages/tags/${showTags}`
+                ? `/src/pages/tags/${showTags}`
                 : ''
           "
         />

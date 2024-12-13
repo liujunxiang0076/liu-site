@@ -18,7 +18,7 @@
           <a
             v-for="(item, index) in postMetaData.tags"
             :key="index"
-            :href="`/pages/tags/${item}`"
+            :href="`/src/pages/tags/${item}`"
             class="tag-item"
           >
             <i class="iconfont icon-hashtag" />
@@ -70,7 +70,7 @@
             <a
               v-for="(item, index) in postMetaData.tags"
               :key="index"
-              :href="`/pages/tags/${item}`"
+              :href="`/src/pages/tags/${item}`"
               class="tag-item"
             >
               <i class="iconfont icon-hashtag" />

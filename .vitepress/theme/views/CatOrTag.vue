@@ -26,7 +26,7 @@
       <a
         v-for="(item, key, index) in theme.tagsData"
         :key="index"
-        :href="`/pages/tags/${key}`"
+        :href="`/src/pages/tags/${key}`"
         class="type-item s-card"
       >
         <i class="iconfont icon-hashtag" />
