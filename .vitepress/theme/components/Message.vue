@@ -32,7 +32,7 @@ const messageTimeOut = ref(null);
 // 消息处理
 const showMessage = (text, type = "info", options = {}, func = null) => {
   // 解构配置
-  const { close = false, always = false, duration = 3000 } = options;
+  const { close = false, always = false, duration = 1500 } = options;
   // 先隐藏
   messageShow.value = false;
   clearTimeout(messageTimeOut.value);
