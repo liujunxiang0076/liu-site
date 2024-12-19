@@ -370,77 +370,66 @@ GO
 
 ```sql
 -- 步骤1：创建日期表
-DECLARE
-	@DateTable TABLE (
-		DateId INT IDENTITY ( 1, 1 ) PRIMARY KEY,
-		DateValue DATE,
-		YEAR INT,
-		MONTH INT,
-		DAY INT,
-		Weekday INT,
-		Weekday_CN VARCHAR ( 50 ),
-		Weeknum INT,
-		StartOfweek_EN DATE,
-		EndOfweek_EN DATE,
-		StartOfweek_CN DATE,
-		EndOfweek_CN DATE 
-	);
+DECLARE @DateTable TABLE
+                   (
+                       DateId         INT IDENTITY ( 1, 1 ) PRIMARY KEY,
+                       DateValue      DATE,
+                       YEAR           INT,
+                       MONTH          INT,
+                       DAY            INT,
+                       Weekday        INT,
+                       Weekday_CN     VARCHAR(50),
+                       Weeknum        INT,
+                       StartOfweek_EN DATE,
+                       EndOfweek_EN   DATE,
+                       StartOfweek_CN DATE,
+                       EndOfweek_CN   DATE
+                   );
 -- 步骤2：设置日期范围
-DECLARE
-	@StartDate DATE;
-DECLARE
-	@EndDate DATE;
-
+DECLARE @StartDate DATE;
+DECLARE @EndDate DATE;
 SET @StartDate = '2024-01-01';
-
 SET @EndDate = '2099-12-31';
 -- 步骤3：生成日期列表
-DECLARE
-	@CurrentDate DATE;
+DECLARE @CurrentDate DATE;
 
 SET @CurrentDate = @StartDate;
-WHILE
-		@CurrentDate <= @EndDate BEGIN-- 步骤4：插入日期数据
-			
-			SET DATEFIRST 1 INSERT INTO @DateTable ( DateValue, YEAR, MONTH, DAY, Weekday, Weekday_CN, Weeknum, StartOfweek_EN, EndOfweek_EN, StartOfweek_CN, EndOfweek_CN )
-		VALUES
-			(
-				@CurrentDate,
-				YEAR ( @CurrentDate ),
-				MONTH ( @CurrentDate ),
-				DAY ( @CurrentDate ),
-				DATEPART( WEEKDAY, 
-				@CurrentDate ),
-			CASE
-					
-					WHEN DATEPART( WEEKDAY, @CurrentDate ) = 7 THEN
-					'周日' 
-					WHEN DATEPART( WEEKDAY, @CurrentDate ) = 1 THEN
-					'周一' 
-					WHEN DATEPART( WEEKDAY, @CurrentDate ) = 2 THEN
-					'周二' 
-					WHEN DATEPART( WEEKDAY, @CurrentDate ) = 3 THEN
-					'周三' 
-					WHEN DATEPART( WEEKDAY, @CurrentDate ) = 4 THEN
-					'周四' 
-					WHEN DATEPART( WEEKDAY, @CurrentDate ) = 5 THEN
-					'周五' 
-					WHEN DATEPART( WEEKDAY, @CurrentDate ) = 6 THEN
-					'周六' 
-				END,
-				DATEPART( WEEK, @CurrentDate ),
-				DATEADD( WEEK, DATEDIFF( WEEK, 0, @CurrentDate ), - 1 ),
-				DATEADD( DAY, 6, DATEADD( WEEK, DATEDIFF( WEEK, 0, @CurrentDate ), - 1 ) ),
-				DATEADD( WEEK, DATEDIFF( WEEK, 0, @CurrentDate ), 0 ),
-				DATEADD( DAY, 6, DATEADD( WEEK, DATEDIFF( WEEK, 0, @CurrentDate ), 0 ) ) 
-			);
-		
-		SET @CurrentDate = DATEADD( DAY, 1, @CurrentDate );
-		
-	END SELECT
-		* 
-FROM
-	@DateTable
+WHILE @CurrentDate <= @EndDate
+    BEGIN-- 步骤4：插入日期数据
+        SET DATEFIRST 1
+        INSERT INTO @DateTable (DateValue, YEAR, MONTH, DAY, Weekday, Weekday_CN, Weeknum, StartOfweek_EN, EndOfweek_EN,
+                                StartOfweek_CN, EndOfweek_CN)
+        VALUES (@CurrentDate,
+                YEAR(@CurrentDate),
+                MONTH(@CurrentDate),
+                DAY(@CurrentDate),
+                DATEPART(WEEKDAY,
+                         @CurrentDate),
+                CASE
+                    WHEN DATEPART(WEEKDAY, @CurrentDate) = 7 THEN
+                        '周日'
+                    WHEN DATEPART(WEEKDAY, @CurrentDate) = 1 THEN
+                        '周一'
+                    WHEN DATEPART(WEEKDAY, @CurrentDate) = 2 THEN
+                        '周二'
+                    WHEN DATEPART(WEEKDAY, @CurrentDate) = 3 THEN
+                        '周三'
+                    WHEN DATEPART(WEEKDAY, @CurrentDate) = 4 THEN
+                        '周四'
+                    WHEN DATEPART(WEEKDAY, @CurrentDate) = 5 THEN
+                        '周五'
+                    WHEN DATEPART(WEEKDAY, @CurrentDate) = 6 THEN
+                        '周六'
+                    END,
+                DATEPART(WEEK, @CurrentDate),
+                DATEADD(WEEK, DATEDIFF(WEEK, 0, @CurrentDate), - 1),
+                DATEADD(DAY, 6, DATEADD(WEEK, DATEDIFF(WEEK, 0, @CurrentDate), - 1)),
+                DATEADD(WEEK, DATEDIFF(WEEK, 0, @CurrentDate), 0),
+                DATEADD(DAY, 6, DATEADD(WEEK, DATEDIFF(WEEK, 0, @CurrentDate), 0)));
+        SET @CurrentDate = DATEADD(DAY, 1, @CurrentDate);
+    END
+SELECT *
+FROM @DateTable
 ```
 
 
