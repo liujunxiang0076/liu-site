@@ -19,7 +19,7 @@
         {{ key }}
       </a>
     </div>
-    <a href="/pages/categories" class="more-type">
+    <a href="src/pages/categories" class="more-type">
       <i class="iconfont icon-arrow-right" />
       更多
     </a>
