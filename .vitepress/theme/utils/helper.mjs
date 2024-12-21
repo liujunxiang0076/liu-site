@@ -124,7 +124,7 @@ export const shufflePost = (postData) => {
   lastIndex = randomIndex;
   // 随机文章
   const randomPost = postData[randomIndex];
-  console.log(randomPost);
+  // console.log(randomPost);
   // 跳转到随机文章
   return randomPost.regularPath;
 };
@@ -177,7 +177,7 @@ export const copyImage = async (imageURL) => {
         [blob.type]: blob,
       }),
     ]);
-    console.log("图片已复制到剪贴板");
+    // console.log("图片已复制到剪贴板");
     $message.success("图片已复制到剪贴板");
   } catch (error) {
     console.error("复制图片出错：", error);
@@ -263,7 +263,7 @@ export const specialDayGray = () => {
   // 查找纪念日
   const specialDay = specialDays.find((day) => day.date === currentDate);
   // console.log(`output->specialDay`,specialDay)
-  console.log(`output->$message`,$message)
+  // console.log(`output->$message`,$message)
   if (specialDay) {
     // document.documentElement.classList.add("gray");
     if (typeof $message !== "undefined") {

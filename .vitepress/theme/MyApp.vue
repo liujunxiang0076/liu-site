@@ -83,7 +83,7 @@ const changeSiteThemeType = () => {
     };
     // 必要数据
     const htmlElement = document.documentElement;
-    console.log('当前模式：', themeType.value);
+    // console.log('当前模式：', themeType.value);
     // 清除所有 class
     Object.values(themeClasses).forEach((themeClass) => {
         htmlElement.classList.remove(themeClass);
@@ -129,7 +129,7 @@ watch(
 );
 
 onMounted(() => {
-    console.log(frontmatter.value, page.value, theme.value);
+    // console.log(frontmatter.value, page.value, theme.value);
     // 全站置灰
     specialDayGray();
     // 更改主题类别

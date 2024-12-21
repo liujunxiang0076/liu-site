@@ -30,7 +30,7 @@ const initTwikoo = async () => {
       el: commentRef.value || "#comment-dom",
       envId: comment.twikoo.envId,
       onCommentLoaded: () => {
-        console.log("评论已加载完毕");
+        // console.log("评论已加载完毕");
         if (props.fill) fillComments(props.fill);
         jumpRedirect(null, theme.value, true);
       },
@@ -43,7 +43,7 @@ const initTwikoo = async () => {
 
 // 填充评论区
 const fillComments = (data) => {
-  console.log("填充评论：", data);
+  // console.log("填充评论：", data);
   // 获取评论元素
   const commentDom = document.querySelector(".tk-input.el-textarea");
   if (!commentDom) return false;

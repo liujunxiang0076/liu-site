@@ -110,7 +110,7 @@ watch(
   () => store.scrollData.percentage,
   (val) => {
     if (val === 0 && tocData.value) {
-      console.log("回到顶部");
+      // console.log("回到顶部");
       // 所有标题
       const headers = getAllTitle();
       if (!headers) return false;

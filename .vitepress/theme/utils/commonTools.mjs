@@ -28,7 +28,7 @@ export const loadScript = (src, option = {}) => {
   // 检查是否已经加载过此脚本
   const existingScript = document.querySelector(`script[src="${src}"]`);
   if (existingScript) {
-    console.log("已有重复脚本");
+    // console.log("已有重复脚本");
     if (!reload) {
       callback && callback(null, existingScript);
       return false;
@@ -64,7 +64,7 @@ export const loadCSS = (href, option = {}) => {
   // 检查是否已经加载过此样式表
   const existingLink = document.querySelector(`link[href="${href}"]`);
   if (existingLink) {
-    console.log("已有重复样式");
+    // console.log("已有重复样式");
     if (!reload) {
       callback && callback(null, existingLink);
       return false;
