@@ -14,7 +14,7 @@
       <a
         v-for="(item, key, index) in theme.categoriesData"
         :key="index"
-        :href="`/pages/categories/${key}`"
+        :href="`/src/pages/categories/${key}`"
         class="type-item s-card"
       >
         <i class="iconfont icon-folder" />
