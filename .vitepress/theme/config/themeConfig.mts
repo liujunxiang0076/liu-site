@@ -17,7 +17,7 @@ export const themeConfig = {
             name: 'liu',
             cover: '/images/logo/logo.webp',
             email: 'liujunxiang0076@foxmail.com',
-            link: 'https://b.liujuxiang0076.site',
+            link: 'https://b.liujunxiang0076.site',
             // github地址
             github: 'https://github.com/liujunxiang0076',
         }
