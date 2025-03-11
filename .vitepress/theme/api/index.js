@@ -100,3 +100,26 @@ export const getStatistics = async (key) => {
   }
   return statistics;
 };
+
+/**
+ * 获取最近的中国节假日
+ * @returns {Promise<Object>} 最近的中国节假日信息
+ */
+export const getRecentHoliday = async () => {
+  const url = "https://date.nager.at/api/v3/NextPublicHolidays/CN"; // 中国节假日
+  try {
+      const response = await fetch(url);
+      const holidays = await response.json();
+      if (holidays.length > 0) {
+          const nextHoliday = holidays[0];
+          // console.log("最近节假日：", nextHoliday.name, nextHoliday.date);
+          return nextHoliday;
+      } else {
+          // console.log("未找到节假日数据");
+          return null;
+      }
+  } catch (error) {
+      // console.error("获取节假日数据失败：", error);
+      return null;
+  }
+}

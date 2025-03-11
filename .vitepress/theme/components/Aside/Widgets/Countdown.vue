@@ -3,9 +3,12 @@
   <div class="count-down s-card">
     <div class="count-left">
       <span class="text"> 距离 </span>
-      <span class="name">{{ theme.aside.countDown.data.name }}</span>
+      <!-- <span class="name">{{ theme.aside.countDown.data.name }}</span>
       <span class="time"> {{ getDaysUntil(theme.aside.countDown.data.date) }} </span>
-      <span class="date">{{ theme.aside.countDown.data.date }}</span>
+      <span class="date">{{ theme.aside.countDown.data.date }}</span> -->
+      <span class="name">{{ nextHoliday }}</span>
+      <span class="time"> {{ getDaysUntil(nextHolidayDate) }} </span>
+      <span class="date">{{ nextHolidayDate }}</span>
     </div>
     <div v-if="remainData" class="count-right">
       <div v-for="(item, tag, index) in remainData" :key="index" class="count-item">
@@ -31,8 +34,16 @@
 
 <script setup>
 import { getTimeRemaining, getDaysUntil } from "@/utils/timeTools";
-
+import { getRecentHoliday } from "@/api";
 const { theme } = useData();
+
+const nextHoliday = ref(null);
+const nextHolidayDate = ref(null);
+const getNextHoliday = async () => {
+  const res = await getRecentHoliday();
+  nextHoliday.value = res.localName;
+  nextHolidayDate.value = res.date;
+};
 
 // 倒计时数据
 const remainData = ref(null);
@@ -48,6 +59,7 @@ const getRemainData = () => {
 
 onMounted(() => {
   getRemainData();
+  getNextHoliday();
 });
 
 onBeforeUnmount(() => {
