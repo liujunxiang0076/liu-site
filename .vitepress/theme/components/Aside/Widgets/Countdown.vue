@@ -7,7 +7,7 @@
       <span class="time"> {{ getDaysUntil(theme.aside.countDown.data.date) }} </span>
       <span class="date">{{ theme.aside.countDown.data.date }}</span> -->
       <span class="name">{{ nextHoliday }}</span>
-      <span class="time"> {{ getDaysUntil(nextHolidayDate) }} </span>
+      <span class="time"> {{ getDaysUntil(nextHolidayDate)+'天' }} </span>
       <span class="date">{{ nextHolidayDate }}</span>
     </div>
     <div v-if="remainData" class="count-right">
