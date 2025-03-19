@@ -1,7 +1,8 @@
 <template>
   <div class="about">
     <h1 class="title">关于本站</h1>
-    <div class="about-content" style="grid-template-columns: 3fr 2fr">
+    <div>等想好了再写</div>
+    <div v-if="false" class="about-content" style="grid-template-columns: 3fr 2fr">
       <!-- 介绍 -->
       <div class="about-item hello">
         <span class="text1">你好，很高兴认识你👋</span>
@@ -16,7 +17,7 @@
         <span class="title2">优秀的作品</span>
       </div>
     </div>
-    <div class="about-content" style="grid-template-columns: 2fr 3fr">
+    <div v-if="false" class="about-content" style="grid-template-columns: 2fr 3fr">
       <!-- 技能 -->
       <div class="about-item skills">
         <span class="tip">技能</span>
@@ -54,7 +55,7 @@
         />
       </div>
     </div>
-    <div class="about-content" style="grid-template-columns: 3fr 2fr">
+    <div v-if="false" class="about-content" style="grid-template-columns: 3fr 2fr">
       <!-- 性格 -->
       <div class="about-item character" style="--color: #4298b4">
         <span class="tip">性格</span>
@@ -81,7 +82,7 @@
         <span class="title2">一丝不苟。</span>
       </div>
     </div>
-    <div class="about-content" style="grid-template-columns: 1fr 1fr">
+    <div v-if="false" class="about-content" style="grid-template-columns: 1fr 1fr">
       <div
         class="about-item like image"
         style="
@@ -113,7 +114,7 @@
         </div>
       </div>
     </div>
-    <div class="about-content" style="grid-template-columns: 2fr 3fr">
+    <div v-if="false" class="about-content" style="grid-template-columns: 2fr 3fr">
       <!-- 数据 -->
       <div
         class="about-item static image"
@@ -159,7 +160,7 @@
       </div>
     </div>
     <!-- 心路历程 -->
-    <div class="about-content" style="display: flex">
+    <div v-if="false" class="about-content" style="display: flex">
       <div class="about-item">
         <span class="tip">心路历程</span>
         <span class="title2">为什么建站？</span>
