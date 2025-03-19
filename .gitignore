@@ -17,6 +17,7 @@ test.html
 .env
 .vitepress/dist
 .vitepress/cache
+.vitepress/.temp
 .vitepress/components.d.ts
 .vitepress/auto-imports.d.ts
 themeConfig.mjs
