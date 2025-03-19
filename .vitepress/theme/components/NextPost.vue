@@ -101,6 +101,8 @@ onBeforeUnmount(() => {
   flex-direction: column;
   padding: 20px;
   background-color: var(--main-card-background);
+  transition: all 0.3s ease;
+  
   .post-tip {
     font-size: 14px;
     color: var(--main-font-second-color);
@@ -109,6 +111,7 @@ onBeforeUnmount(() => {
     border-bottom: 1px dashed var(--main-card-border);
     transition: color 0.3s;
   }
+  
   .post-title {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -117,6 +120,7 @@ onBeforeUnmount(() => {
     line-clamp: 2;
     -webkit-box-orient: vertical;
   }
+  
   &.fixed {
     position: fixed;
     right: 20px;
@@ -125,11 +129,14 @@ onBeforeUnmount(() => {
     z-index: 100;
     width: 300px;
     transform: translateY(180px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
+  
   &.show {
     opacity: 1;
     transform: translateY(0);
   }
+  
   &:hover {
     background-color: var(--main-color);
     border-color: var(--main-color);
@@ -140,8 +147,46 @@ onBeforeUnmount(() => {
       color: var(--main-card-background);
     }
   }
+
+  // 平板设备
+  @media (max-width: 1024px) {
+    &.fixed {
+      width: 260px;
+      right: 16px;
+      bottom: 16px;
+    }
+  }
+
+  // 移动设备
   @media (max-width: 768px) {
-    display: none;
+    &.fixed {
+      width: auto;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      padding: 16px;
+    }
+    
+    .post-tip {
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    
+    .post-title {
+      font-size: 14px;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
+    }
+  }
+
+  // 小屏幕设备
+  @media (max-width: 480px) {
+    &.fixed {
+      padding: 12px;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+    }
   }
 }
 </style>
