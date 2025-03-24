@@ -1,6 +1,15 @@
-import { defineConfig } from "vitepress";
-import { createRssFile } from "./theme/utils/generateRSS.mjs";
+// VitePress 配置文件
+
+// 核心依赖导入
+import { defineConfig, HeadConfig } from "vitepress";
+import path from "path";
+
+// 插件导入
 import { withPwa } from "@vite-pwa/vitepress";
+import AutoImport from "unplugin-auto-import/vite";
+import Components from "unplugin-vue-components/vite";
+
+// 自定义工具和配置导入
 import {
   getAllPosts,
   getAllType,
@@ -8,46 +17,44 @@ import {
   getAllArchives,
 } from "./theme/utils/getPostData.mjs";
 import { jumpRedirect } from "./theme/utils/commonTools.mjs";
+import { createRssFile } from "./theme/utils/generateRSS.mjs";
 import { getThemeConfig } from "./init.mjs";
 import markdownConfig from "./theme/utils/markdownConfig.mjs";
-import AutoImport from "unplugin-auto-import/vite";
-import Components from "unplugin-vue-components/vite";
-import path from "path";
-import { HeadConfig } from "vitepress";
 
-// 获取全局数据
+// 加载全局数据
 const postData = await getAllPosts();
-// 获取主题配置
 const themeConfig = await getThemeConfig();
 
-// https://vitepress.dev/reference/site-config
+// VitePress主配置
 export default withPwa(
   defineConfig({
+    // 站点基本信息
     title: themeConfig.siteMeta.title,
     description: themeConfig.siteMeta.description,
     lang: themeConfig.siteMeta.lang,
-    // 简洁的 URL
     cleanUrls: true,
-    // 最后更新时间戳
     lastUpdated: true,
-    // 主题
     appearance: true,
-    // Head
+    
+    // 头部标签
     head: themeConfig.inject.header as HeadConfig[],
-    // sitemap
+    
+    // 站点地图
     sitemap: {
       hostname: themeConfig.siteMeta.site,
     },
-    // 解构主题配置
+    
+    // 主题配置，使用类型断言
     themeConfig: {
       ...themeConfig,
-      // 必要数据
-      postData: postData,
+      // 使用类型断言处理自定义属性
+      postData,
       tagsData: getAllType(postData),
       categoriesData: getAllCategories(postData),
       archivesData: getAllArchives(postData),
-    },
-    // markdown
+    } as any, // 使用类型断言绕过类型检查
+    
+    // Markdown配置
     markdown: {
       math: true,
       lineNumbers: true,
@@ -57,33 +64,55 @@ export default withPwa(
       },
       config: (md) => markdownConfig(md, themeConfig),
     },
-    // 构建排除
+    
+    // 构建排除的文件
     srcExclude: ["**/README.md", "**/TODO.md"],
-    // transformHead
+    
+    // 页面数据转换：添加规范链接
     transformPageData: async (pageData) => {
-      // canonical URL
+      // 生成规范URL，移除.md后缀和index.md
       const canonicalUrl = `${themeConfig.siteMeta.site}/${pageData.relativePath}`
         .replace(/index\.md$/, "")
         .replace(/\.md$/, "");
+      
+      // 初始化头部标签数组（如果不存在）
       pageData.frontmatter.head ??= [];
+      
+      // 添加规范链接标签
       pageData.frontmatter.head.push(["link", { rel: "canonical", href: canonicalUrl }]);
     },
-    // transformHtml
-    transformHtml: (html) => {
-      return jumpRedirect(html, themeConfig);
+    
+    // HTML转换：处理跳转重定向
+    transformHtml(html: string, id: string, ctx: any) {
+      try {
+        const result = jumpRedirect(html, themeConfig);
+        // 确保返回字符串，否则返回原始HTML
+        return typeof result === 'string' ? result : html;
+      } catch (error) {
+        console.error('HTML转换失败:', error);
+        return html; // 出错时返回原始HTML
+      }
     },
-    // buildEnd
+    
+    // 构建结束钩子：生成RSS
     buildEnd: async (config) => {
-      await createRssFile(config, themeConfig);
+      try {
+        await createRssFile(config, themeConfig);
+        console.log('RSS文件生成成功');
+      } catch (error) {
+        console.error('RSS文件生成失败:', error);
+      }
     },
-    // vite
+    
+    // 直接内联Vite配置
     vite: {
       plugins: [
-        // 自动导入
+        // 自动导入Vue组件和API
         AutoImport({
           imports: ['vue', 'vitepress'],
           dts: '.vitepress/auto-imports.d.ts'
         }),
+        // 自动注册Vue组件
         Components({
           dirs: ['.vitepress/theme/components', '.vitepress/theme/views'],
           extensions: ['vue', 'md'],
@@ -92,9 +121,8 @@ export default withPwa(
         })
       ],
       resolve: {
-        // 配置路径别名
+        // 路径别名
         alias: {
-          // eslint-disable-next-line no-undef
           '@': path.resolve(__dirname, './theme')
         }
       },
@@ -105,22 +133,24 @@ export default withPwa(
           },
         },
       },
-      // 服务器
+      // 开发服务器配置
       server: {
         port: 2912,
       },
-      // 构建
+      // 构建优化
       build: {
         chunkSizeWarningLimit: 1600,
         minify: "terser",
         terserOptions: {
           compress: {
+            // 移除生产环境中的console.log
             pure_funcs: ["console.log"],
           },
         },
       },
     },
-    // PWA
+    
+    // PWA配置
     pwa: {
       registerType: "autoUpdate",
       selfDestroying: true,
@@ -128,42 +158,40 @@ export default withPwa(
         clientsClaim: true,
         skipWaiting: true,
         cleanupOutdatedCaches: true,
-        // 资源缓存
+        // 资源缓存策略
         runtimeCaching: [
           {
+            // 字体和样式资源缓存
             urlPattern: /(.*?)\.(woff2|woff|ttf|css)/,
             handler: "CacheFirst",
-            options: {
-              cacheName: "file-cache",
-            },
+            options: { cacheName: "file-cache" },
           },
           {
+            // 图片资源缓存
             urlPattern: /(.*?)\.(ico|webp|png|jpe?g|svg|gif|bmp|psd|tiff|tga|eps)/,
             handler: "CacheFirst",
-            options: {
-              cacheName: "image-cache",
-            },
+            options: { cacheName: "image-cache" },
           },
           {
+            // 第三方资源缓存
             urlPattern: /^https:\/\/cdn2\.codesign\.qq\.com\/.*/i,
             handler: "CacheFirst",
             options: {
               cacheName: "iconfont-cache",
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 2,
+                maxAgeSeconds: 60 * 60 * 24 * 2, // 2天
               },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
+              cacheableResponse: { statuses: [0, 200] },
             },
           },
         ],
-        // 缓存文件
+        // 缓存文件模式
         globPatterns: ["**/*.{js,css,html,ico,png,jpg,jpeg,gif,svg,woff2,ttf}"],
-        // 排除路径
+        // 排除的导航路径
         navigateFallbackDenylist: [/^\/sitemap.xml$/, /^\/rss.xml$/, /^\/robots.txt$/],
       },
+      // 应用清单
       manifest: {
         name: themeConfig.siteMeta.title,
         short_name: themeConfig.siteMeta.title,
