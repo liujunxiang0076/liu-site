@@ -6,8 +6,10 @@ import DefaultTheme from "vitepress/theme";
 // 导入icon组件
 import Icon from "./components/Icon.vue";
 import App from "./MyApp.vue";
+import ScrollProgress from "./components/ScrollProgress.vue";
 // 全局样式
 import "./style/main.scss";
+import "./style/animations.scss";
 import { createPinia } from "pinia";
 import { routeChange } from "./utils/initTools.mjs";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
@@ -34,6 +36,7 @@ export default {
   enhanceApp({ app, router, siteData }) {
     // 注册组件
     app.component("Icon", Icon);
+    app.component("ScrollProgress", ScrollProgress);
 
     // 挂载
     app.use(pinia);
