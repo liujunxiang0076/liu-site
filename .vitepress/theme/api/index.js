@@ -462,8 +462,6 @@ export const getWeather = async (config, position) => {
       // 高德地图天气API
       const key = thirdParty?.amap?.webServerKey || '';
 
-      console.log(`output->getCurrentCityInfo`,await getCurrentCityInfo)
-
       let city = params.city || '110101';
 
       if (!key) {
@@ -531,7 +529,24 @@ export const getWeather = async (config, position) => {
     } else if (apiType === 'qweather') {
       // 和风天气API
       const key = thirdParty?.qweather?.key || '';
-      const location = params.location || `${longitude},${latitude}`;
+      // 优先使用选择的城市ID，其次使用浏览器获取的经纬度，最后使用传入的位置参数
+      let location = params.location;
+      if (!location && position?.coords) {
+        const longitude = parseFloat(position.coords.longitude).toFixed(2);
+        const latitude = parseFloat(position.coords.latitude).toFixed(2);
+        location = `${longitude},${latitude}`;
+      }
+      
+      if (!location) {
+        console.log('没有有效的位置信息，尝试获取当前坐标');
+        location = await getCurrentCoordinates();
+      }
+      
+      if (!location) {
+        // 默认北京坐标
+        location = '116.41,39.91';
+      }
+      
       const lang = params.lang || 'zh';
       const unit = params.unit || 'm';
       const days = params.days || '3';
@@ -540,7 +555,67 @@ export const getWeather = async (config, position) => {
       if (!key) {
         throw new Error('和风天气API密钥未配置');
       }
-
+      
+      console.log('使用和风天气API，location:', location);
+      
+      // 先通过坐标获取位置名称
+      let locationName = '未知位置';
+      try {
+        const cityInfo = await getQWeatherCityLookup(key, location, { isFree });
+        console.log('城市查询返回结果:', JSON.stringify(cityInfo));
+        
+        if (cityInfo && cityInfo.location && cityInfo.location.length > 0) {
+          // 使用第一个结果的城市名
+          const cityData = cityInfo.location[0];
+          console.log('城市数据:', JSON.stringify(cityData));
+          
+          // 优先使用城市名称，如果有区/县级名称则使用
+          if (cityData.adm2 && cityData.name !== cityData.adm2) {
+            // 如果区/县名不同于城市名，优先使用区/县名
+            locationName = cityData.name;
+          } else if (cityData.adm2) {
+            // 否则使用城市名
+            locationName = cityData.adm2;
+          } else if (cityData.name) {
+            // 兜底使用名称字段
+            locationName = cityData.name;
+          }
+          
+          console.log('获取到位置名称:', locationName);
+        } else {
+          // 如果城市查询API没有返回结果，尝试使用高德地图IP定位
+          try {
+            console.log('尝试使用高德地图IP定位');
+            const amapKey = thirdParty?.amap?.webServerKey;
+            if (amapKey) {
+              const ipLocation = await getAmapIPLocation(amapKey);
+              if (ipLocation && ipLocation.city) {
+                locationName = ipLocation.city.replace('市', '');
+                console.log('通过高德IP定位获取城市名:', locationName);
+              }
+            }
+          } catch (ipErr) {
+            console.warn('高德IP定位失败:', ipErr);
+          }
+        }
+      } catch (err) {
+        console.warn('获取位置名称失败:', err);
+        // 尝试使用高德地图IP定位作为备选
+        try {
+          console.log('尝试使用高德地图IP定位');
+          const amapKey = thirdParty?.amap?.webServerKey;
+          if (amapKey) {
+            const ipLocation = await getAmapIPLocation(amapKey);
+            if (ipLocation && ipLocation.city) {
+              locationName = ipLocation.city.replace('市', '');
+              console.log('通过高德IP定位获取城市名:', locationName);
+            }
+          }
+        } catch (ipErr) {
+          console.warn('高德IP定位也失败:', ipErr);
+        }
+      }
+      
       // 获取实时天气和预报数据
       const [nowResult, forecastResult] = await Promise.all([
         getQWeatherNowData(key, location, { lang, unit, isFree }),
@@ -570,7 +645,7 @@ export const getWeather = async (config, position) => {
       }
 
       weatherData = {
-        location: now.name || '未知位置',
+        location: locationName,
         temperature: parseInt(now.temp),
         weatherType,
         weatherText: now.text,
@@ -624,6 +699,7 @@ export const getQWeatherCityLookup = async (key, location, options = {}) => {
       throw new Error('和风天气API密钥未配置');
     }
 
+    // 根据是否免费选择正确的基础URL
     const baseUrl = isFree ? 'https://devapi.qweather.com' : 'https://geoapi.qweather.com';
 
     // 构建请求URL
@@ -646,6 +722,7 @@ export const getQWeatherCityLookup = async (key, location, options = {}) => {
     }
 
     const data = await response.json();
+    console.log('城市搜索API返回数据:', JSON.stringify(data));
 
     if (data.code !== '200') {
       throw new Error(data.msg || '城市搜索失败');
