@@ -174,7 +174,7 @@ export const themeConfig = {
                     name: '图床',
                     url: 'https://imgbed.liujunxiang0076.site/'
                 },
-                
+
 
             ]
         },
@@ -328,6 +328,39 @@ export const themeConfig = {
         // 目录
         toc: {
             enable: true
+        },
+        // 天气
+        weather: {
+            enable: true,
+            // 天气API类型: caiyun / baidu / amap / qweather / 其他可扩展
+            type: 'caiyun',
+            // API参数
+            params: {
+                // 彩云天气API Token
+                token: 'TAkhjf8d1nlSlspN',
+                // 百度地图API密钥
+                baiduAK: '',
+                // 区域ID（百度天气API使用）
+                districtId: '222405',
+                // 高德地图API密钥
+                amapKey: '',
+                // 城市编码（高德天气API使用）
+                city: '110101',
+                // 是否使用IP定位（高德地图API使用）
+                useIPLocation: true,
+                // 和风天气API密钥
+                qweatherKey: '',
+                // 位置ID或经纬度（和风天气API使用）
+                location: '',
+                // 预报天数：3/7/10/15/30（和风天气API使用）
+                days: '3',
+                // 是否为免费版（和风天气API使用）
+                isFree: true,
+                // 单位：m(公制)/i(英制)（和风天气API使用）
+                unit: 'm',
+                // 语言（和风天气API使用）
+                lang: 'zh'
+            }
         },
         // 标签
         tags: {
