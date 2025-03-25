@@ -5,10 +5,13 @@
 :root {
   /* 定义一系列颜色变量，用于整个网站的颜色统一管理 */
   --main-color: #425aef;
+  --main-color-rgb: 66, 90, 239; /* 添加主色RGB值 */
   --main-color-bg: #4259ef0d;
   --main-site-background: #f7f9fe;
   --main-card-background: #fff;
+  --main-card-background-rgb: 255, 255, 255;
   --main-card-second-background: #f7f7f9;
+  --main-card-second-background-rgb: 247, 247, 249;
   --main-font-color: #363636;
   --main-font-second-color: #3c3c43cc;
   --main-card-border: #e3e8f7;
@@ -20,6 +23,12 @@
   --main-color-opacity: rgba(255, 255, 255, 0.15);
   --main-dark-opacity: rgba(255, 255, 255, 0.15);
   --main-dark-shadow: #0000006e;
+  
+  /* 重要强调色 */
+  --main-accent-primary: #6366f1; /* 主要强调色 */
+  --main-accent-secondary: #06b6d4; /* 次要强调色 */
+  --main-accent-tertiary: #f59e0b; /* 第三强调色 */
+
   --main-info-color: #50bfff;
   --main-info-color-gray: #50bfff60;
   --main-warning-color: #ffa500;
@@ -39,10 +48,13 @@
 html.dark {
   /* 当 html 元素带有 .dark 类时，定义暗色主题的颜色变量 */
   --main-color: #dfac46;
+  --main-color-rgb: 223, 172, 70; /* 添加主色RGB值 */
   --main-color-bg: #f2b94b23;
   --main-site-background: #18171d;
   --main-card-background: #1b1c20;
+  --main-card-background-rgb: 27, 28, 32;
   --main-card-second-background: #21232a;
+  --main-card-second-background-rgb: 33, 35, 42;
   --main-font-color: #f7f7fa;
   --main-font-second-color: #a1a2b8;
   --main-card-border: #3d3d3f;
@@ -52,6 +64,11 @@ html.dark {
   --main-mask-Inverse-background: rgba(255, 255, 255, 0.08);
   --main-mask-second-background: rgba(0, 0, 0, 0.45);
   --main-color-opacity: rgba(0, 0, 0, 0.15);
+  
+  /* 重要强调色 - 暗色模式 */
+  --main-accent-primary: #818cf8; /* 主要强调色 - 暗色 */
+  --main-accent-secondary: #22d3ee; /* 次要强调色 - 暗色 */
+  --main-accent-tertiary: #fbbf24; /* 第三强调色 - 暗色 */
 }
 
 // 字体
@@ -245,4 +262,66 @@ a {
       border-color: var(--main-color) !important;
     }
   }
+}
+
+/* 增加重要内容的样式 */
+.accent-primary {
+  color: var(--main-accent-primary);
+  font-weight: bold;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: var(--main-accent-primary);
+    opacity: 0.2;
+    border-radius: 2px;
+  }
+}
+
+.accent-secondary {
+  color: var(--main-accent-secondary);
+  font-weight: bold;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: var(--main-accent-secondary);
+    opacity: 0.2;
+    border-radius: 2px;
+  }
+}
+
+.accent-tertiary {
+  color: var(--main-accent-tertiary);
+  font-weight: bold;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: var(--main-accent-tertiary);
+    opacity: 0.2;
+    border-radius: 2px;
+  }
+}
+
+.highlight {
+  background: linear-gradient(120deg, rgba(var(--main-color-rgb), 0.2) 0%, rgba(var(--main-color-rgb), 0.1) 100%);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin: 0 2px;
 }
