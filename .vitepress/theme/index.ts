@@ -45,7 +45,7 @@ export default {
     router.onBeforeRouteChange = (to) => {
       routeChange("before", to);
     };
-    router.onAfterRouteChanged = (to) => {
+    router.onAfterRouteChange = (to) => {
       routeChange("after", to);
     };
   },
