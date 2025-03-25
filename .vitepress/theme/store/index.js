@@ -5,6 +5,7 @@ export const mainStore = defineStore("main", {
     return {
       // 主题类别
       themeType: "auto",
+      // 主题值
       themeValue: "light",
       // banner
       bannerType: "half",
@@ -38,7 +39,7 @@ export const mainStore = defineStore("main", {
       // 移动端菜单显示
       mobileMenuShow: false,
       // 使用自定义右键菜单
-      useRightMenu: true,
+      useRightMenu: false,
       // 背景模糊
       backgroundBlur: false,
       // 全站字体
@@ -54,7 +55,9 @@ export const mainStore = defineStore("main", {
       backgroundUrl: "https://tuapi.eees.cc/api.php?category={dongman,fengjing}&type=302",
     };
   },
+  // 计算
   getters: {},
+  // 同步
   actions: {
     // 切换应用状态
     changeShowStatus(value, blur = true) {
