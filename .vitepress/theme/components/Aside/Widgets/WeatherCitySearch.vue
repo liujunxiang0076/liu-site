@@ -107,9 +107,23 @@ const search = async () => {
 };
 
 const selectCity = (city) => {
-  searchQuery.value = city.name;
+  searchQuery.value = '';
   searchResults.value = [];
-  emit('select', city);
+  hasSearched.value = false;
+  error.value = false;
+  
+  emit('select', {
+    id: city.id,
+    name: city.name,
+    adm1: city.adm1,
+    adm2: city.adm2,
+    country: city.country,
+    lat: city.lat,
+    lon: city.lon,
+    displayName: city.adm2 && city.name !== city.adm2 
+      ? `${city.name}, ${city.adm2}` 
+      : city.name
+  });
 };
 
 watch(searchQuery, (newValue) => {
