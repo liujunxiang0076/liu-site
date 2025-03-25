@@ -12,3 +12,4 @@ const { params } = useData();
 </script>
 
 <Home :showHeader="false" :page="Number(params.num)" />
+

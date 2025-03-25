@@ -10,3 +10,4 @@ const router = useRouter();
 
 onMounted(() => router.go("/"));
 </script>
+
