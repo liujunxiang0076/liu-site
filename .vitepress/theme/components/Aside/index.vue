@@ -1,10 +1,15 @@
 <template>
   <aside class="main-aside">
+    <!-- 欢迎 -->
     <Hello v-if="theme.aside.hello.enable" class="weidgets" />
     <div class="sticky">
+      <!-- 目录 -->
       <Toc v-if="theme.aside.toc.enable && showToc" class="weidgets" />
+      <!-- 倒计时 -->
       <Countdown class="weidgets" />
+      <!-- 标签 -->
       <Tags v-if="theme.aside.tags.enable" class="weidgets" />
+      <!-- 站点数据 -->
       <SiteData v-if="theme.aside.siteData.enable" class="weidgets" />
     </div>
   </aside>
