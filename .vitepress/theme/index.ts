@@ -7,6 +7,7 @@ import DefaultTheme from "vitepress/theme";
 import Icon from "./components/Icon.vue";
 import App from "./MyApp.vue";
 import ScrollProgress from "./components/ScrollProgress.vue";
+import LazyLoader from "./components/LazyLoader.vue";
 // 全局样式
 import "./style/main.scss";
 import "./style/animations.scss";
@@ -37,6 +38,7 @@ export default {
     // 注册组件
     app.component("Icon", Icon);
     app.component("ScrollProgress", ScrollProgress);
+    app.component("LazyLoader", LazyLoader);
 
     // 挂载
     app.use(pinia);
