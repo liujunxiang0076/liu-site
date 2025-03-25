@@ -33,7 +33,7 @@ interface Particle {
 // 网络配置
 const config = {
   // 核心设置
-  particleCount: 60, // 进一步减少粒子数量以提高性能
+  particleCount: 180, // 增加粒子数量以提高视觉效果
   particleColor: 'rgba(255, 255, 255, 0.7)',
   lineColor: 'rgba(255, 255, 255, 0.2)',
   highlightLineColor: 'rgba(255, 255, 255, 0.5)',
@@ -50,16 +50,16 @@ const config = {
 
   // 粒子属性
   particleMinRadius: 1,
-  particleMaxRadius: 2,
-  baseSpeed: 0.1,
+  particleMaxRadius: 2.5, // 增加部分粒子的最大尺寸
+  baseSpeed: 0.3, // 稍微提高基础速度
 
   // 连线属性
   lineWidth: 0.5,
-  connectDistance: 120,
+  connectDistance: 150, // 增加连线距离，让网络更密集
 
   // 交互设置
-  interactiveDistance: 100,
-  interactiveForce: 0.02,
+  interactiveDistance: 300, // 增加交互影响范围
+  interactiveForce: 100, // 增强鼠标交互力度
   baseBrightness: 0.4,
 
   // 光效设置
@@ -121,7 +121,7 @@ const initCanvas = () => {
       mousePosition.x = e.clientX;
       mousePosition.y = e.clientY;
       hasMouseMoved.value = true;
-    }, 16); // 约60fps
+    }, 3); // 减少延迟时间，提高响应速度
   };
 
   window.addEventListener('mousemove', handleMouseMove);
