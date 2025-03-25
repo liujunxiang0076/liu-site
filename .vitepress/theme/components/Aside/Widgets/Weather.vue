@@ -8,29 +8,72 @@
     <!-- 天气内容 -->
     <div class="weather-content">
       <!-- 主卡片 -->
-      <div class="weather-main-card" :class="currentWeather">
-        <!-- 动画效果 -->
-        <div v-if="['cloudy', 'rainy', 'snowy', 'windy'].includes(currentWeather)" class="clouds">
-          <div class="cloud"></div>
-          <div class="cloud"></div>
+      <div class="weather-main-card" :class="[currentWeather, timeOfDay]">
+        <!-- 天空背景层 -->
+        <div class="sky-background"></div>
+        
+        <!-- 星星（夜间） -->
+        <div v-if="timeOfDay === 'night'" class="stars">
+          <div v-for="i in 20" :key="`star-${i}`" class="star"
+            :style="{ 
+              left: `${Math.random() * 100}%`, 
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`
+            }">
+          </div>
         </div>
         
+        <!-- 太阳/月亮 -->
+        <div v-if="currentWeather === 'sunny' || currentWeather === 'cloudy'" 
+          :class="['celestial-body', { 'sun': isDayTime, 'moon': !isDayTime }]">
+        </div>
+        
+        <!-- 云层 -->
+        <div v-if="['cloudy', 'rainy', 'snowy'].includes(currentWeather)" class="clouds">
+          <div v-for="i in 3" :key="`cloud-${i}`" 
+            class="cloud"
+            :style="{ 
+              animationDuration: `${20 + i * 5}s`,
+              animationDelay: `${i * 2}s`,
+              opacity: timeOfDay === 'night' ? 0.6 : 0.8
+            }">
+          </div>
+        </div>
+        
+        <!-- 雨滴 -->
         <div v-if="currentWeather === 'rainy'" class="rain">
-          <div v-for="i in 10" :key="`rain-${i}`" class="drop"
-            :style="{ left: `${i * 10}%`, animationDuration: `${0.7 + Math.random() * 0.3}s`, animationDelay: `${Math.random() * 0.5}s` }">
+          <div v-for="i in 20" :key="`rain-${i}`" class="drop"
+            :style="{ 
+              left: `${i * 5}%`,
+              animationDuration: `${0.8 + (i * 0.1)}s`,
+              animationDelay: `${i * 0.1}s`,
+              opacity: 0.4 + (i * 0.02)
+            }">
           </div>
         </div>
         
+        <!-- 雪花 -->
         <div v-if="currentWeather === 'snowy'" class="snow">
-          <div v-for="i in 10" :key="`snow-${i}`" class="snowflake"
-            :style="{ left: `${i * 10}%`, animationDuration: `${1 + Math.random() * 0.5}s`, animationDelay: `${Math.random() * 0.5}s` }">
+          <div v-for="i in 20" :key="`snow-${i}`" class="snowflake"
+            :style="{ 
+              left: `${i * 5}%`,
+              animationDuration: `${2.5 + (i * 0.1)}s`,
+              animationDelay: `${i * 0.15}s`,
+              opacity: 0.6 + (i * 0.02)
+            }">
           </div>
         </div>
         
-        <div v-if="currentWeather === 'sunny'" class="sun"></div>
-        
+        <!-- 风效果 -->
         <div v-if="currentWeather === 'windy'" class="wind">
-          <div v-for="i in 3" :key="`wind-${i}`" class="wind-line" :style="{ animationDelay: `${i * 0.2}s` }"></div>
+          <div v-for="i in 5" :key="`wind-${i}`" class="wind-line"
+            :style="{ 
+              top: `${20 + (i * 15)}%`,
+              width: `${30 + (i * 10)}px`,
+              animationDelay: `${i * 0.2}s`,
+              opacity: 0.4 + (i * 0.1)
+            }">
+          </div>
         </div>
         
         <!-- 天气信息 -->
@@ -300,6 +343,19 @@ async function getLocation() {
     // 使用默认坐标
   }
 }
+
+const isDayTime = computed(() => {
+  const hour = new Date().getHours();
+  return hour >= 6 && hour < 18;
+});
+
+const timeOfDay = computed(() => {
+  const hour = new Date().getHours();
+  if (hour >= 5 && hour < 8) return 'dawn';
+  if (hour >= 8 && hour < 16) return 'day';
+  if (hour >= 16 && hour < 19) return 'dusk';
+  return 'night';
+});
 </script>
 
 <style lang="scss" scoped>
@@ -350,29 +406,121 @@ html.dark {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
 
-    &.sunny {
-      background: linear-gradient(160deg, #FFA53E, #FFCB7B);
+    // 晴天 - 白天
+    &.sunny.day {
+      background: linear-gradient(160deg, #64B5F6, #42A5F5);
+      .sky-background {
+        background: linear-gradient(160deg, #1E88E5, #64B5F6);
+        opacity: 0.8;
+      }
     }
 
-    &.cloudy {
-      background: linear-gradient(160deg, #7F9EFA, #A8C0FF);
+    // 晴天 - 夜晚
+    &.sunny.night {
+      background: linear-gradient(160deg, #1A237E, #283593);
+      .sky-background {
+        background: linear-gradient(160deg, #0D47A1, #1A237E);
+        opacity: 0.9;
+      }
     }
 
-    &.rainy {
-      background: linear-gradient(160deg, #6B8299, #9BADBF);
+    // 晴天 - 黎明
+    &.sunny.dawn {
+      background: linear-gradient(160deg, #FF9800, #FFA726);
+      .sky-background {
+        background: linear-gradient(160deg, #FB8C00, #FF9800);
+        opacity: 0.85;
+      }
     }
 
-    &.snowy {
-      background: linear-gradient(160deg, #B8D9FB, #D5E8FF);
+    // 晴天 - 黄昏
+    &.sunny.dusk {
+      background: linear-gradient(160deg, #FF7043, #FF5722);
+      .sky-background {
+        background: linear-gradient(160deg, #F4511E, #FF7043);
+        opacity: 0.85;
+      }
     }
 
-    &.windy {
-      background: linear-gradient(160deg, #90CAE8, #C1E2F5);
+    // 多云 - 白天
+    &.cloudy.day {
+      background: linear-gradient(160deg, #90A4AE, #B0BEC5);
+      .sky-background {
+        background: linear-gradient(160deg, #78909C, #90A4AE);
+        opacity: 0.9;
+      }
     }
-    
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+
+    // 多云 - 夜晚
+    &.cloudy.night {
+      background: linear-gradient(160deg, #37474F, #455A64);
+      .sky-background {
+        background: linear-gradient(160deg, #263238, #37474F);
+        opacity: 0.95;
+      }
+    }
+
+    // 多云 - 黎明/黄昏
+    &.cloudy.dawn, &.cloudy.dusk {
+      background: linear-gradient(160deg, #795548, #8D6E63);
+      .sky-background {
+        background: linear-gradient(160deg, #6D4C41, #795548);
+        opacity: 0.9;
+      }
+    }
+
+    // 雨天 - 白天
+    &.rainy.day {
+      background: linear-gradient(160deg, #546E7A, #78909C);
+      .sky-background {
+        background: linear-gradient(160deg, #455A64, #546E7A);
+        opacity: 0.95;
+      }
+    }
+
+    // 雨天 - 夜晚
+    &.rainy.night {
+      background: linear-gradient(160deg, #263238, #37474F);
+      .sky-background {
+        background: linear-gradient(160deg, #1A237E, #263238);
+        opacity: 0.97;
+      }
+    }
+
+    // 雪天 - 白天
+    &.snowy.day {
+      background: linear-gradient(160deg, #90A4AE, #CFD8DC);
+      .sky-background {
+        background: linear-gradient(160deg, #78909C, #B0BEC5);
+        opacity: 0.9;
+      }
+    }
+
+    // 雪天 - 夜晚
+    &.snowy.night {
+      background: linear-gradient(160deg, #37474F, #455A64);
+      .sky-background {
+        background: linear-gradient(160deg, #263238, #37474F);
+        opacity: 0.95;
+      }
+    }
+
+    // 大风 - 白天
+    &.windy.day {
+      background: linear-gradient(160deg, #64B5F6, #90CAF9);
+      .sky-background {
+        background: linear-gradient(160deg, #42A5F5, #64B5F6);
+        opacity: 0.8;
+      }
+    }
+
+    // 大风 - 夜晚
+    &.windy.night {
+      background: linear-gradient(160deg, #1A237E, #283593);
+      .sky-background {
+        background: linear-gradient(160deg, #0D47A1, #1A237E);
+        opacity: 0.9;
+      }
     }
   }
   
@@ -527,113 +675,329 @@ html.dark {
   }
 
   // 动画效果
-  .clouds, .rain, .snow, .wind, .sun {
+  .sky-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: all 1s ease;
+  }
+  
+  .celestial-body {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    left: 20px;
+    top: 20px;
+    transition: all 0.5s ease;
+    
+    &.sun {
+      background: linear-gradient(145deg, #FDD835, #FFB300);
+      box-shadow: 
+        0 0 60px rgba(255, 235, 59, 0.6),
+        0 0 120px rgba(255, 235, 59, 0.3);
+      animation: float 6s ease-in-out infinite;
+      
+      // 黎明时的太阳
+      .dawn & {
+        background: linear-gradient(145deg, #FFB74D, #FFA726);
+        box-shadow: 
+          0 0 60px rgba(255, 167, 38, 0.4),
+          0 0 120px rgba(255, 167, 38, 0.2);
+        opacity: 0.9;
+      }
+      
+      // 黄昏时的太阳
+      .dusk & {
+        background: linear-gradient(145deg, #FF7043, #FF5722);
+        box-shadow: 
+          0 0 60px rgba(255, 87, 34, 0.4),
+          0 0 120px rgba(255, 87, 34, 0.2);
+        opacity: 0.85;
+      }
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: -20px;
+        left: -20px;
+        right: -20px;
+        bottom: -20px;
+        background: radial-gradient(circle, rgba(255, 235, 59, 0.3) 0%, transparent 70%);
+        animation: sun-pulse 4s ease-in-out infinite;
+        
+        .dawn & {
+          background: radial-gradient(circle, rgba(255, 167, 38, 0.3) 0%, transparent 70%);
+        }
+        
+        .dusk & {
+          background: radial-gradient(circle, rgba(255, 87, 34, 0.3) 0%, transparent 70%);
+        }
+      }
+    }
+    
+    &.moon {
+      background: linear-gradient(145deg, #FFFFFF 5%, #F4F4F4 50%, #E8E8E8 100%);
+      box-shadow: 
+        0 0 30px rgba(255, 255, 255, 0.3),
+        0 0 60px rgba(255, 255, 255, 0.1),
+        inset -8px -8px 15px rgba(0, 0, 0, 0.1);
+      animation: float 8s ease-in-out infinite;
+      overflow: hidden;
+      
+      // 深夜的月亮
+      .night & {
+        box-shadow: 
+          0 0 40px rgba(255, 255, 255, 0.4),
+          0 0 80px rgba(255, 255, 255, 0.2),
+          inset -8px -8px 15px rgba(0, 0, 0, 0.15);
+      }
+      
+      &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: 
+          radial-gradient(circle at 25% 25%, rgba(244, 244, 244, 0.8) 5%, transparent 15%),
+          radial-gradient(circle at 75% 30%, rgba(244, 244, 244, 0.8) 4%, transparent 12%),
+          radial-gradient(circle at 35% 65%, rgba(244, 244, 244, 0.8) 6%, transparent 18%),
+          radial-gradient(circle at 65% 70%, rgba(244, 244, 244, 0.8) 5%, transparent 15%);
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+        
+        .night & {
+          opacity: 1;
+        }
+      }
+    }
+  }
+  
+  .stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s ease-in-out infinite;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: white;
+        border-radius: 50%;
+        filter: blur(1px);
+        opacity: 0.5;
+      }
+      
+      // 使用固定序列替代随机值
+      @for $i from 1 through 20 {
+        &:nth-child(#{$i}) {
+          $size: if($i % 2 == 0, 2, 1);
+          $duration: 1.5s + ($i % 10) * 0.1s;
+          width: #{$size}px;
+          height: #{$size}px;
+          animation-duration: $duration;
+        }
+      }
+    }
+  }
+  
+  .clouds {
     position: absolute;
     width: 100%;
     height: 100%;
     pointer-events: none;
-  }
-
-  .cloud {
-    position: absolute;
-    width: 40px;
-    height: 16px;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 20px;
-    animation: cloud-move 20s linear infinite;
-
-    &:before,
-    &:after {
-      content: '';
+    
+    .cloud {
       position: absolute;
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      animation: cloud-move 20s linear infinite;
+      filter: blur(1px);
+      
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        background: inherit;
+        border-radius: 50%;
+      }
+      
+      &:nth-child(1) {
+        width: 60px;
+        height: 20px;
+        top: 30px;
+        left: -60px;
+        opacity: 0.9;
+        animation-duration: 25s;
+        
+        &::before {
+          width: 25px;
+          height: 25px;
+          top: -10px;
+          left: 12px;
+        }
+        
+        &::after {
+          width: 30px;
+          height: 30px;
+          top: -15px;
+          right: 10px;
+        }
+      }
+      
+      &:nth-child(2) {
+        width: 50px;
+        height: 18px;
+        top: 60px;
+        left: -50px;
+        opacity: 0.7;
+        animation-duration: 30s;
+        animation-delay: -15s;
+        
+        &::before {
+          width: 22px;
+          height: 22px;
+          top: -10px;
+          left: 10px;
+        }
+        
+        &::after {
+          width: 26px;
+          height: 26px;
+          top: -12px;
+          right: 8px;
+        }
+      }
+      
+      &:nth-child(3) {
+        width: 40px;
+        height: 15px;
+        top: 90px;
+        left: -40px;
+        opacity: 0.6;
+        animation-duration: 35s;
+        animation-delay: -7s;
+        
+        &::before {
+          width: 18px;
+          height: 18px;
+          top: -8px;
+          left: 7px;
+        }
+        
+        &::after {
+          width: 20px;
+          height: 20px;
+          top: -10px;
+          right: 7px;
+        }
+      }
+      
+      // 夜间云层效果
+      .night & {
+        background: rgba(255, 255, 255, 0.7);
+        filter: blur(2px);
+      }
+      
+      // 黎明/黄昏云层效果
+      .dawn &, .dusk & {
+        background: rgba(255, 255, 255, 0.8);
+        filter: blur(1.5px);
+      }
+    }
+  }
+
+  .rain {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    
+    .drop {
+      position: absolute;
+      width: 2px;
+      height: 20px;
+      background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.5));
+      border-radius: 1px;
+      animation: rain-drop 1s linear infinite;
+      filter: blur(0.5px);
+      
+      @for $i from 1 through 20 {
+        &:nth-child(#{$i}) {
+          left: ($i * 5) * 1%;
+          animation-delay: ($i * 0.1) * 1s;
+          animation-duration: (0.8 + $i * 0.1) * 1s;
+          opacity: 0.4 + ($i * 0.02);
+        }
+      }
+    }
+  }
+
+  .snow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    
+    .snowflake {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: white;
       border-radius: 50%;
-    }
-
-    &:before {
-      width: 20px;
-      height: 20px;
-      top: -9px;
-      left: 7px;
-    }
-
-    &:after {
-      width: 24px;
-      height: 24px;
-      top: -12px;
-      right: 7px;
-    }
-
-    &:nth-child(1) {
-      top: 25px;
-      left: -40px;
-      animation-duration: 30s;
-    }
-
-    &:nth-child(2) {
-      top: 70px;
-      left: -60px;
-      width: 50px;
-      height: 20px;
-      animation-duration: 25s;
-      animation-delay: 5s;
+      animation: snow-drop 3s linear infinite;
+      filter: blur(0.5px);
+      
+      &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        transform: scale(0.8);
+      }
+      
+      @for $i from 1 through 20 {
+        &:nth-child(#{$i}) {
+          left: ($i * 5) * 1%;
+          animation-delay: ($i * 0.15) * 1s;
+          animation-duration: (2.5 + $i * 0.1) * 1s;
+          opacity: 0.6 + ($i * 0.02);
+        }
+      }
     }
   }
 
-  .drop {
+  .wind {
     position: absolute;
-    top: -20px;
-    width: 2px;
-    height: 12px;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 1px;
-    animation: rain-drop 1s linear infinite;
-  }
-
-  .snowflake {
-    position: absolute;
-    top: -10px;
-    width: 6px;
-    height: 6px;
-    background: white;
-    border-radius: 50%;
-    animation: snow-drop 2s linear infinite;
-  }
-
-  .sun {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 60px rgba(255, 240, 180, 0.6);
-    animation: sun-pulse 3s ease-in-out infinite;
-  }
-
-  .wind-line {
-    position: absolute;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.7);
-    animation: wind-blow 3s linear infinite;
-
-    &:nth-child(1) {
-      top: 40px;
-      left: -30px;
-      width: 40px;
-    }
-
-    &:nth-child(2) {
-      top: 80px;
-      left: -30px;
-      width: 60px;
-    }
-
-    &:nth-child(3) {
-      top: 120px;
-      left: -30px;
-      width: 30px;
+    width: 100%;
+    height: 100%;
+    
+    .wind-line {
+      position: absolute;
+      height: 2px;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.7), transparent);
+      animation: wind-blow 3s linear infinite;
+      filter: blur(0.5px);
+      
+      @for $i from 1 through 5 {
+        &:nth-child(#{$i}) {
+          top: (20 + $i * 15) * 1%;
+          width: (30 + $i * 10) * 1px;
+          animation-delay: ($i * 0.2) * 1s;
+          opacity: 0.4 + ($i * 0.1);
+        }
+      }
     }
   }
 }
@@ -641,56 +1005,84 @@ html.dark {
 // 动画定义
 @keyframes cloud-move {
   0% {
-    transform: translateX(-10%);
+    transform: translateX(-120%) translateY(0);
+  }
+  50% {
+    transform: translateX(-60%) translateY(-5px);
   }
   100% {
-    transform: translateX(120%);
+    transform: translateX(120%) translateY(0);
   }
 }
 
 @keyframes rain-drop {
   0% {
-    transform: translateY(0) scaleY(1);
+    transform: translateY(-10px) translateX(0) scaleY(1);
+    opacity: 0;
+  }
+  50% {
     opacity: 1;
   }
   100% {
-    transform: translateY(170px) scaleY(2);
+    transform: translateY(170px) translateX(-20px) scaleY(2);
     opacity: 0;
   }
 }
 
 @keyframes snow-drop {
   0% {
-    transform: translateY(0) rotate(0deg);
+    transform: translateY(-10px) rotate(0deg) scale(1);
+    opacity: 0;
+  }
+  25% {
+    transform: translateY(40px) rotate(90deg) scale(1.2);
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(120px) rotate(270deg) scale(0.8);
     opacity: 1;
   }
   100% {
-    transform: translateY(170px) rotate(360deg);
+    transform: translateY(170px) rotate(360deg) scale(0.5);
     opacity: 0;
+  }
+}
+
+@keyframes sun-rays {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 
 @keyframes sun-pulse {
   0%, 100% {
     transform: scale(1);
-    opacity: 0.9;
+    opacity: 0.3;
   }
   50% {
-    transform: scale(1.1);
-    opacity: 1;
+    transform: scale(1.2);
+    opacity: 0.5;
   }
 }
 
 @keyframes wind-blow {
   0% {
-    transform: translateX(-10px);
+    transform: translateX(-30px) scaleX(0.5);
     opacity: 0;
   }
-  20% {
+  25% {
+    transform: translateX(0) scaleX(1);
     opacity: 1;
   }
+  75% {
+    transform: translateX(90px) scaleX(1.2);
+    opacity: 0.7;
+  }
   100% {
-    transform: translateX(120%);
+    transform: translateX(120px) scaleX(0.5);
     opacity: 0;
   }
 }
@@ -698,6 +1090,26 @@ html.dark {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
   }
 }
 </style>
