@@ -1,6 +1,7 @@
 <template>
     <!-- 背景图片 -->
-    <Background />
+    <!-- <Background /> -->
+    <ParticleBackground />
     <!-- 加载提示 -->
     <Loading />
     <!-- 中控台 -->
