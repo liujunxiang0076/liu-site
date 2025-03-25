@@ -333,23 +333,12 @@ export const themeConfig = {
         weather: {
             enable: true,
             // 天气API类型: caiyun / baidu / amap / qweather / 其他可扩展
-            type: 'caiyun',
+            type: 'amap',
             // API参数
             params: {
-                // 彩云天气API Token
-                token: 'TAkhjf8d1nlSlspN',
-                // 百度地图API密钥
-                baiduAK: '',
+                
                 // 区域ID（百度天气API使用）
                 districtId: '222405',
-                // 高德地图API密钥
-                amapKey: '',
-                // 城市编码（高德天气API使用）
-                city: '110101',
-                // 是否使用IP定位（高德地图API使用）
-                useIPLocation: true,
-                // 和风天气API密钥
-                qweatherKey: '',
                 // 位置ID或经纬度（和风天气API使用）
                 location: '',
                 // 预报天数：3/7/10/15/30（和风天气API使用）
@@ -434,5 +423,55 @@ export const themeConfig = {
     // 站点统计
     tongji: {
         '51la': ''
+    },
+    // 第三方集成配置
+    thirdParty: {
+        // 高德地图
+        amap: {
+            /**
+             * Web端Key
+             * 可使用服务（JS定位……）
+             */
+            webKey: 'e77c26cdccb4e2d2dd16c75eb9e79ec2',
+            /**
+             * Web服务Key
+             * 已使用服务（国内天气查询）
+             */
+            webServerKey: '13e484c8594cb5e32afe11d48c9631cf'
+        },
+        // 百度地图
+        baidu: {
+            
+            /**
+             * 浏览器端AK
+             * 可使用服务（JS定位……）
+             */
+            browserKey: 'jGkvEb16QQjFMAeaR3Wh4h9WvG1bNAfr',
+            /**
+             * 服务端AK
+             * 已使用服务（国内天气查询）
+             */
+            serverKey: '9V9xkJbN8JsGjMSZcm7GEwqxKP5FsG96'
+        },
+        // 彩云天气
+        caiyun: {
+            // 彩云天气API Token
+            token: 'TAkhjf8d1nlSlspN'
+        },
+        // 和风天气
+        qweather: {
+            // 和风天气API密钥
+            key: '9e31fc183b77456788d5260d97b288b7'
+        },
+        // 百度统计
+        baiduTongji: {
+            // 百度统计ID
+            id: ''
+        },
+        // CNZZ统计
+        cnzz: {
+            // CNZZ统计ID
+            id: ''
+        }
     }
 };
