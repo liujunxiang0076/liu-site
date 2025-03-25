@@ -7,6 +7,8 @@
       <Toc v-if="theme.aside.toc.enable && showToc" class="weidgets" />
       <!-- 倒计时 -->
       <Countdown class="weidgets" />
+      <!-- 天气 -->
+      <Weather v-if="theme.aside.weather && theme.aside.weather.enable" class="weidgets" />
       <!-- 标签 -->
       <Tags v-if="theme.aside.tags.enable" class="weidgets" />
       <!-- 站点数据 -->
@@ -16,6 +18,9 @@
 </template>
 
 <script setup>
+// 组件
+import Weather from './Widgets/Weather.vue'
+
 // 主题
 const { theme } = useData();
 // 路由
