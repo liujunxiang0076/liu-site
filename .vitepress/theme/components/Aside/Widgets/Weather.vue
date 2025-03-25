@@ -1,5 +1,5 @@
 <template>
-  <div class="weather-card">
+  <div class="weather-card s-card">
     <!-- 城市搜索组件 -->
     <div v-if="isQWeatherAPI" class="search-section">
       <WeatherCitySearch @select="handleCitySelect" />
@@ -77,7 +77,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch, watchEffect } from 'vue'
 import { useData } from 'vitepress'
 import { useI18n } from '../../../i18n'
 import { getWeather } from '../../../api'
@@ -85,7 +85,7 @@ import WeatherCitySearch from './WeatherCitySearch.vue'
 import { getCurrentCoordinates,getQWeatherCityLookup } from '../../../api'
 
 const { t } = useI18n()
-const { theme } = useData()
+const { theme, isDark } = useData()
 
 // 天气类型
 const weatherTypes = ['sunny', 'cloudy', 'rainy', 'snowy', 'windy']
@@ -105,6 +105,11 @@ const {longitude, latitude} =ref(null)
 const isQWeatherAPI = computed(() => {
   return theme.value.aside.weather?.type === 'qweather';
 });
+
+// 添加打印，查看变量的值
+watchEffect(() => {
+  console.log('深色模式状态:', isDark.value);
+})
 
 // 切换天气类型
 const changeWeather = (weather) => {
@@ -246,6 +251,25 @@ async function getLocation() {
 </script>
 
 <style lang="scss" scoped>
+html.dark {
+  .weather-card {
+    background-color: #1e1e20 !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1) !important;
+    
+    .forecast-item {
+      background-color: rgba(50, 50, 50, 0.8) !important;
+      
+      &:hover {
+        background-color: rgba(60, 60, 60, 0.8) !important;
+      }
+    }
+    
+    .loading-container, .error-container {
+      background-color: rgba(50, 50, 50, 0.8) !important;
+    }
+  }
+}
+
 .weather-card {
   position: relative;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
@@ -255,7 +279,7 @@ async function getLocation() {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
   padding: 16px;
   margin: 12px 0;
-  
+
   .search-section {
     margin-bottom: 16px;
   }
@@ -429,7 +453,7 @@ async function getLocation() {
     background-color: var(--vp-c-bg-alt, rgba(255, 255, 255, 0.6));
     backdrop-filter: blur(8px);
     border-radius: 16px;
-    color: #ff4757;
+    color: var(--vp-c-danger);
     gap: 10px;
     
     .error-icon {
@@ -437,7 +461,7 @@ async function getLocation() {
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: #ffe0e3;
+      background: rgba(255, 71, 87, 0.1);
       display: flex;
       justify-content: center;
       align-items: center;
