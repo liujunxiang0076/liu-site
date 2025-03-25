@@ -1,11 +1,5 @@
 <template>
   <div class="weather-card">
-    <!-- 天气标题 -->
-    <div class="title">
-      <span class="iconfont icon-weather"></span>
-      <span class="title-name">{{ t('weather.title') }}</span>
-    </div>
-    
     <!-- 城市搜索组件 -->
     <div v-if="isQWeatherAPI" class="search-section">
       <WeatherCitySearch @select="handleCitySelect" />
@@ -13,70 +7,68 @@
     
     <!-- 天气内容 -->
     <div class="weather-content">
-      <div class="weather-display" :class="currentWeather">
-        <!-- 云朵动画 -->
+      <!-- 主卡片 -->
+      <div class="weather-main-card" :class="currentWeather">
+        <!-- 动画效果 -->
         <div v-if="['cloudy', 'rainy', 'snowy', 'windy'].includes(currentWeather)" class="clouds">
           <div class="cloud"></div>
           <div class="cloud"></div>
         </div>
-        <!-- 雨滴动画 -->
+        
         <div v-if="currentWeather === 'rainy'" class="rain">
           <div v-for="i in 10" :key="`rain-${i}`" class="drop"
             :style="{ left: `${i * 10}%`, animationDuration: `${0.7 + Math.random() * 0.3}s`, animationDelay: `${Math.random() * 0.5}s` }">
           </div>
         </div>
-        <!-- 雪花动画 -->
+        
         <div v-if="currentWeather === 'snowy'" class="snow">
           <div v-for="i in 10" :key="`snow-${i}`" class="snowflake"
             :style="{ left: `${i * 10}%`, animationDuration: `${1 + Math.random() * 0.5}s`, animationDelay: `${Math.random() * 0.5}s` }">
           </div>
         </div>
-        <!-- 太阳动画 -->
+        
         <div v-if="currentWeather === 'sunny'" class="sun"></div>
-        <!-- 风动画 -->
+        
         <div v-if="currentWeather === 'windy'" class="wind">
           <div v-for="i in 3" :key="`wind-${i}`" class="wind-line" :style="{ animationDelay: `${i * 0.2}s` }"></div>
         </div>
-      </div>
-      <!-- 天气信息 -->
-      <div class="weather-info">
-        <div v-if="loading" class="loading">
-          <div class="spinner"></div>
-        </div>
-        <!-- 天气数据 -->
-        <template v-else-if="weatherData">
-          <div class="location">{{ weatherData.location }}</div>
-          <div class="temperature">{{ weatherData.temperature }}°C</div>
-          <div class="weather-text">{{ weatherData.weather }}</div>
-          <div class="weather-detail">
-            <span>{{ t('weather.humidity') }}: {{ weatherData.humidity }}%</span>
+        
+        <!-- 天气信息 -->
+        <div v-if="weatherData" class="weather-info-overlay">
+          <div class="city-name">{{ weatherData.location }}</div>
+          <div class="current-temp">{{ weatherData.temperature }}<span class="temp-unit">°C</span></div>
+          <div class="current-weather">{{ weatherData.weather }}</div>
+          <div class="weather-details">
+            <span>湿度 {{ weatherData.humidity }}%</span>
+            <span class="divider">•</span>
             <span>{{ weatherData.windDirection }} {{ weatherData.windSpeed }}</span>
           </div>
-
-          <!-- 天气预报 -->
-          <div v-if="weatherData.forecast && weatherData.forecast.length > 0" class="weather-forecast">
-            <div class="forecast-title">{{ t('weather.forecast') }}</div>
-            <div class="forecast-items">
-              <div v-for="(day, index) in weatherData.forecast.slice(0, 3)" :key="index" class="forecast-item">
-                <div class="forecast-date">{{ formatForecastDate(day.date) }}</div>
-                <div class="forecast-temp">{{ day.dayTemp }}/{{ day.nightTemp }}°C</div>
-                <div class="forecast-weather">{{ day.dayWeather }}</div>
-              </div>
-            </div>
-          </div>
-        </template>
-        <!-- 天气数据错误 -->
-        <div v-else-if="error" class="error">
-          {{ t('weather.error') }}
         </div>
       </div>
-      <!-- 天气按钮 -->
-      <div class="weather-buttons">
-        <button v-for="weather in weatherTypes" :key="weather" @click="changeWeather(weather)"
-          :class="{ active: currentWeather === weather }" :title="t(`weather.${weather}`)">
-          <span class="iconfont" :class="`icon-${weather}`"></span>
-        </button>
-        <button @click="refreshWeather" class="refresh" title="刷新">
+      
+      <!-- 加载状态 -->
+      <div v-if="loading" class="loading-container">
+        <div class="spinner"></div>
+      </div>
+      
+      <!-- 错误状态 -->
+      <div v-else-if="error && !weatherData" class="error-container">
+        <span class="error-icon">!</span>
+        <span>{{ t('weather.error') }}</span>
+      </div>
+      
+      <!-- 天气预报 -->
+      <div v-if="weatherData && weatherData.forecast && weatherData.forecast.length > 1" class="forecast-container">
+        <div v-for="(day, index) in weatherData.forecast.slice(1, 3)" :key="index" class="forecast-item">
+          <div class="forecast-day">{{ formatForecastDate(day.date) }}</div>
+          <div class="forecast-weather">{{ day.dayWeather }}</div>
+          <div class="forecast-temp">{{ day.dayTemp }}<small>/{{ day.nightTemp }}°</small></div>
+        </div>
+      </div>
+      
+      <!-- 控制按钮 -->
+      <div class="control-bar">
+        <button @click="refreshWeather" class="refresh-btn" title="刷新">
           <span class="iconfont icon-refresh"></span>
         </button>
       </div>
@@ -90,7 +82,7 @@ import { useData } from 'vitepress'
 import { useI18n } from '../../../i18n'
 import { getWeather } from '../../../api'
 import WeatherCitySearch from './WeatherCitySearch.vue'
-import { getCurrentCoordinates } from '../../../api'
+import { getCurrentCoordinates,getQWeatherCityLookup } from '../../../api'
 
 const { t } = useI18n()
 const { theme } = useData()
@@ -177,42 +169,28 @@ const fetchWeatherData = async () => {
     // 获取位置信息
     let position = null;
     
-    // 如果已选择城市且使用和风天气API，则不需要位置信息
-    if (!(isQWeatherAPI.value && selectedCityId.value)) {
-      // 尝试通过浏览器定位
-      try {
-        if (navigator.geolocation) {
-          position = await new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(
-              (pos) => resolve(pos),
-              (err) => {
-                console.warn('浏览器地理位置获取失败:', err.message);
-                reject(err);
-              },
-              { timeout: 10000, maximumAge: 3600000 } // 1小时内缓存位置
-            )
-          });
-
-          longitude=position.coords.longitude
-          
-          latitude=position.coords.latitude
-          console.log('浏览器地理位置获取成功：', longitude,latitude);
-        }
-      } catch (locErr) {
-        console.warn('浏览器定位失败:', locErr);
-        // 浏览器定位失败，继续后续流程
-      }
-      
-      // 如果浏览器定位失败且未设置position，创建默认位置
-      if (!position) {
-        position = { coords: { longitude: 116.41, latitude: 39.91 } };
-        console.log('使用默认位置: 北京');
-      }
+    // 尝试获取格式化后的经纬度
+    const coordinates = await getCurrentCoordinates();
+    
+    if (coordinates) {
+      // 如果成功获取经纬度，创建position对象
+      const [longitude, latitude] = coordinates.split(',');
+      position = { 
+        coords: { 
+          longitude: parseFloat(longitude), 
+          latitude: parseFloat(latitude) 
+        } 
+      };
+      console.log('浏览器地理位置获取成功：', coordinates);
+    } else {
+      // 如果获取失败，使用默认位置（北京）
+      position = { coords: { longitude: 116.41, latitude: 39.91 } };
+      console.log('使用默认位置: 北京');
     }
     
-    // 构造完整配置，包括天气配置和第三方API配置
+    // 构造完整配置，使用和风天气API
     const config = {
-      type: theme.value.aside.weather?.type,
+      type: 'qweather', // 强制使用和风天气API
       params: {
         ...(theme.value.aside.weather?.params || {}),
         // 如果选择了城市，则使用城市ID作为location
@@ -252,6 +230,7 @@ onMounted(() => {
   fetchWeatherData()
 })
 
+
 async function getLocation() {
   // 获取格式化后的经纬度
   const coordinates = await getCurrentCoordinates();
@@ -269,311 +248,316 @@ async function getLocation() {
 <style lang="scss" scoped>
 .weather-card {
   position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
   overflow: hidden;
+  border-radius: 16px;
+  background-color: var(--vp-c-bg-soft, #fff);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  padding: 16px;
+  margin: 12px 0;
   
   .search-section {
-    margin-bottom: 10px;
+    margin-bottom: 16px;
   }
 
   .weather-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    min-height: 180px;
+    gap: 12px;
   }
 
-  .weather-display {
-    width: 100%;
-    height: 80px;
+  .weather-main-card {
     position: relative;
-    margin-bottom: 10px;
-    border-radius: 8px;
+    height: 160px;
+    border-radius: 16px;
     overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
 
     &.sunny {
-      background: linear-gradient(to bottom, #ffdb6f, #ffb86c);
+      background: linear-gradient(160deg, #FFA53E, #FFCB7B);
     }
 
     &.cloudy {
-      background: linear-gradient(to bottom, #c2d9ff, #7ba3e7);
+      background: linear-gradient(160deg, #7F9EFA, #A8C0FF);
     }
 
     &.rainy {
-      background: linear-gradient(to bottom, #89a4c7, #546987);
+      background: linear-gradient(160deg, #6B8299, #9BADBF);
     }
 
     &.snowy {
-      background: linear-gradient(to bottom, #c4d9f1, #9fb1c7);
+      background: linear-gradient(160deg, #B8D9FB, #D5E8FF);
     }
 
     &.windy {
-      background: linear-gradient(to bottom, #a0c8e0, #7ca6c5);
+      background: linear-gradient(160deg, #90CAE8, #C1E2F5);
+    }
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+  }
+  
+  .weather-info-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    
+    .city-name {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 2px;
+      opacity: 0.95;
+    }
+    
+    .current-temp {
+      font-size: 60px;
+      font-weight: 200; // 超细字重，苹果风格
+      line-height: 1;
+      margin: 8px 0;
+      
+      .temp-unit {
+        font-size: 30px;
+        font-weight: 300;
+      }
+    }
+    
+    .current-weather {
+      font-size: 18px;
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+    
+    .weather-details {
+      font-size: 13px;
+      opacity: 0.9;
+      display: flex;
+      align-items: center;
+      
+      .divider {
+        margin: 0 8px;
+        opacity: 0.7;
+      }
     }
   }
 
-  .weather-info {
-    text-align: center;
-    width: 100%;
-
-    .location {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 4px;
-    }
-
-    .temperature {
-      font-size: 24px;
-      font-weight: bold;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .weather-text {
-      font-size: 14px;
-      margin-bottom: 4px;
-      opacity: 0.8;
-    }
-
-    .weather-detail {
-      font-size: 12px;
-      opacity: 0.7;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      margin-bottom: 8px;
-    }
-
-    .error {
-      color: #ff6b6b;
-      font-size: 14px;
-    }
-
-    .loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 80px;
-
-      .spinner {
-        width: 24px;
-        height: 24px;
-        border: 3px solid rgba(0, 0, 0, 0.1);
-        border-top-color: var(--vp-c-brand);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
+  .forecast-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 0;
+    
+    .forecast-item {
+      flex: 1;
+      background-color: var(--vp-c-bg-alt, rgba(255, 255, 255, 0.6));
+      backdrop-filter: blur(8px);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      transition: all 0.2s ease;
+      
+      &:hover {
+        transform: translateY(-2px);
+        background-color: var(--vp-c-bg-soft, rgba(255, 255, 255, 0.7));
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
       }
-    }
-
-    .weather-forecast {
-      width: 100%;
-      margin-top: 8px;
-
-      .forecast-title {
+      
+      .forecast-day {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--vp-c-text-1);
+      }
+      
+      .forecast-weather {
         font-size: 14px;
-        font-weight: bold;
-        margin-bottom: 6px;
-        opacity: 0.8;
+        color: var(--vp-c-text-2);
+        margin-bottom: 4px;
       }
-
-      .forecast-items {
-        display: flex;
-        justify-content: space-between;
-        gap: 8px;
-      }
-
-      .forecast-item {
-        flex: 1;
-        background-color: var(--vp-c-bg-soft);
-        border-radius: 6px;
-        padding: 6px;
-        text-align: center;
-
-        .forecast-date {
-          font-size: 12px;
-          font-weight: bold;
-          margin-bottom: 2px;
-        }
-
-        .forecast-temp {
-          font-size: 12px;
-          margin-bottom: 2px;
-        }
-
-        .forecast-weather {
-          font-size: 11px;
+      
+      .forecast-temp {
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--vp-c-text-1);
+        
+        small {
+          font-size: 14px;
+          font-weight: normal;
           opacity: 0.8;
         }
       }
     }
   }
-
-  .weather-buttons {
+  
+  .loading-container {
+    height: 160px;
     display: flex;
     justify-content: center;
-    gap: 8px;
-    margin-top: 10px;
-
-    button {
-      background: none;
-      border: none;
+    align-items: center;
+    background-color: var(--vp-c-bg-alt, rgba(255, 255, 255, 0.6));
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    
+    .spinner {
       width: 28px;
       height: 28px;
+      border: 2px solid var(--vp-c-divider, rgba(0, 0, 0, 0.08));
+      border-top-color: var(--vp-c-brand);
       border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0.5;
-      transition: all 0.3s;
-
-      &:hover {
-        background-color: var(--vp-c-bg-soft);
-        opacity: 1;
-      }
-
-      &.active {
-        opacity: 1;
-        background-color: var(--vp-c-bg-soft);
-      }
-
-      .iconfont {
-        font-size: 16px;
-      }
+      animation: spin 0.8s linear infinite;
     }
+  }
+  
+  .error-container {
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--vp-c-bg-alt, rgba(255, 255, 255, 0.6));
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    color: #ff4757;
+    gap: 10px;
+    
+    .error-icon {
+      font-size: 22px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #ffe0e3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+    }
+  }
+  
+  // 隐藏控制按钮
+  .control-bar {
+    display: none;
   }
 
   // 动画效果
-  // 云朵
-  .clouds {
+  .clouds, .rain, .snow, .wind, .sun {
     position: absolute;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    pointer-events: none;
+  }
 
-    .cloud {
+  .cloud {
+    position: absolute;
+    width: 40px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    animation: cloud-move 20s linear infinite;
+
+    &:before,
+    &:after {
+      content: '';
       position: absolute;
-      width: 30px;
-      height: 12px;
       background: rgba(255, 255, 255, 0.8);
-      border-radius: 10px;
-      animation: cloud-move 20s linear infinite;
-
-      &:before,
-      &:after {
-        content: '';
-        position: absolute;
-        background: rgba(255, 255, 255, 0.8);
-        border-radius: 50%;
-      }
-
-      &:before {
-        width: 15px;
-        height: 15px;
-        top: -7px;
-        left: 5px;
-      }
-
-      &:after {
-        width: 20px;
-        height: 20px;
-        top: -10px;
-        right: 5px;
-      }
-
-      &:nth-child(1) {
-        top: 15px;
-        left: -30px;
-        animation-duration: 30s;
-      }
-
-      &:nth-child(2) {
-        top: 40px;
-        left: -50px;
-        width: 40px;
-        height: 15px;
-        animation-duration: 25s;
-        animation-delay: 5s;
-      }
-    }
-  }
-
-  // 雨滴
-  .rain {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-
-    .drop {
-      position: absolute;
-      top: -10px;
-      width: 2px;
-      height: 10px;
-      background: rgba(255, 255, 255, 0.6);
-      animation: rain-drop 1s linear infinite;
-    }
-  }
-
-  // 雪花
-  .snow {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-
-    .snowflake {
-      position: absolute;
-      top: -10px;
-      width: 5px;
-      height: 5px;
-      background: white;
       border-radius: 50%;
-      animation: snow-drop 2s linear infinite;
+    }
+
+    &:before {
+      width: 20px;
+      height: 20px;
+      top: -9px;
+      left: 7px;
+    }
+
+    &:after {
+      width: 24px;
+      height: 24px;
+      top: -12px;
+      right: 7px;
+    }
+
+    &:nth-child(1) {
+      top: 25px;
+      left: -40px;
+      animation-duration: 30s;
+    }
+
+    &:nth-child(2) {
+      top: 70px;
+      left: -60px;
+      width: 50px;
+      height: 20px;
+      animation-duration: 25s;
+      animation-delay: 5s;
     }
   }
 
-  // 太阳
+  .drop {
+    position: absolute;
+    top: -20px;
+    width: 2px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 1px;
+    animation: rain-drop 1s linear infinite;
+  }
+
+  .snowflake {
+    position: absolute;
+    top: -10px;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    animation: snow-drop 2s linear infinite;
+  }
+
   .sun {
     position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 30px;
-    height: 30px;
-    background: #fff;
+    top: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 50%;
-    box-shadow: 0 0 10px #fff, 0 0 20px #ff0;
-    animation: sun-pulse 2s ease-in-out infinite;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 60px rgba(255, 240, 180, 0.6);
+    animation: sun-pulse 3s ease-in-out infinite;
   }
 
-  // 风
-  .wind {
+  .wind-line {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.7);
+    animation: wind-blow 3s linear infinite;
 
-    .wind-line {
-      position: absolute;
-      height: 2px;
-      background: rgba(255, 255, 255, 0.6);
-      animation: wind-blow 3s linear infinite;
+    &:nth-child(1) {
+      top: 40px;
+      left: -30px;
+      width: 40px;
+    }
 
-      &:nth-child(1) {
-        top: 20px;
-        left: -20px;
-        width: 30px;
-      }
+    &:nth-child(2) {
+      top: 80px;
+      left: -30px;
+      width: 60px;
+    }
 
-      &:nth-child(2) {
-        top: 35px;
-        left: -20px;
-        width: 40px;
-      }
-
-      &:nth-child(3) {
-        top: 50px;
-        left: -20px;
-        width: 20px;
-      }
+    &:nth-child(3) {
+      top: 120px;
+      left: -30px;
+      width: 30px;
     }
   }
 }
@@ -583,7 +567,6 @@ async function getLocation() {
   0% {
     transform: translateX(-10%);
   }
-
   100% {
     transform: translateX(120%);
   }
@@ -594,9 +577,8 @@ async function getLocation() {
     transform: translateY(0) scaleY(1);
     opacity: 1;
   }
-
   100% {
-    transform: translateY(80px) scaleY(2);
+    transform: translateY(170px) scaleY(2);
     opacity: 0;
   }
 }
@@ -606,24 +588,20 @@ async function getLocation() {
     transform: translateY(0) rotate(0deg);
     opacity: 1;
   }
-
   100% {
-    transform: translateY(80px) rotate(360deg);
+    transform: translateY(170px) rotate(360deg);
     opacity: 0;
   }
 }
 
 @keyframes sun-pulse {
-
-  0%,
-  100% {
+  0%, 100% {
     transform: scale(1);
-    opacity: 1;
+    opacity: 0.9;
   }
-
   50% {
     transform: scale(1.1);
-    opacity: 0.9;
+    opacity: 1;
   }
 }
 
@@ -632,11 +610,9 @@ async function getLocation() {
     transform: translateX(-10px);
     opacity: 0;
   }
-
   20% {
     opacity: 1;
   }
-
   100% {
     transform: translateX(120%);
     opacity: 0;
