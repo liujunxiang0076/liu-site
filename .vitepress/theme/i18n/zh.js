@@ -25,6 +25,11 @@ export default {
     wednesday: '周三',
     thursday: '周四',
     friday: '周五',
-    saturday: '周六'
+    saturday: '周六',
+    // 城市搜索相关
+    searchCity: '搜索城市...',
+    searchError: '搜索出错，请重试',
+    noResults: '未找到匹配的城市',
+    searchPlaceholder: '输入城市名称'
   }
 } 
