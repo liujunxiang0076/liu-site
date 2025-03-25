@@ -9,6 +9,8 @@
     <Control />
     <!-- 导航栏 -->
     <Nav />
+    <!-- 滚动进度条 -->
+    <ScrollProgress />
     <!-- 主内容 -->
     <main :class="['mian-layout', { loading: loadingStatus, 'is-post': isPostPage }]">
         <!-- 404 -->
