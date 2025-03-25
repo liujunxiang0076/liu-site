@@ -127,8 +127,8 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
-import { mainStore } from "@/store";
-import { smoothScrolling, shufflePost } from "@/utils/helper";
+import { mainStore } from "../store/index";
+import { smoothScrolling, shufflePost } from "../utils/helper";
 
 const router = useRouter();
 const store = mainStore();
