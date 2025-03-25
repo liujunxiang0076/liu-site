@@ -1,7 +1,7 @@
 <template>
     <!-- 背景图片 -->
     <!-- <Background /> -->
-     <!-- 粒子效果背景 -->
+    <!-- 粒子效果背景 -->
     <ParticleBackground />
     <!-- 加载提示 -->
     <Loading />
@@ -37,7 +37,7 @@
         </div>
     </Teleport>
     <!-- 右键菜单 -->
-    <!-- <RightMenu ref="rightMenuRef" /> -->
+    <RightMenu ref="rightMenuRef" />
     <!-- 全局消息 -->
     <Message />
 </template>
@@ -63,7 +63,11 @@ const isPostPage = computed(() => {
 
 // 开启右键菜单
 const openRightMenu = (e) => {
-    rightMenuRef.value?.openRightMenu(e);
+    // 判断是否为右键
+    if (e.button === 2) {
+        // console.log('右键');
+        rightMenuRef.value?.openRightMenu(e);
+    }
 };
 
 // 复制时触发
@@ -164,22 +168,27 @@ onBeforeUnmount(() => {
     animation: show 0.5s forwards;
     animation-duration: 0.5s;
     display: block;
+
     &.loading {
         display: none;
     }
+
     @media (max-width: 768px) {
         padding: 1rem 1.5rem;
+
         &.is-post {
             padding: 0;
         }
     }
 }
+
 .left-menu {
     position: fixed;
     left: 20px;
     bottom: 20px;
     z-index: 1002;
     transition: opacity 0.3s, transform 0.3s;
+
     &.hidden {
         opacity: 0;
         transform: translateY(100px);
