@@ -125,8 +125,60 @@ const refreshWeather = async () => {
 const handleCitySelect = (city) => {
   console.log('选择城市:', city);
   selectedCityId.value = city.id;
-  fetchWeatherData();
-}
+  error.value = false; // 清除错误状态
+  
+  // 立即更新显示的城市名称
+  if (weatherData.value) {
+    weatherData.value.location = city.displayName || city.name;
+  }
+  
+  // 构造完整配置，使用和风天气API
+  const config = {
+    type: 'qweather',
+    params: {
+      location: city.id,
+      cityName: city.displayName || city.name
+    },
+    thirdParty: theme.value.thirdParty
+  };
+  
+  // 获取新的天气数据
+  fetchWeatherDataWithConfig(config);
+};
+
+// 获取天气数据（带配置）
+const fetchWeatherDataWithConfig = async (config) => {
+  if (!theme.value.aside.weather?.enable) return;
+  
+  loading.value = true;
+  error.value = false;
+  
+  try {
+    // 调用统一天气API
+    console.log('正在获取天气数据...');
+    const data = await getWeather(config);
+    console.log('天气数据获取成功:', data);
+    
+    // 设置当前天气类型
+    currentWeather.value = data.weatherType;
+    
+    // 保存天气数据
+    weatherData.value = {
+      location: data.location,
+      temperature: data.temperature,
+      weather: data.weatherText || t(`weather.${data.weatherType}`),
+      humidity: data.humidity,
+      windDirection: data.windDirection,
+      windSpeed: data.windSpeed,
+      forecast: data.forecast || []
+    };
+  } catch (err) {
+    console.error('获取天气数据错误:', err);
+    error.value = true;
+  } finally {
+    loading.value = false;
+  }
+};
 
 // 格式化预报日期
 const formatForecastDate = (dateString) => {
@@ -186,7 +238,7 @@ const fetchWeatherData = async () => {
           latitude: parseFloat(latitude) 
         } 
       };
-      console.log('浏览器地理位置获取成功：', coordinates);
+      // console.log('浏览器地理位置获取成功：', coordinates);
     } else {
       // 如果获取失败，使用默认位置（北京）
       position = { coords: { longitude: 116.41, latitude: 39.91 } };
