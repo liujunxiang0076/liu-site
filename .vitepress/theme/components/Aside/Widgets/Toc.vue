@@ -77,7 +77,7 @@ const activeTocItem = throttle(
     const headers = getAllTitle();
     if (!headers) return false;
     // 容错高度
-    const bufferheight = 120;
+    const bufferheight = 100;
     // 遍历所有标题
     for (let header of headers) {
       const rect = header.getBoundingClientRect();
@@ -85,11 +85,12 @@ const activeTocItem = throttle(
       if (rect.top - bufferheight <= 0 && rect.bottom + bufferheight >= 0) {
         // 高亮对应标题
         activeHeader.value = header.id;
+        break;
       }
     }
   },
-  100,
-  { leading: true, trailing: false },
+  50,
+  { leading: true, trailing: true },
 );
 
 // 滚动标题至指定位置
@@ -177,16 +178,18 @@ onBeforeUnmount(() => {
     flex-direction: column;
     max-height: calc(70vh - 58px);
     overflow: auto;
+    scroll-behavior: smooth;
     .toc-item {
       margin: 4px 0;
       padding: 6px 12px;
       border-radius: 8px;
       opacity: 0.6;
       transition:
-        color 0.3s,
-        opacity 0.3s,
-        font-size 0.3s,
-        background-color 0.3s;
+        color 0.3s ease,
+        opacity 0.3s ease,
+        font-size 0.3s ease,
+        background-color 0.3s ease,
+        transform 0.3s ease;
       cursor: pointer;
       &:first-child {
         margin-top: 0;
@@ -205,6 +208,7 @@ onBeforeUnmount(() => {
         opacity: 1;
         color: var(--main-color);
         background-color: var(--main-color-bg);
+        transform: translateX(5px);
         &.H2 {
           font-size: 18px;
         }
@@ -216,6 +220,7 @@ onBeforeUnmount(() => {
         opacity: 1;
         color: var(--main-color);
         background-color: var(--main-color-bg);
+        transform: translateX(5px);
       }
     }
     &::after {
@@ -228,7 +233,7 @@ onBeforeUnmount(() => {
       margin: 8px 0;
       background-color: var(--main-color);
       border-radius: 8px;
-      transition: top 0.3s;
+      transition: top 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
   }
   &::before {
