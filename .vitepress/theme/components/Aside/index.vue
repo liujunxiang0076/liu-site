@@ -1,7 +1,7 @@
 <template>
   <aside class="main-aside">
     <!-- 欢迎 -->
-    <Hello v-if="theme.aside.hello.enable" class="weidgets" />
+    <Hello v-if="theme.aside.hello.enable && !isPostPage" class="weidgets" />
     <div class="sticky">
       <!-- 目录 -->
       <Toc v-if="theme.aside.toc.enable && showToc" class="weidgets" />
@@ -16,7 +16,16 @@
 </template>
 
 <script setup>
+// 主题
 const { theme } = useData();
+// 路由
+const route = useRoute();
+// 是否为文章页
+const isPostPage = computed(() => {
+  const routePath = decodeURIComponent(route.path);
+  return routePath.includes('/posts/');
+});
+// 定义属性
 const props = defineProps({
   // 显示目录
   showToc: {
