@@ -1,0 +1,30 @@
+export default {
+  weather: {
+    title: '天气预报',
+    error: '获取天气失败',
+    humidity: '湿度',
+    sunny: '晴天',
+    cloudy: '多云',
+    rainy: '雨天',
+    snowy: '雪天',
+    windy: '大风',
+    north: '北风',
+    northEast: '东北风',
+    east: '东风',
+    southEast: '东南风',
+    south: '南风',
+    southWest: '西南风',
+    west: '西风',
+    northWest: '西北风',
+    forecast: '未来天气',
+    today: '今天',
+    tomorrow: '明天',
+    sunday: '周日',
+    monday: '周一',
+    tuesday: '周二',
+    wednesday: '周三',
+    thursday: '周四',
+    friday: '周五',
+    saturday: '周六'
+  }
+} 
