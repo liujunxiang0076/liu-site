@@ -5,6 +5,12 @@
       <span class="iconfont icon-weather"></span>
       <span class="title-name">{{ t('weather.title') }}</span>
     </div>
+    
+    <!-- 城市搜索组件 -->
+    <div v-if="isQWeatherAPI" class="search-section">
+      <WeatherCitySearch @select="handleCitySelect" />
+    </div>
+    
     <!-- 天气内容 -->
     <div class="weather-content">
       <div class="weather-display" :class="currentWeather">
@@ -83,6 +89,8 @@ import { ref, onMounted, computed } from 'vue'
 import { useData } from 'vitepress'
 import { useI18n } from '../../../i18n'
 import { getWeather } from '../../../api'
+import WeatherCitySearch from './WeatherCitySearch.vue'
+import { getCurrentCoordinates } from '../../../api'
 
 const { t } = useI18n()
 const { theme } = useData()
@@ -97,6 +105,14 @@ const weatherData = ref(null)
 const loading = ref(false)
 // 错误状态
 const error = ref(false)
+// 选中的城市ID
+const selectedCityId = ref('')
+// 经度，纬度
+const {longitude, latitude} =ref(null)
+// 是否使用和风天气API
+const isQWeatherAPI = computed(() => {
+  return theme.value.aside.weather?.type === 'qweather';
+});
 
 // 切换天气类型
 const changeWeather = (weather) => {
@@ -106,6 +122,13 @@ const changeWeather = (weather) => {
 // 刷新天气数据
 const refreshWeather = async () => {
   await fetchWeatherData()
+}
+
+// 处理城市选择
+const handleCitySelect = (city) => {
+  console.log('选择城市:', city);
+  selectedCityId.value = city.id;
+  fetchWeatherData();
 }
 
 // 格式化预报日期
@@ -154,34 +177,49 @@ const fetchWeatherData = async () => {
     // 获取位置信息
     let position = null;
     
-    // 尝试通过浏览器定位
-    try {
-      if (navigator.geolocation) {
-        position = await new Promise((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(
-            (pos) => resolve(pos),
-            (err) => {
-              console.warn('浏览器地理位置获取失败:', err.message);
-              reject(err);
-            },
-            { timeout: 10000, maximumAge: 3600000 } // 1小时内缓存位置
-          )
-        });
-        console.log('浏览器地理位置获取成功');
+    // 如果已选择城市且使用和风天气API，则不需要位置信息
+    if (!(isQWeatherAPI.value && selectedCityId.value)) {
+      // 尝试通过浏览器定位
+      try {
+        if (navigator.geolocation) {
+          position = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(
+              (pos) => resolve(pos),
+              (err) => {
+                console.warn('浏览器地理位置获取失败:', err.message);
+                reject(err);
+              },
+              { timeout: 10000, maximumAge: 3600000 } // 1小时内缓存位置
+            )
+          });
+
+          longitude=position.coords.longitude
+          
+          latitude=position.coords.latitude
+          console.log('浏览器地理位置获取成功：', longitude,latitude);
+        }
+      } catch (locErr) {
+        console.warn('浏览器定位失败:', locErr);
+        // 浏览器定位失败，继续后续流程
       }
-    } catch (locErr) {
-      console.warn('浏览器定位失败:', locErr);
-      // 浏览器定位失败，继续后续流程
+      
+      // 如果浏览器定位失败且未设置position，创建默认位置
+      if (!position) {
+        position = { coords: { longitude: 116.41, latitude: 39.91 } };
+        console.log('使用默认位置: 北京');
+      }
     }
     
-    // 如果浏览器定位失败且未设置position，创建默认位置
-    if (!position) {
-      position = { coords: { longitude: 116.41, latitude: 39.91 } };
-      console.log('使用默认位置: 北京');
-    }
-    
-    // 直接使用主题配置
-    const config = theme.value.aside.weather
+    // 构造完整配置，包括天气配置和第三方API配置
+    const config = {
+      type: theme.value.aside.weather?.type,
+      params: {
+        ...(theme.value.aside.weather?.params || {}),
+        // 如果选择了城市，则使用城市ID作为location
+        ...(selectedCityId.value && { location: selectedCityId.value })
+      },
+      thirdParty: theme.value.thirdParty
+    };
     
     // 调用统一天气API
     console.log('正在获取天气数据...');
@@ -213,12 +251,29 @@ const fetchWeatherData = async () => {
 onMounted(() => {
   fetchWeatherData()
 })
+
+async function getLocation() {
+  // 获取格式化后的经纬度
+  const coordinates = await getCurrentCoordinates();
+  
+  if (coordinates) {
+    console.log('当前位置坐标:', coordinates); // 例如："116.41,39.92"
+    // 在这里使用坐标进行后续操作
+  } else {
+    console.log('无法获取位置信息，使用默认坐标');
+    // 使用默认坐标
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 .weather-card {
   position: relative;
   overflow: hidden;
+  
+  .search-section {
+    margin-bottom: 10px;
+  }
 
   .weather-content {
     display: flex;
