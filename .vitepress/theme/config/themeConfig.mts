@@ -332,13 +332,10 @@ export const themeConfig = {
         // 天气
         weather: {
             enable: true,
-            // 天气API类型: caiyun / baidu / amap / qweather / 其他可扩展
-            type: 'amap',
+            // 天气API类型: 只使用 qweather
+            type: 'qweather',
             // API参数
             params: {
-                
-                // 区域ID（百度天气API使用）
-                districtId: '222405',
                 // 位置ID或经纬度（和风天气API使用）
                 location: '',
                 // 预报天数：3/7/10/15/30（和风天气API使用）
@@ -426,38 +423,6 @@ export const themeConfig = {
     },
     // 第三方集成配置
     thirdParty: {
-        // 高德地图
-        amap: {
-            /**
-             * Web端Key
-             * 可使用服务（JS定位……）
-             */
-            webKey: 'e77c26cdccb4e2d2dd16c75eb9e79ec2',
-            /**
-             * Web服务Key
-             * 已使用服务（国内天气查询）
-             */
-            webServerKey: '13e484c8594cb5e32afe11d48c9631cf'
-        },
-        // 百度地图
-        baidu: {
-            
-            /**
-             * 浏览器端AK
-             * 可使用服务（JS定位……）
-             */
-            browserKey: 'jGkvEb16QQjFMAeaR3Wh4h9WvG1bNAfr',
-            /**
-             * 服务端AK
-             * 已使用服务（国内天气查询）
-             */
-            serverKey: '9V9xkJbN8JsGjMSZcm7GEwqxKP5FsG96'
-        },
-        // 彩云天气
-        caiyun: {
-            // 彩云天气API Token
-            token: 'TAkhjf8d1nlSlspN'
-        },
         // 和风天气
         qweather: {
             // 和风天气API密钥
