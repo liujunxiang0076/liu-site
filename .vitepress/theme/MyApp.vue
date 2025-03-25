@@ -1,6 +1,7 @@
 <template>
     <!-- 背景图片 -->
     <!-- <Background /> -->
+     <!-- 粒子效果背景 -->
     <ParticleBackground />
     <!-- 加载提示 -->
     <Loading />
@@ -43,8 +44,8 @@
 
 <script setup>
 import { storeToRefs } from 'pinia';
-import { mainStore } from '@/store';
-import { calculateScroll, specialDayGray } from '@/utils/helper';
+import { mainStore } from './store/index';
+import { calculateScroll, specialDayGray } from './utils/helper';
 
 const route = useRoute();
 const store = mainStore();
