@@ -33,7 +33,7 @@ interface Particle {
 // 网络配置
 const config = {
   // 核心设置
-  particleCount: 180, // 增加粒子数量以提高视觉效果
+  particleCount: 100, // 增加粒子数量以提高视觉效果
   particleColor: 'rgba(255, 255, 255, 0.7)',
   lineColor: 'rgba(255, 255, 255, 0.2)',
   highlightLineColor: 'rgba(255, 255, 255, 0.5)',
