@@ -1,39 +1,39 @@
 <template>
-  <!-- 倒计时 -->
-  <div class="count-down s-card">
-    <div class="count-left" @click="toggleCalendarView">
-      <span class="text"> 距离 </span>
-      <!-- <span class="name">{{ theme.aside.countDown.data.name }}</span>
-      <span class="time"> {{ getDaysUntil(theme.aside.countDown.data.date) }} </span>
-      <span class="date">{{ theme.aside.countDown.data.date }}</span> -->
-      <span class="name">{{ nextHoliday }}</span>
-      <span class="time"> {{ getDaysUntil(nextHolidayDate)+'天' }} </span>
-      <span class="date">{{ nextHolidayDate }}</span>
-    </div>
-    <div v-if="remainData" class="count-right">
-      <div v-for="(item, tag, index) in remainData" :key="index" class="count-item">
-        <div class="item-name">{{ item.name }}</div>
-        <div class="item-progress">
-          <div
-            class="progress-bar"
-            :style="{ width: item.percentage + '%', opacity: item.percentage / 100 }"
-          />
-          <span :class="['percentage', { many: item.percentage >= 46 }]">
-            {{ item.percentage }}%
-          </span>
-          <span :class="['remaining', { many: item.percentage >= 60 }]">
-            <span class="tip">还剩</span>
-            {{ item.remaining }}
-            <span class="tip">{{ tag === "day" ? "小时" : "天" }}</span>
-          </span>
+  <div class="countdown-calendar-widget s-card">
+    <!-- 倒计时 -->
+    <div class="count-down">
+      <div class="count-left" @click="toggleCalendarView">
+        <span class="text">距离</span>
+        <span class="name">{{ nextHoliday }}</span>
+        <span class="time">{{ getDaysUntil(nextHolidayDate) }}天</span>
+        <span class="date">{{ nextHolidayDate }}</span>
+      </div>
+      <div v-if="remainData" class="count-right">
+        <div v-for="(item, tag, index) in remainData" :key="index" class="count-item">
+          <div class="item-name">{{ item.name }}</div>
+          <div class="item-progress">
+            <div
+              class="progress-bar"
+              :style="{ width: item.percentage + '%', opacity: item.percentage / 100 }"
+            />
+            <span :class="['percentage', { many: item.percentage >= 46 }]">
+              {{ item.percentage }}%
+            </span>
+            <span :class="['remaining', { many: item.percentage >= 60 }]">
+              <span class="tip">还剩</span>
+              {{ item.remaining }}
+              <span class="tip">{{ tag === "day" ? "小时" : "天" }}</span>
+            </span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  
-  <!-- 日历部分（可折叠显示/隐藏） -->
-  <div v-if="showCalendar" class="calendar-container s-card">
-    <div class="calendar-border">
+    
+    <!-- 分隔线 -->
+    <div class="divider" v-if="showCalendar"></div>
+    
+    <!-- 日历部分 -->
+    <div class="calendar-container" v-if="showCalendar">
       <!-- 日历顶部导航 -->
       <div class="calendar-header">
         <div class="navigation-section">
@@ -45,8 +45,7 @@
           </button>
           <!-- 当前月份 -->
           <div class="current-month">
-            <div class="year">{{ currentYear }}年</div>
-            <div class="month">{{ currentMonth + 1 }}月</div>
+            {{ currentYear }}年{{ currentMonth + 1 }}月
           </div>
           <!-- 下个月 -->
           <button class="arrow-btn next" @click="nextMonth">
@@ -78,15 +77,6 @@
           <span class="day-number">{{ dayNumber }}</span>
           <div v-if="isToday" class="day-marker today-marker"></div>
           <div v-if="isTargetDate" class="day-marker target-marker"></div>
-        </div>
-      </div>
-
-      <!-- 底部信息 -->
-      <div class="calendar-footer" v-if="false">
-        <div class="target-festival-section">
-          <span class="festival-label">{{ nextHoliday }}:</span>
-          <span class="target-date-display">{{ nextHolidayDate }}</span>
-          <span class="days-left-display">还有 <span class="days-number">{{ getDaysUntil(nextHolidayDate) }}</span> 天</span>
         </div>
       </div>
     </div>
@@ -238,24 +228,37 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
+.countdown-calendar-widget {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+  padding: 12px;
+}
+
+.divider {
+  height: 1px;
+  background-color: #eee;
+  margin: 12px 0;
+  animation: fade-in 0.3s ease;
+}
+
 .count-down {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 12px;
   
   .count-left {
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-evenly;
     margin-right: 0.8rem;
     cursor: pointer;
     transition: opacity 0.2s;
     
     &:hover {
-      opacity: 0.9;
+      opacity: 0.8;
     }
     
     .text {
@@ -359,8 +362,6 @@ onBeforeUnmount(() => {
 
 /* 日历样式 */
 .calendar-container {
-  padding: 0;
-  margin-bottom: 12px;
   animation: slide-down 0.3s ease;
 }
 
@@ -383,10 +384,13 @@ onBeforeUnmount(() => {
   }
 }
 
-.calendar-border {
-  // border: 1px solid #ffc107;
-  border-radius: 12px;
-  padding: 10px;
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* 日历顶部导航 */
@@ -394,7 +398,7 @@ onBeforeUnmount(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 // 日历顶部导航
 .navigation-section {
@@ -421,19 +425,8 @@ onBeforeUnmount(() => {
 }
 // 当前月份
 .current-month {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   font-weight: 500;
-}
-// 年份
-.year {
   font-size: 0.9rem;
-}
-// 月份
-.month {
-  font-size: 0.9rem;
-  // margin-top: -4px;
 }
 // 今天按钮
 .today-btn {
@@ -466,16 +459,12 @@ onBeforeUnmount(() => {
   display: grid;
   // 7列
   grid-template-columns: repeat(7, 1fr);
-  // 行高
-  // grid-auto-rows: 1fr;
   // 间距
   gap: 2px;
-  // 上间距
-  // margin-top: 5px;
 }
 // 日历主体
 .day {
-  height: 40px;
+  height: 36px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -498,8 +487,10 @@ onBeforeUnmount(() => {
 .today {
   color: #4169e1;
   font-weight: bold;
-  // border-radius: 100%;
-  // box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+}
+// 目标日期
+.target-date .day-number {
+  color: #ff6b6b;
 }
 // 日历标记
 .day-marker {
@@ -518,38 +509,6 @@ onBeforeUnmount(() => {
   background-color: #ff6b6b;
 }
 
-// 日历底部
-.calendar-footer {
-  margin-top: 12px;
-  border-top: 1px solid #f0f0f0;
-  padding-top: 12px;
-}
-
-.target-festival-section {
-  display: flex;
-  align-items: center;
-  font-size: 0.9rem;
-}
-// 节日标签
-.festival-label {
-  color: #666;
-  margin-right: 6px;
-}
-// 目标日期显示
-.target-date-display {
-  color: #888;
-  margin-right: 8px;
-}
-// 剩余天数显示
-.days-left-display {
-  color: #4169e1;
-}
-// 剩余天数数字
-.days-number {
-  font-weight: bold;
-  font-size: 1rem;
-}
-
 // 深色模式支持
 @media (prefers-color-scheme: dark) {
   .s-card {
@@ -557,8 +516,8 @@ onBeforeUnmount(() => {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
   
-  .calendar-border {
-    border-color: #ffc107;
+  .divider {
+    background-color: #444;
   }
   
   .arrow-btn {
@@ -585,7 +544,6 @@ onBeforeUnmount(() => {
   .weekdays {
     color: #aaa;
     border-color: #444;
-
   }
   
   .day-number {
@@ -600,16 +558,8 @@ onBeforeUnmount(() => {
     color: #6b8aff;
   }
   
-  .calendar-footer {
-    border-color: #444;
-  }
-  
-  .festival-label, .target-date-display {
-    color: #bbb;
-  }
-  
-  .days-left-display {
-    color: #6b8aff;
+  .target-date .day-number {
+    color: #ff6b6b;
   }
 }
 </style>
