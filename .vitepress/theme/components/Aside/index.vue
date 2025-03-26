@@ -18,8 +18,6 @@
 </template>
 
 <script setup>
-// 组件
-import Weather from './Widgets/Weather.vue'
 
 // 主题
 const { theme } = useData();
