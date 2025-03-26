@@ -509,19 +509,69 @@ onBeforeUnmount(() => {
   background-color: #ff6b6b;
 }
 
-// 深色模式支持
+// 深色模式支持 - 使用媒体查询和VitePress主题类匹配
 @media (prefers-color-scheme: dark) {
-  .s-card {
-    background-color: #2a2a2a;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  .countdown-calendar-widget.s-card {
+    background-color: #222 !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   }
   
   .divider {
-    background-color: #444;
+    background-color: #333;
+  }
+  
+  .count-left {
+    &::after {
+      background-color: #333;
+    }
+    
+    .text {
+      color: #aaa;
+    }
+    
+    .name {
+      color: #fff;
+    }
+    
+    .time {
+      color: #f0a500;
+    }
+    
+    .date {
+      color: #aaa;
+    }
+  }
+  
+  .count-right {
+    .count-item {
+      .item-name {
+        color: #aaa;
+      }
+      
+      .item-progress {
+        background-color: #333;
+        
+        .progress-bar {
+          background-color: #f0a500;
+        }
+        
+        .percentage, .remaining {
+          color: #fff;
+          
+          &.many {
+            color: #fff;
+          }
+          
+          .tip {
+            color: #aaa;
+          }
+        }
+      }
+    }
   }
   
   .arrow-btn {
-    color: #ccc;
+    color: #bbb;
     
     &:hover {
       background-color: #333;
@@ -529,21 +579,21 @@ onBeforeUnmount(() => {
   }
   
   .current-month {
-    color: #eee;
+    color: #ddd;
   }
   
   .today-btn {
-    background-color: #374275;
-    color: #a0b4ff;
+    background-color: #333;
+    color: #fff;
     
     &:hover {
-      background-color: #3d4880;
+      background-color: #444;
     }
   }
   
   .weekdays {
     color: #aaa;
-    border-color: #444;
+    border-color: #333;
   }
   
   .day-number {
@@ -555,12 +605,153 @@ onBeforeUnmount(() => {
   }
   
   .today {
-    color: #6b8aff;
+    color: #fff;
   }
   
   .target-date .day-number {
-    color: #ff6b6b;
+    color: #f0a500;
   }
+  
+  .day-marker {
+    opacity: 1;
+  }
+  
+  .today-marker {
+    background-color: #4169e1;
+  }
+  
+  .target-marker {
+    background-color: #f0a500;
+  }
+}
+
+// 添加VitePress主题类匹配
+:root.dark .countdown-calendar-widget.s-card,
+.dark .countdown-calendar-widget.s-card {
+  background-color: #222 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+:root.dark .divider,
+.dark .divider {
+  background-color: #333;
+}
+
+:root.dark .count-left,
+.dark .count-left {
+  &::after {
+    background-color: #333;
+  }
+  
+  .text {
+    color: #aaa;
+  }
+  
+  .name {
+    color: #fff;
+  }
+  
+  .time {
+    color: #f0a500;
+  }
+  
+  .date {
+    color: #aaa;
+  }
+}
+
+:root.dark .count-right,
+.dark .count-right {
+  .count-item {
+    .item-name {
+      color: #aaa;
+    }
+    
+    .item-progress {
+      background-color: #333;
+      
+      .progress-bar {
+        background-color: #f0a500;
+      }
+      
+      .percentage, .remaining {
+        color: #fff;
+        
+        &.many {
+          color: #fff;
+        }
+        
+        .tip {
+          color: #aaa;
+        }
+      }
+    }
+  }
+}
+
+:root.dark .arrow-btn,
+.dark .arrow-btn {
+  color: #bbb;
+  
+  &:hover {
+    background-color: #333;
+  }
+}
+
+:root.dark .current-month,
+.dark .current-month {
+  color: #ddd;
+}
+
+:root.dark .today-btn,
+.dark .today-btn {
+  background-color: #333;
+  color: #fff;
+  
+  &:hover {
+    background-color: #444;
+  }
+}
+
+:root.dark .weekdays,
+.dark .weekdays {
+  color: #aaa;
+  border-color: #333;
+}
+
+:root.dark .day-number,
+.dark .day-number {
+  color: #ddd;
+}
+
+:root.dark .other-month,
+.dark .other-month {
+  color: #666;
+}
+
+:root.dark .today,
+.dark .today {
+  color: #fff;
+}
+
+:root.dark .target-date .day-number,
+.dark .target-date .day-number {
+  color: #f0a500;
+}
+
+:root.dark .day-marker,
+.dark .day-marker {
+  opacity: 1;
+}
+
+:root.dark .today-marker,
+.dark .today-marker {
+  background-color: #4169e1;
+}
+
+:root.dark .target-marker,
+.dark .target-marker {
+  background-color: #f0a500;
 }
 </style>
 
