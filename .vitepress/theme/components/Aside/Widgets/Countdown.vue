@@ -34,33 +34,36 @@
   <!-- 日历部分（可折叠显示/隐藏） -->
   <div v-if="showCalendar" class="calendar-container s-card">
     <div class="calendar-border">
+      <!-- 日历顶部导航 -->
       <div class="calendar-header">
         <div class="navigation-section">
+          <!-- 上个月 -->
           <button class="arrow-btn prev" @click="prevMonth">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M15 18l-6-6 6-6"></path>
             </svg>
           </button>
-          
+          <!-- 当前月份 -->
           <div class="current-month">
             <div class="year">{{ currentYear }}年</div>
             <div class="month">{{ currentMonth + 1 }}月</div>
           </div>
-          
+          <!-- 下个月 -->
           <button class="arrow-btn next" @click="nextMonth">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 18l6-6-6-6"></path>
             </svg>
           </button>
         </div>
-        
+        <!-- 回到今天 -->
         <button class="today-btn" @click="goToToday">今天</button>
       </div>
 
+      <!-- 星期标题 -->
       <div class="weekdays">
         <div v-for="day in weekDays" :key="day" class="weekday">{{ day }}</div>
       </div>
-
+      <!-- 日历主体 -->
       <div class="days-grid">
         <div 
           v-for="{ date, dayNumber, isCurrentMonth, isToday, isTargetDate } in calendarDays" 
@@ -78,7 +81,8 @@
         </div>
       </div>
 
-      <div class="calendar-footer">
+      <!-- 底部信息 -->
+      <div class="calendar-footer" v-if="false">
         <div class="target-festival-section">
           <span class="festival-label">{{ nextHoliday }}:</span>
           <span class="target-date-display">{{ nextHolidayDate }}</span>
@@ -380,9 +384,9 @@ onBeforeUnmount(() => {
 }
 
 .calendar-border {
-  border: 1px solid #ffc107;
+  // border: 1px solid #ffc107;
   border-radius: 12px;
-  padding: 16px;
+  padding: 10px;
 }
 
 /* 日历顶部导航 */
@@ -390,15 +394,15 @@ onBeforeUnmount(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  // margin-bottom: 5px;
 }
-
+// 日历顶部导航
 .navigation-section {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-
+// 箭头按钮
 .arrow-btn {
   background: none;
   border: none;
@@ -410,28 +414,28 @@ onBeforeUnmount(() => {
   padding: 4px;
   border-radius: 50%;
   transition: background-color 0.2s;
-  
+  // 鼠标悬停
   &:hover {
     background-color: #f5f5f5;
   }
 }
-
+// 当前月份
 .current-month {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   font-weight: 500;
 }
-
+// 年份
 .year {
   font-size: 0.9rem;
 }
-
+// 月份
 .month {
-  font-size: 1.1rem;
-  margin-top: -4px;
+  font-size: 0.9rem;
+  // margin-top: -4px;
 }
-
+// 今天按钮
 .today-btn {
   background-color: #f0f2ff;
   border: none;
@@ -441,13 +445,12 @@ onBeforeUnmount(() => {
   color: #4169e1;
   font-size: 0.85rem;
   transition: background-color 0.2s;
-  
+  // 鼠标悬停
   &:hover {
     background-color: #e0e6ff;
   }
 }
-
-/* 日历星期栏 */
+// 日历星期栏
 .weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -457,15 +460,20 @@ onBeforeUnmount(() => {
   color: #666;
   border-bottom: 1px solid #f0f0f0;
 }
-
-/* 日历网格 */
+// 日历网格
 .days-grid {
+  // 网格布局
   display: grid;
+  // 7列
   grid-template-columns: repeat(7, 1fr);
+  // 行高
+  // grid-auto-rows: 1fr;
+  // 间距
   gap: 2px;
-  margin-top: 8px;
+  // 上间距
+  // margin-top: 5px;
 }
-
+// 日历主体
 .day {
   height: 40px;
   display: flex;
@@ -476,22 +484,24 @@ onBeforeUnmount(() => {
   cursor: pointer;
   border-radius: 4px;
 }
-
+// 日历数字
 .day-number {
   font-size: 0.95rem;
   font-weight: 500;
   z-index: 1;
 }
-
+// 其他月份
 .other-month {
   color: #ccc;
 }
-
+// 今天
 .today {
   color: #4169e1;
   font-weight: bold;
+  // border-radius: 100%;
+  // box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
 }
-
+// 日历标记
 .day-marker {
   position: absolute;
   width: 5px;
@@ -499,16 +509,16 @@ onBeforeUnmount(() => {
   border-radius: 50%;
   bottom: 5px;
 }
-
+// 今天标记
 .today-marker {
   background-color: #4169e1;
 }
-
+// 目标标记
 .target-marker {
   background-color: #ff6b6b;
 }
 
-/* 日历底部 */
+// 日历底部
 .calendar-footer {
   margin-top: 12px;
   border-top: 1px solid #f0f0f0;
@@ -520,21 +530,21 @@ onBeforeUnmount(() => {
   align-items: center;
   font-size: 0.9rem;
 }
-
+// 节日标签
 .festival-label {
   color: #666;
   margin-right: 6px;
 }
-
+// 目标日期显示
 .target-date-display {
   color: #888;
   margin-right: 8px;
 }
-
+// 剩余天数显示
 .days-left-display {
   color: #4169e1;
 }
-
+// 剩余天数数字
 .days-number {
   font-weight: bold;
   font-size: 1rem;
