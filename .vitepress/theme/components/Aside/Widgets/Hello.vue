@@ -6,7 +6,7 @@
       <div class="site-logo">
         <Clock />
       </div>
-      <span class="site-desc" v-html="theme.aside.hello.text" />
+      <!-- <span class="site-desc" v-html="theme.aside.hello.text" /> -->
     </div>
     <div class="info">
       <div class="name">
@@ -134,15 +134,15 @@ onBeforeUnmount(() => {
         opacity cubic-bezier(0.69, 0.39, 0, 1.21) 0.3s;
       transform-origin: bottom;
     }
-    .site-desc {
-      display: block;
-      height: 100%;
-      margin-top: 20px;
-      font-size: 1.1rem;
-      line-height: 1.5;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
+    // .site-desc {
+    //   display: block;
+    //   height: 100%;
+    //   margin-top: 20px;
+    //   font-size: 1.1rem;
+    //   line-height: 1.5;
+    //   opacity: 0;
+    //   transition: opacity 0.3s;
+    // }
   }
   .info {
     display: flex;
@@ -194,16 +194,16 @@ onBeforeUnmount(() => {
       }
     }
   }
-  &:hover {
-    .content {
-      .site-logo {
-        opacity: 0;
-        transform: scale(0);
-      }
-      .site-desc {
-        opacity: 1;
-      }
-    }
-  }
+  // &:hover {
+  //   .content {
+  //     .site-logo {
+  //       opacity: 0;
+  //       transform: scale(0);
+  //     }
+  //     .site-desc {
+  //       opacity: 1;
+  //     }
+  //   }
+  // }
 }
 </style>
