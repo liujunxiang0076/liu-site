@@ -12,7 +12,7 @@
 - 完善的扩展能力
 - 持续稳定的版本维护
 
-[![license](https://img.shields.io/github/license/liujunxiang0076/liu-theme)](LICENSE)
+[![license](https://img.shields.io/github/license/liujunxiang0076/liu-theme)](https://github.com/liujunxiang0076/liu-theme/blob/main/LICENSE)
 [![npm version](https://img.shields.io/npm/v/vitepress)](https://www.npmjs.com/package/vitepress)
 
 基于 VitePress 1.x 构建的现代化博客主题，集成文章分类、Algolia搜索、PWA支持、RSS订阅等特性。
@@ -203,4 +203,4 @@ vercel deploy --prod
 ```
 
 ## 许可证
-[MIT License](LICENSE) © 2023 LiuJunxiang
+[MIT License](https://github.com/liujunxiang0076/liu-theme/blob/main/LICENSE) © 2023 LiuJunxiang
