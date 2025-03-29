@@ -16,7 +16,10 @@ import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 
 // pinia
 const pinia = createPinia();
-pinia.use(piniaPluginPersistedstate);
+// 为了避免类型错误，你可以使用类型断言来绕过类型检查
+if (!(import.meta as any).env.SSR) {
+  pinia.use(piniaPluginPersistedstate);
+}
 
 export default {
   // 扩展另一个主题
