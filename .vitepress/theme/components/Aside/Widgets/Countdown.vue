@@ -362,12 +362,7 @@ onBeforeUnmount(() => {
 
 /* 日历样式 */
 .calendar-container {
-  animation: slide-down 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: top center;
-  will-change: transform, opacity;
-}
-.days-grid {
-  will-change: transform;
+  animation: slide-down 0.3s ease;
 }
 
 .s-card {
@@ -379,28 +374,22 @@ onBeforeUnmount(() => {
 }
 
 @keyframes slide-down {
-  0% {
+  from {
     opacity: 0;
-    transform: translateY(-8px) scaleY(0.96);
+    transform: translateY(-10px);
   }
-  50% {
+  to {
     opacity: 1;
-    transform: translateY(-2px) scaleY(0.98);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scaleY(1);
+    transform: translateY(0);
   }
 }
 
 @keyframes fade-in {
-  0% {
+  from {
     opacity: 0;
-    transform: scale(0.95);
   }
-  100% {
+  to {
     opacity: 1;
-    transform: scale(1);
   }
 }
 
@@ -520,10 +509,6 @@ onBeforeUnmount(() => {
   background-color: #ff6b6b;
 }
 
-// 深色模式支持 - 保持动画曲线一致性
-.calendar-container {
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
 // 深色模式支持 - 使用媒体查询和VitePress主题类匹配
 @media (prefers-color-scheme: dark) {
   .countdown-calendar-widget.s-card {
