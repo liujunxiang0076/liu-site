@@ -1,89 +1,91 @@
-# Liu Theme - VitePress 博客主题
+# Liu Theme - VitePress Blog Theme
+
+[中文版](README.zh-CN.md) | [English](README.md)
 
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/liujunxiang0076/liu-theme/ci.yml?logo=github)](https://github.com/liujunxiang0076/liu-theme/actions)
 [![npm downloads](https://img.shields.io/npm/dm/vitepress?logo=npm)](https://www.npmjs.com/package/vitepress)
 
-## 🚩 项目背景
-专为技术博客打造的开源主题，基于VitePress的极速构建特性，结合Vue 3的组件化开发模式，旨在提供优雅的阅读体验和高度可定制性。
+## 🚀 Project Background
+An open-source theme specifically designed for technical blogs, leveraging VitePress's rapid build capabilities and Vue 3's component-based development model to deliver an elegant reading experience with high customizability.
 
-## 🎯 设计目标
-- 极简主义视觉设计
-- 开箱即用的博客功能
-- 完善的扩展能力
-- 持续稳定的版本维护
+## 🎯 Design Goals
+- Minimalist visual design
+- Out-of-the-box blog features
+- Comprehensive extensibility
+- Continuous and stable version maintenance
 
 [![license](https://img.shields.io/github/license/liujunxiang0076/liu-theme)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/vitepress)](https://www.npmjs.com/package/vitepress)
 
-基于 VitePress 1.x 构建的现代化博客主题，集成文章分类、Algolia搜索、PWA支持、RSS订阅等特性。
+Modern blog theme built on VitePress 1.x with integrated features including article categorization, Algolia search, PWA support, and RSS subscription.
 
-## ✨ 核心特性
+## ✨ Core Features
 
-### 🖌 内容创作
-- Markdown增强（流程图、公式、自定义容器）
-- 文章分类自动聚合
-- 更新时间自动追踪
+### 🖌 Content Creation
+- Enhanced Markdown (flowcharts, equations, custom containers)
+- Automatic article categorization
+- Update time tracking
 
-### 🎛 系统功能
-- 多语言支持（中英文切换）
-- 自动生成RSS订阅
-- 渐进式Web应用（PWA）
-- 页面访问统计集成
+### 🎛 System Features
+- Multilingual support (Chinese/English toggle)
+- Automatic RSS generation
+- Progressive Web App (PWA)
+- Page analytics integration
 
-### ⚙ 开发体验
-- 热模块替换（HMR）
-- 组件自动注册
-- TypeScript类型支持
-- 可视化主题调试工具
-- 📝 Markdown 增强（数学公式、属性扩展）
-- 🔍 Algolia 文档搜索集成
-- 📱 响应式布局
-- 🎨 可定制的主题样式
-- ⚡ Vite 极速构建
-- 📦 PWA 离线支持
+### ⚙ Development Experience
+- Hot Module Replacement (HMR)
+- Auto-registered components
+- TypeScript support
+- Visual theme debugger
+- 📝 Enhanced Markdown (math equations, attribute extensions)
+- 🔍 Algolia DocSearch integration
+- 📱 Responsive layout
+- 🎨 Customizable theme styles
+- ⚡ Vite rapid build
+- 📦 PWA offline support
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 环境要求
+### Prerequisites
 - Node.js >= 20
 - pnpm >= 8
 
-### 安装
+### Installation
 ```bash
 pnpm install
 ```
 
-### 开发模式
+### Development Mode
 ```bash
 pnpm dev
 ```
 
-### 生产构建
+### Production Build
 ```bash
 pnpm docs:build
 ```
 
-### 本地预览
+### Local Preview
 ```bash
 pnpm docs:preview
 ```
 
-## 📂 目录结构
+## 📂 Directory Structure
 ```
-├── .vitepress/          # 主题配置
-│   ├── config.mts       # 主题配置文件
-│   └── theme/           # 自定义主题组件
+├── .vitepress/          # Theme configuration
+│   ├── config.mts       # Theme config file
+│   └── theme/           # Custom theme components
 ├── src/
-│   ├── posts/           # 文章目录
-│   └── pages/           # 独立页面
-├── public/              # 静态资源
+│   ├── posts/           # Articles directory
+│   └── pages/           # Standalone pages
+├── public/              # Static resources
 ├── package.json
 └── README.md
 ```
 
-## 🛠 深度配置
+## 🛠 Advanced Configuration
 
-### 主题样式定制
+### Theme Customization
 ```scss
 // .vitepress/theme/style/_override.scss
 $theme-colors: (
@@ -98,8 +100,8 @@ $theme-colors: (
 );
 ```
 
-### 扩展博客功能
-1. 添加评论系统：
+### Extending Blog Features
+1. Add comment system:
 ```ts
 // config.mts
 export default defineConfig({
@@ -111,33 +113,31 @@ export default defineConfig({
   }
 })
 ```
-1. 修改 `.vitepress/config.mts` 中的站点配置
-2. 在 `src/posts` 目录下添加 Markdown 格式的文章
-3. 自定义主题样式请修改 `theme/style` 中的 SCSS 文件
 
-## 🛠 技术栈
-- 核心框架：[VitePress 1.6](https://vitepress.dev)
-- UI框架：[Vue 3](https://vuejs.org)
-- 样式预处理器：[Sass](https://sass-lang.com)
-- 搜索服务：[Algolia DocSearch](https://docsearch.algolia.com)
-- PWA支持：[vite-plugin-pwa](https://vite-pwa-org.netlify.app)
+## 🛠 Tech Stack
+- Core Framework: [VitePress 1.6](https://vitepress.dev)
+- UI Framework: [Vue 3](https://vuejs.org)
+- CSS Preprocessor: [Sass](https://sass-lang.com)
+- Search Service: [Algolia DocSearch](https://docsearch.algolia.com)
+- PWA Support: [vite-plugin-pwa](https://vite-pwa-org.netlify.app)
 
-## 🎨 主题定制
-### 修改主题变量
-在 `.vitepress/theme/style/_variables.scss` 中覆盖默认值：
+## 🎨 Theme Customization
+
+### Modifying Theme Variables
+Override default values in `.vitepress/theme/style/_variables.scss`:
 ```scss
-// 主色配置
+// Primary colors
 $primary-color: #3eaf7c;
 $accent-color: #4abf8a;
 
-// 布局尺寸
+// Layout dimensions
 $content-width: 72rem;
 $sidebar-width: 18rem;
 ```
 
-### 添加自定义组件
-1. 在 `.vitepress/theme/components` 创建 Vue 组件
-2. 在 `.vitepress/theme/index.ts` 中全局注册：
+### Adding Custom Components
+1. Create Vue components in `.vitepress/theme/components`
+2. Register globally in `.vitepress/theme/index.ts`:
 ```ts
 import MyComponent from './components/MyComponent.vue'
 
@@ -148,9 +148,9 @@ export default {
 }
 ```
 
-## 🔍 搜索配置
-1. 申请 [Algolia DocSearch](https://docsearch.algolia.com/apply/)
-2. 在 `.vitepress/config.mts` 中添加配置：
+## 🔍 Search Configuration
+1. Apply for [Algolia DocSearch](https://docsearch.algolia.com/apply/)
+2. Add configuration in `.vitepress/config.mts`:
 ```ts
 algolia: {
   appId: 'YOUR_APP_ID',
@@ -159,48 +159,46 @@ algolia: {
 }
 ```
 
-## 🤝 参与贡献
+## 🤝 Contributing
 
-### 开发工作流
+### Development Workflow
 ```mermaid
 graph LR
-A[Fork仓库] --> B[创建feature分支]
-B --> C[开发功能]
-C --> D[编写测试用例]
-D --> E[提交规范commit]
-E --> F[创建PR请求]
+A[Fork Repository] --> B[Create Feature Branch]
+B --> C[Develop Feature]
+C --> D[Write Tests]
+D --> E[Commit Changes]
+E --> F[Create PR]
 ```
 
-### 质量保障
-- 提交前必须通过ESLint检查
-- 组件需包含Vitest单元测试
-- 布局修改需同步更新Storybook
-- 重大变更需更新CHANGELOG.md
-### 提交规范
-- 提交信息遵循 [Conventional Commits](https://www.conventionalcommits.org) 规范
-- 示例：`feat: 添加暗黑模式切换组件`
+### Quality Assurance
+- Pass ESLint checks before committing
+- Include Vitest unit tests for components
+- Update Storybook for layout changes
+- Maintain CHANGELOG.md for significant changes
 
-### 开发流程
-1. 从 `main` 分支创建特性分支
-2. 提交前运行格式检查：
+### Commit Convention
+- Follow [Conventional Commits](https://www.conventionalcommits.org)
+- Example: `feat: add dark mode toggle component`
+
+### Development Process
+1. Create feature branch from `main`
+2. Run lint checks:
 ```bash
 pnpm lint
 ```
-3. 更新对应组件的单元测试
-4. 创建 Pull Request 时需关联相关 issue
+3. Update relevant unit tests
+4. Reference related issues in PR
 
-## 🚢 部署指南
-### Vercel 部署
+## 🚢 Deployment Guide
+### Vercel Deployment
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-repo)
 
-1. 安装 Vercel CLI：
+1. Install Vercel CLI:
 ```bash
 pnpm add -g vercel
 ```
-2. 执行部署：
+2. Deploy:
 ```bash
-vercel deploy --prod
+vercel deploy
 ```
-
-## 许可证
-[MIT License](LICENSE) © 2023 LiuJunxiang
