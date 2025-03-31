@@ -242,9 +242,9 @@ export const themeConfig = {
      */
     comment: {
         // 是否启用评论
-        enable: false,
-        // 评论系统类型：artalk / twikoo
-        type: 'artalk',
+        enable: true,
+        // 评论系统类型：artalk / twikoo / waline
+        type: 'waline',
         // Artalk 配置
         artalk: {
             site: '',
@@ -260,6 +260,19 @@ export const themeConfig = {
             region: 'ap-shanghai',
             // 语言设置
             lang: 'zh-CN'
+        },
+        // Waline 配置
+        waline: {
+            // Waline 服务端地址
+            serverURL: 'https://waline.liujunxiang0076.site/',
+            // 评论数统计
+            comment: true,
+            // 页面访问量统计
+            pageview: true,
+            // 语言设置
+            locale: {
+                placeholder: '请留下您的评论~'
+            }
         }
     },
 
