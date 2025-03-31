@@ -87,6 +87,8 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { getTimeRemaining, getDaysUntil } from "@/utils/timeTools";
 import { getRecentHoliday } from "@/api";
+import { useData } from 'vitepress';
+
 const { theme } = useData();
 
 // 日历状态
@@ -95,13 +97,97 @@ const currentMonth = ref(new Date().getMonth());
 const currentYear = ref(new Date().getFullYear());
 const weekDays = ['日', '一', '二', '三', '四', '五', '六'];
 
+// 缓存键名
+const HOLIDAY_CACHE_KEY = 'holiday_cache_data';
+const HOLIDAY_CACHE_TIMESTAMP_KEY = 'holiday_cache_timestamp';
+
+// 获取缓存的节假日数据
+const getHolidayCache = () => {
+  try {
+    const cachedData = localStorage.getItem(HOLIDAY_CACHE_KEY);
+    const timestamp = localStorage.getItem(HOLIDAY_CACHE_TIMESTAMP_KEY);
+    
+    console.log('节假日缓存检查 - 数据:', cachedData ? '存在' : '不存在', 
+              '时间戳:', timestamp ? '存在' : '不存在');
+    
+    if (!cachedData || !timestamp) {
+      console.log('节假日缓存数据或时间戳不存在，需要重新获取');
+      return null;
+    }
+    
+    // 检查缓存是否是今天的
+    const cachedDate = new Date(parseInt(timestamp));
+    const today = new Date();
+    
+    console.log('节假日缓存日期:', cachedDate.toLocaleString(), 
+              '当前日期:', today.toLocaleString());
+    
+    // 如果不是同一天，则缓存无效
+    if (cachedDate.getDate() !== today.getDate() || 
+        cachedDate.getMonth() !== today.getMonth() || 
+        cachedDate.getFullYear() !== today.getFullYear()) {
+      console.log('节假日缓存已过期 - 不是同一天');
+      return null;
+    }
+    
+    console.log('使用缓存的节假日数据');
+    return JSON.parse(cachedData);
+  } catch (error) {
+    console.error('获取节假日缓存数据出错:', error);
+    return null;
+  }
+};
+
+// 保存节假日数据到缓存
+const saveHolidayCache = (data) => {
+  try {
+    localStorage.setItem(HOLIDAY_CACHE_KEY, JSON.stringify(data));
+    localStorage.setItem(HOLIDAY_CACHE_TIMESTAMP_KEY, Date.now().toString());
+    console.log('节假日数据已缓存');
+    
+    // 验证缓存是否成功写入
+    const saved = localStorage.getItem(HOLIDAY_CACHE_KEY);
+    console.log('节假日缓存验证:', saved ? '成功' : '失败');
+  } catch (error) {
+    console.error('缓存节假日数据出错:', error);
+  }
+};
+
 // 节假日数据
 const nextHoliday = ref(null);
 const nextHolidayDate = ref(null);
 const getNextHoliday = async () => {
-  const res = await getRecentHoliday();
-  nextHoliday.value = res.localName;
-  nextHolidayDate.value = res.date;
+  // 先检查缓存
+  const cachedData = getHolidayCache();
+  if (cachedData) {
+    // 使用缓存数据
+    nextHoliday.value = cachedData.localName;
+    nextHolidayDate.value = cachedData.date;
+    console.log('使用缓存的节假日数据:', cachedData.localName, cachedData.date);
+    return;
+  }
+
+  // 如果缓存不存在或已过期，则获取新数据
+  try {
+    console.log('正在获取节假日数据...');
+    const res = await getRecentHoliday();
+    nextHoliday.value = res.localName;
+    nextHolidayDate.value = res.date;
+    
+    // 保存到缓存
+    saveHolidayCache(res);
+    console.log('节假日数据获取成功:', res.localName, res.date);
+  } catch (error) {
+    console.error('获取节假日数据错误:', error);
+  }
+};
+
+// 强制刷新节假日数据
+const refreshHoliday = async () => {
+  // 清除缓存强制刷新
+  localStorage.removeItem(HOLIDAY_CACHE_KEY);
+  localStorage.removeItem(HOLIDAY_CACHE_TIMESTAMP_KEY);
+  await getNextHoliday();
 };
 
 // 倒计时数据
