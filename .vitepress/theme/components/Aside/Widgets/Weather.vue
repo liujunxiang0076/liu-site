@@ -149,6 +149,73 @@ const isQWeatherAPI = computed(() => {
   return theme.value.aside.weather?.type === 'qweather';
 });
 
+// 本地存储键
+const WEATHER_CACHE_KEY = 'weather_cache_data';
+const WEATHER_CACHE_TIMESTAMP_KEY = 'weather_cache_timestamp';
+const WEATHER_CACHE_CITY_ID_KEY = 'weather_cache_city_id';
+
+// 获取缓存的天气数据
+const getWeatherCache = () => {
+  try {
+    const cachedData = localStorage.getItem(WEATHER_CACHE_KEY);
+    const timestamp = localStorage.getItem(WEATHER_CACHE_TIMESTAMP_KEY);
+    const cachedCityId = localStorage.getItem(WEATHER_CACHE_CITY_ID_KEY);
+    
+    console.log('缓存检查 - 数据:', cachedData ? '存在' : '不存在', 
+                '时间戳:', timestamp ? '存在' : '不存在');
+    
+    if (!cachedData || !timestamp) {
+      console.log('缓存数据或时间戳不存在，需要重新获取');
+      return null;
+    }
+    
+    // 检查缓存是否是今天的
+    const cachedDate = new Date(parseInt(timestamp));
+    const today = new Date();
+    
+    console.log('缓存日期:', cachedDate.toLocaleString(), 
+                '当前日期:', today.toLocaleString());
+    
+    // 如果不是同一天，则缓存无效
+    if (cachedDate.getDate() !== today.getDate() || 
+        cachedDate.getMonth() !== today.getMonth() || 
+        cachedDate.getFullYear() !== today.getFullYear()) {
+      console.log('缓存已过期 - 不是同一天');
+      return null;
+    }
+    
+    // 如果选择了不同的城市，则缓存无效
+    if (selectedCityId.value && cachedCityId !== selectedCityId.value) {
+      console.log('城市已更改，缓存无效 - 缓存城市:', cachedCityId, '当前城市:', selectedCityId.value);
+      return null;
+    }
+    
+    console.log('使用缓存的天气数据');
+    return JSON.parse(cachedData);
+  } catch (error) {
+    console.error('获取缓存数据出错:', error);
+    return null;
+  }
+};
+
+// 保存天气数据到缓存
+const saveWeatherCache = (data) => {
+  try {
+    localStorage.setItem(WEATHER_CACHE_KEY, JSON.stringify(data));
+    localStorage.setItem(WEATHER_CACHE_TIMESTAMP_KEY, Date.now().toString());
+    if (selectedCityId.value) {
+      localStorage.setItem(WEATHER_CACHE_CITY_ID_KEY, selectedCityId.value);
+    }
+    console.log('天气数据已缓存');
+    
+    // 验证缓存是否成功写入
+    const saved = localStorage.getItem(WEATHER_CACHE_KEY);
+    console.log('缓存验证:', saved ? '成功' : '失败');
+  } catch (error) {
+    console.error('缓存天气数据出错:', error);
+  }
+};
+
 // 添加打印，查看变量的值
 watchEffect(() => {
   console.log('深色模式状态:', isDark.value);
@@ -161,7 +228,10 @@ const changeWeather = (weather) => {
 
 // 刷新天气数据
 const refreshWeather = async () => {
-  await fetchWeatherData()
+  // 清除缓存强制刷新
+  localStorage.removeItem(WEATHER_CACHE_KEY);
+  localStorage.removeItem(WEATHER_CACHE_TIMESTAMP_KEY);
+  await fetchWeatherData();
 }
 
 // 处理城市选择
@@ -174,6 +244,11 @@ const handleCitySelect = (city) => {
   if (weatherData.value) {
     weatherData.value.location = city.displayName || city.name;
   }
+  
+  // 清除之前的缓存
+  localStorage.removeItem(WEATHER_CACHE_KEY);
+  localStorage.removeItem(WEATHER_CACHE_TIMESTAMP_KEY);
+  localStorage.removeItem(WEATHER_CACHE_CITY_ID_KEY);
   
   // 构造完整配置，使用和风天气API
   const config = {
@@ -206,15 +281,22 @@ const fetchWeatherDataWithConfig = async (config) => {
     currentWeather.value = data.weatherType;
     
     // 保存天气数据
-    weatherData.value = {
+    const weatherInfo = {
       location: data.location,
       temperature: data.temperature,
       weather: data.weatherText || t(`weather.${data.weatherType}`),
       humidity: data.humidity,
       windDirection: data.windDirection,
       windSpeed: data.windSpeed,
-      forecast: data.forecast || []
+      forecast: data.forecast || [],
+      weatherType: data.weatherType
     };
+    
+    // 更新显示
+    weatherData.value = weatherInfo;
+    
+    // 保存到缓存
+    saveWeatherCache(weatherInfo);
   } catch (err) {
     console.error('获取天气数据错误:', err);
     error.value = true;
@@ -223,47 +305,24 @@ const fetchWeatherDataWithConfig = async (config) => {
   }
 };
 
-// 格式化预报日期
-const formatForecastDate = (dateString) => {
-  if (!dateString) return '';
-
-  try {
-    const date = new Date(dateString);
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-
-    // 检查是否为今天或明天
-    if (date.toDateString() === today.toDateString()) {
-      return t('weather.today');
-    } else if (date.toDateString() === tomorrow.toDateString()) {
-      return t('weather.tomorrow');
-    }
-
-    // 返回星期几
-    const weekdays = [
-      t('weather.sunday'),
-      t('weather.monday'),
-      t('weather.tuesday'),
-      t('weather.wednesday'),
-      t('weather.thursday'),
-      t('weather.friday'),
-      t('weather.saturday')
-    ];
-    return weekdays[date.getDay()];
-  } catch (e) {
-    console.error('日期格式化错误:', e);
-    return dateString;
-  }
-}
-
 // 获取天气数据
 const fetchWeatherData = async () => {
-  if (!theme.value.aside.weather?.enable) return
+  if (!theme.value.aside.weather?.enable) return;
   
-  loading.value = true
-  error.value = false
-  currentWeather.value = currentWeather.value || 'sunny' // 设置一个默认值，防止界面闪烁
+  // 先检查缓存
+  const cachedData = getWeatherCache();
+  if (cachedData) {
+    // 使用缓存数据
+    weatherData.value = cachedData;
+    currentWeather.value = cachedData.weatherType;
+    loading.value = false;
+    error.value = false;
+    return;
+  }
+  
+  loading.value = true;
+  error.value = false;
+  currentWeather.value = currentWeather.value || 'sunny'; // 设置一个默认值，防止界面闪烁
   
   try {
     // 获取位置信息
@@ -301,27 +360,34 @@ const fetchWeatherData = async () => {
     
     // 调用统一天气API
     console.log('正在获取天气数据...');
-    const data = await getWeather(config, position)
+    const data = await getWeather(config, position);
     console.log('天气数据获取成功:', data.location);
     
     // 设置当前天气类型
-    currentWeather.value = data.weatherType
+    currentWeather.value = data.weatherType;
     
     // 保存天气数据
-    weatherData.value = {
+    const weatherInfo = {
       location: data.location,
       temperature: data.temperature,
       weather: data.weatherText || t(`weather.${data.weatherType}`),
       humidity: data.humidity,
       windDirection: data.windDirection,
       windSpeed: data.windSpeed,
-      forecast: data.forecast || []
-    }
+      forecast: data.forecast || [],
+      weatherType: data.weatherType
+    };
+    
+    // 更新显示
+    weatherData.value = weatherInfo;
+    
+    // 保存到缓存
+    saveWeatherCache(weatherInfo);
   } catch (err) {
-    console.error('获取天气数据错误:', err)
-    error.value = true
+    console.error('获取天气数据错误:', err);
+    error.value = true;
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
@@ -356,6 +422,41 @@ const timeOfDay = computed(() => {
   if (hour >= 16 && hour < 19) return 'dusk';
   return 'night';
 });
+
+// 将被删除的formatForecastDate函数恢复
+// 格式化预报日期
+const formatForecastDate = (dateString) => {
+  if (!dateString) return '';
+
+  try {
+    const date = new Date(dateString);
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    // 检查是否为今天或明天
+    if (date.toDateString() === today.toDateString()) {
+      return t('weather.today');
+    } else if (date.toDateString() === tomorrow.toDateString()) {
+      return t('weather.tomorrow');
+    }
+
+    // 返回星期几
+    const weekdays = [
+      t('weather.sunday'),
+      t('weather.monday'),
+      t('weather.tuesday'),
+      t('weather.wednesday'),
+      t('weather.thursday'),
+      t('weather.friday'),
+      t('weather.saturday')
+    ];
+    return weekdays[date.getDay()];
+  } catch (e) {
+    console.error('日期格式化错误:', e);
+    return dateString;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
