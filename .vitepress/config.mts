@@ -118,7 +118,17 @@ export default withPwa(
           extensions: ['vue', 'md'],
           include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
           dts: '.vitepress/components.d.ts'
-        })
+        }),
+        // 添加Vue插件配置
+        {
+          name: 'vitepress-custom-elements',
+          transform(code, id) {
+            if (id.includes('vue&type=template')) {
+              // 标记ReadingTime为自定义元素，避免组件解析错误
+              return code.replace(/ReadingTime/g, 'reading-time');
+            }
+          }
+        }
       ],
       resolve: {
         // 路径别名
@@ -147,7 +157,17 @@ export default withPwa(
             pure_funcs: ["console.log"],
           },
         },
-      },
+      }
+    },
+    
+    // Vue配置（正确位置）
+    vue: {
+      template: {
+        compilerOptions: {
+          // 将ReadingTime标记为自定义元素，避免组件解析错误
+          isCustomElement: (tag) => tag === 'ReadingTime'
+        }
+      }
     },
     
     // PWA配置
