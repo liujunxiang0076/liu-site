@@ -130,7 +130,7 @@ const getHolidayCache = () => {
       return null;
     }
     
-    console.log('使用缓存的节假日数据');
+    // console.log('使用缓存的节假日数据');
     return JSON.parse(cachedData);
   } catch (error) {
     console.error('获取节假日缓存数据出错:', error);
