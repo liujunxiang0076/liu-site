@@ -20,6 +20,14 @@ export default {
       pages.push({ params: { num: pageNum.toString() } });
     }
     console.info("文章分页动态路由：", pages);
+    
+    // 如果没有生成页面路由，可能是因为文章数量不足，输出一些调试信息
+    if (pages.length === 0) {
+      console.info("未生成文章分页，文章总数：", postData.length);
+      console.info("每页文章数：", postsPerPage);
+      console.info("计算的总页数：", totalPages);
+    }
+    
     return pages;
   },
 };
