@@ -12,10 +12,10 @@ export const getThemeConfig = async () => {
     // 检查文件是否存在
     if (existsSync(configPath)) {
       // 文件存在时进行动态导入
-      const userConfig = await import("../.vitepress/theme/config/themeConfig.mts");
+      // 直接使用已导入的themeConfig而不是重新导入
       console.log("User configuration file loaded successfully.");
-      // 合并配置文件
-      return Object.assign(themeConfig, userConfig?.themeConfig || {});
+      // 直接返回已导入的配置
+      return themeConfig;
     } else {
       // 文件不存在时返回默认配置
       console.warn(
