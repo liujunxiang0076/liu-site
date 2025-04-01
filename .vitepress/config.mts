@@ -124,8 +124,9 @@ export default withPwa(
           name: 'vitepress-custom-elements',
           transform(code, id) {
             if (id.includes('vue&type=template')) {
-              // 标记ReadingTime为自定义元素，避免组件解析错误
-              return code.replace(/ReadingTime/g, 'reading-time');
+              // 标记ReadingTime和CodeBlock为自定义元素，避免组件解析错误
+              return code.replace(/ReadingTime/g, 'reading-time')
+                        .replace(/CodeBlock/g, 'code-block');
             }
           }
         }
@@ -165,7 +166,7 @@ export default withPwa(
       template: {
         compilerOptions: {
           // 将ReadingTime标记为自定义元素，避免组件解析错误
-          isCustomElement: (tag) => tag === 'ReadingTime'
+          isCustomElement: (tag) => tag === 'ReadingTime' || tag === 'CodeBlock'
         }
       }
     },
