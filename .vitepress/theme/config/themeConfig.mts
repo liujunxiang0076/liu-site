@@ -105,7 +105,7 @@ export const themeConfig = {
                     href: 'https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.css'
                 }
             ],
-            // 图标字体
+            // codesign图标字体
             [
                 'link',
                 {
