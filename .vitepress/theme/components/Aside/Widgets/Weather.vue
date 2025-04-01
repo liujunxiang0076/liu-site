@@ -190,7 +190,7 @@ const getWeatherCache = () => {
       return null;
     }
     
-    console.log('使用缓存的天气数据');
+    // console.log('使用缓存的天气数据');
     return JSON.parse(cachedData);
   } catch (error) {
     console.error('获取缓存数据出错:', error);
