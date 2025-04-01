@@ -271,8 +271,14 @@ export const themeConfig = {
             pageview: true,
             // 语言设置
             locale: {
-                placeholder: '请留下您的评论~'
-            }
+                placeholder: '来都来了，不留下点什么吗？'
+            },
+            // 评论者信息
+            meta: ['nick'],
+            // 是否禁用版权
+            noCopyright: true,
+            // 是否禁用评论表情
+            reaction: true
         }
     },
 
