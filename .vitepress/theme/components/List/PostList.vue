@@ -181,14 +181,15 @@ const toPost = (path) => {
       }
       .post-desc {
         margin-top: -0.4rem;
-        margin-bottom: 0.8rem;
+        margin-bottom: 1.2rem;
         opacity: 0.8;
-        line-height: 30px;
+        line-height: 24px;
         display: -webkit-box;
         overflow: hidden;
         word-break: break-all;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 3;
+        padding-bottom: 4px;
       }
       .post-meta {
         display: flex;
