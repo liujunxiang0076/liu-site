@@ -4,7 +4,7 @@
     <a
       v-if="currentPage > 1"
       class="page-item prev"
-      :href="withBase(currentPage === 2 ? '/' : `/page/${currentPage - 1}/`)"
+      :href="withBase(currentPage === 2 ? '/' : `/src/page/${currentPage - 1}/`)"
     >
       <i class="iconfont icon-page-right" />
       <span class="page-text">上页</span>
@@ -14,7 +14,7 @@
         v-for="(item, index) in filteredPageNumbers"
         :key="index"
         :class="['page-item', { choose: item === currentPage }]"
-        :href="withBase(item === 1 ? '/' : `/page/${item}/`)"
+        :href="withBase(item === 1 ? '/' : `/src/page/${item}/`)"
       >
         <span class="page-num">{{ item }}</span>
       </a>
@@ -41,7 +41,7 @@
     <a
       v-if="currentPage * limit < total"
       class="page-item next"
-      :href="withBase(`/page/${currentPage + 1}/`)"
+      :href="withBase(`/src/page/${currentPage + 1}/`)"
     >
       <span class="page-text">下页</span>
       <i class="iconfont icon-page-right" />
@@ -160,7 +160,7 @@ const fastJump = () => {
   
   const targetUrl = jumpInput.value === 1 
     ? withBase('/') 
-    : withBase(`/page/${jumpInput.value}/`);
+    : withBase(`/src/page/${jumpInput.value}/`);
     
   window.location.href = targetUrl;
 };
