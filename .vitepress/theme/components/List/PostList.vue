@@ -186,7 +186,7 @@ onUpdated(checkDescriptionOverflow);
       display: flex;
       flex-direction: column;
       justify-content: space-between; /* Changed to space-between to push meta to bottom */
-      height: 250px !important;
+      // height: 250px !important;
       overflow: hidden; /* No scrolling, use fade effect instead */
       
       .post-category {
