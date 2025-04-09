@@ -1,27 +1,28 @@
 <!-- 分页 -->
 <template>
   <div v-if="total > 0" class="pagination">
-    <div
+    <a
       v-if="currentPage > 1"
       class="page-item prev"
-      @click="
-        jumpPage(
-          currentPage === 2 ? `${routePath}` : `${routePath}/page/${currentPage - 1}`,
-          currentPage === 2 ? 1 : currentPage - 1,
-        )
-      "
+      :href="withBase(currentPage === 2 ? '/' : `/page/${currentPage - 1}/`)"
     >
       <i class="iconfont icon-page-right" />
       <span class="page-text">上页</span>
-    </div>
+    </a>
     <div class="page-number">
-      <div
-        v-for="(item, index) in pageNumber"
+      <a
+        v-for="(item, index) in filteredPageNumbers"
         :key="index"
-        :class="[item === '...' ? 'point' : 'page-item', { choose: item === currentPage }]"
-        @click="jumpPage(item === 1 ? `${routePath}` : `${routePath}/page/${item}`, item)"
+        :class="['page-item', { choose: item === currentPage }]"
+        :href="withBase(item === 1 ? '/' : `/page/${item}/`)"
       >
         <span class="page-num">{{ item }}</span>
+      </a>
+      <div 
+        v-for="(item, index) in ellipsisPoints"
+        :key="`ellipsis-${index}`"
+        class="point">
+        <span>{{ item }}</span>
       </div>
       <!-- 快速跳转 -->
       <div :class="['fast-jump', { focus: inputFocus }]" title="快速跳转">
@@ -37,19 +38,19 @@
         <i :class="['iconfont icon-arrow-right', { click: jumpInput }]" @click.stop="fastJump" />
       </div>
     </div>
-    <div
+    <a
       v-if="currentPage * limit < total"
       class="page-item next"
-      @click="jumpPage(`${routePath}/page/${currentPage + 1}`, currentPage + 1)"
+      :href="withBase(`/page/${currentPage + 1}/`)"
     >
       <span class="page-text">下页</span>
       <i class="iconfont icon-page-right" />
-    </div>
+    </a>
   </div>
 </template>
 
 <script setup>
-const router = useRouter();
+import { withBase, useRoute } from 'vitepress';
 
 // 分页数据
 const props = defineProps({
@@ -121,6 +122,16 @@ const pageNumber = computed(() => {
   return pages;
 });
 
+// 过滤掉省略号的页码，用于v-for渲染
+const filteredPageNumbers = computed(() => {
+  return pageNumber.value.filter(item => item !== '...');
+});
+
+// 只获取省略号用于单独渲染
+const ellipsisPoints = computed(() => {
+  return pageNumber.value.filter(item => item === '...');
+});
+
 // 检查输入
 const validateInput = () => {
   const numericValue = Number(jumpInput.value);
@@ -133,31 +144,28 @@ const validateInput = () => {
   }
 };
 
-// 跳转页面
-const jumpPage = (url, page) => {
-  // 使用参数跳转
-  if (props.useParams) {
-    if (page === 1) {
-      router.go(`${props.routePath}`);
-    } else {
-      router.go(`${props.routePath}?page=${page}`);
-    }
-  }
-  // 正常跳转
-  else {
-    router.go(url);
-  }
-};
+// 获取当前路由
+const route = useRoute();
+
+// 确定是否为分页页面
+const isPageRoute = computed(() => {
+  if (typeof window === 'undefined') return false;
+  return window.location.pathname.includes('/page/');
+});
 
 // 快速跳转
 const fastJump = () => {
   inputFocus.value = false;
   if (!jumpInput.value) return false;
-  jumpPage(
-    jumpInput.value === 1 ? `${props.routePath}` : `${props.routePath}/page/${jumpInput.value}`,
-    jumpInput.value,
-  );
+  
+  const targetUrl = jumpInput.value === 1 
+    ? withBase('/') 
+    : withBase(`/page/${jumpInput.value}/`);
+    
+  window.location.href = targetUrl;
 };
+
+
 
 // 检查当前路径参数
 const checkCurrentPage = () => {
