@@ -5,14 +5,14 @@
       v-for="(item, index) in listData"
       :key="index"
       :class="['post-item', 's-card', 'hover',{ simple, cover: showCover(item),[`cover-${layoutType}`]: showCover(item) }]"
-      :style="{ animationDelay: `${0.4 + index / 10}s` }"
+      :style="{ animationDelay: `${0.4 + index / 10}s`, height: 'auto !important', minHeight: 'auto !important', maxHeight: 'none !important' }"
       @click="toPost(item.regularPath)"
     >
       <div v-if="!simple && showCover(item)" class="post-cover">
         <img :src="getCover(item)" :alt="item.title">
       </div>
       
-      <div class="post-content">
+      <div class="post-content" style="height: auto; overflow: visible;">
         <div v-if="!simple && item?.categories" class="post-category">
           <span v-for="cat in item?.categories" :key="cat" class="cat-name">
             <i class="iconfont icon-folder" />
@@ -24,10 +24,12 @@
             置顶
           </span>
         </div>
-        <span class="post-title">{{ item.title }}</span>
-        <span v-if="item?.description" class="post-desc">
-          {{ item.description }}
-        </span>
+        <div class="post-title-wrapper" style="width: 100%">
+          <h3 class="post-title" style="margin: 0.6rem 0; font-size: 20px; font-weight: bold; white-space: normal; overflow: visible;">{{ item.title }}</h3>
+        </div>
+        <div v-if="item?.description" class="post-desc-wrapper" style="width: 100%">
+          <p class="post-desc" style="margin-top: 0.5rem; margin-bottom: 1.2rem; opacity: 0.8; white-space: normal; overflow: visible;">{{ item.description }}</p>
+        </div>
         <div v-if="!simple" class="post-meta">
           <div v-if="item?.tags" class="post-tags">
             <span
@@ -50,6 +52,7 @@
 <script setup>
 import { mainStore } from "@/store";
 import { formatTimestamp } from "@/utils/helper";
+import { onMounted, onUpdated, nextTick } from 'vue';
 
 const store = mainStore();
 const router = useRouter();
@@ -106,31 +109,73 @@ const toPost = (path) => {
   // 跳转文章
   router.go(path);
 };
+
+// 检查每个描述文本是否需要显示渐变效果
+const checkDescriptionOverflow = () => {
+  if (typeof window === 'undefined') return;
+  
+  nextTick(() => {
+    // 获取所有描述元素
+    const descriptions = document.querySelectorAll('.post-desc');
+    
+    descriptions.forEach(desc => {
+      // 如果内容高度大于容器高度，则显示渐变效果
+      const isOverflowing = desc.scrollHeight > desc.clientHeight;
+      
+      // 获取渐变元素 (::after 伪元素无法直接操作，使用自定义属性)
+      desc.style.setProperty('--fade-display', isOverflowing ? 'block' : 'none');
+    });
+  });
+};
+
+// 在内容挂载和更新后检查溢出
+onMounted(checkDescriptionOverflow);
+onUpdated(checkDescriptionOverflow);
 </script>
 
 <style lang="scss" scoped>
+/* Force full text display with no truncation */
+.post-title-wrapper, .post-desc-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+.post-title, .post-desc {
+  text-overflow: initial !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  display: block !important;
+  height: auto !important;
+  max-height: none !important;
+  max-width: 100% !important;
+  word-break: break-word !important;
+}
+
 .post-lists {
   .post-item {
     padding: 0!important;
     display: flex;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     animation: fade-up 0.6s 0.4s backwards;
     cursor: pointer;
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    transition: box-shadow 0.3s, transform 0.3s;
+    height: 250px !important; /* Fixed height for consistent appearance */
     overflow: hidden;
-    height: 200px;
     
     .post-cover {
       flex: 0 0 35%;
-      overflow: hidden;
-      transform: translateZ(0);
+      height: 250px !important;
       
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         transform-origin: center center;
-        will-change: transform, filter;
-        transition: transform 0.5s ease-out, filter 0.5s ease-out;
+        will-change: transform;
+        transition: transform 0.5s ease-out;
         backface-visibility: hidden;
       }
     }
@@ -140,7 +185,9 @@ const toPost = (path) => {
       padding: 1.6rem 2rem;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: space-between; /* Changed to space-between to push meta to bottom */
+      height: 250px !important;
+      overflow: hidden; /* No scrolling, use fade effect instead */
       
       .post-category {
         display: flex;
@@ -167,29 +214,54 @@ const toPost = (path) => {
           }
         }
       }
+      .post-title-wrapper {
+        width: 100%;
+        overflow: visible;
+      }
+      
       .post-title {
         font-size: 20px;
-        line-height: 30px;
+        line-height: 1.5;
         font-weight: bold;
         margin: 0.6rem 0;
         transition: color 0.3s;
-        display: -webkit-box;
-        overflow: hidden;
-        word-break: break-all;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
+        overflow: visible;
+        white-space: normal;
+        word-wrap: break-word;
+        display: block;
+        width: 100%;
       }
+      .post-desc-wrapper {
+        width: 100%;
+        overflow: visible;
+      }
+      
       .post-desc {
-        margin-top: -0.4rem;
+        margin-top: 0.5rem;
         margin-bottom: 1.2rem;
         opacity: 0.8;
-        line-height: 24px;
-        display: -webkit-box;
+        line-height: 1.5;
         overflow: hidden;
-        word-break: break-all;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
-        padding-bottom: 4px;
+        white-space: normal;
+        word-wrap: break-word;
+        display: block;
+        width: 100%;
+        max-height: 120px; /* Height limit for description */
+        position: relative;
+        
+        /* Only show the fade effect when the content overflows */
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 50px; /* Gradient height */
+          background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, var(--card-bg-color, #fff) 100%);
+          pointer-events: none;
+          /* Will be controlled by JavaScript using CSS variable */
+          display: var(--fade-display, none);
+        }
       }
       .post-meta {
         display: flex;
@@ -197,6 +269,7 @@ const toPost = (path) => {
         align-items: center;
         justify-content: space-between;
         color: var(--main-font-second-color);
+        margin-top: auto; /* Push to bottom of flex container */
         .post-tags {
           display: flex;
           flex-wrap: wrap;
@@ -252,8 +325,8 @@ const toPost = (path) => {
     }
     &:hover {
       .post-cover img {
-        filter: brightness(.8);
         transform: scale(1.05);
+        /* Removed brightness filter that was causing white images to turn gray */
       }
       .post-content {
         .post-title {
@@ -314,7 +387,7 @@ const toPost = (path) => {
     .post-item {
       margin: 0;
       flex-direction: column;
-      height: auto;
+      height: 350px !important; /* Fixed height for grid layout */
 
       .post-cover {
         flex: none;
