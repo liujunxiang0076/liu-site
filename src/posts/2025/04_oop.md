@@ -12,40 +12,96 @@ cover: https://imgbed.liujunxiang0076.site/file/1744182867239_oop.jpg
 
 ## 一、面向对象核心概念
 
-### 1.1 类与对象
+### 1.1 类与对象I
+### 继承概念四步演进法
 
-```plantuml
-@startuml
-class Animal {
-  + name: str
-  + __init__(name: str)
-  + speak(): str
-}
+**Step 1 - 概念理解**  
+继承就像生物分类体系：哺乳动物→猫科动物→家猫，子类自动获得父类特征，并发展特有属性
 
-class Dog {
-  + speak(): str
-}
+**Step 2 - 基础父类定义**  
+```python
+# 基类：生物体
+class Organism:
+    def __init__(self, species):
+        self.species = species  # 物种属性
 
-class Cat {
-  + speak(): str
-}
+    def breathe(self):
+        print("进行呼吸作用")
 
-Animal <|-- Dog
-Animal <|-- Cat
-@enduml
+# 动物基类继承生物体
+class Animal(Organism):
+    def __init__(self, name, species):
+        super().__init__(species)
+        self.name = name
+
+    def speak(self):
+        pass  # 待子类实现
 ```
 
-▲ 继承关系类图说明
+**Step 3 - 继承关系对比**  
+```python
+# 父类定义 vs 子类继承
+class Vehicle:                    class Car(Vehicle):
+    def transport(): ...               def __init__(self):
+                                           super().__init__('汽车')
+
+# 方法重写对比               
+class Animal:                    class Dog(Animal):
+    def sound():                     def sound():
+        return "..."                     return "汪汪！"
+```
+
+**Step 4 - 电商用户体系实战**  
+```python
+class User:
+    def __init__(self, uid):
+        self.uid = uid
+
+class Member(User):
+    def __init__(self, uid, level):
+        super().__init__(uid)
+        self.level = level  # 会员等级
+
+class Admin(User):
+    def manage_system(self):
+        print("执行管理操作")
+
+# 调用示例
+vip = Member('U1001', 3)
+print(vip.level)  # 输出：3
+```
+
+### 动物类继承完整实现
 ```python
 class Animal:
     def __init__(self, name):
         self.name = name
 
     def speak(self):
-        pass
+        raise NotImplementedError("子类必须实现此方法")
 
-# 创建对象实例
-dog = Animal("Buddy")
+class Dog(Animal):
+    def speak(self):
+        return f"{self.name}: 汪汪！"
+
+    def guard(self):  # 扩展专属方法
+        print(f"{self.name} 正在看门")
+
+class Cat(Animal):
+    def speak(self):
+        return f"{self.name}: 喵～"
+
+# 多态调用示例
+animals = [Dog("阿黄"), Cat("小白")]
+for a in animals:
+    print(a.speak())  
+# 输出结果：
+# 阿黄: 汪汪！
+# 小白: 喵～
+
+# 专属方法调用
+dog = Dog("小黑")
+dog.guard()  # 输出：小黑 正在看门
 ```
 
 ### 1.2 封装特性
@@ -207,3 +263,24 @@ user = User("张三", 30)
 print(user.to_json())
 print(user.to_xml())
 ```
+
+▲ 空心三角箭头表示继承关系（箭头从子类指向父类），Dog和Cat继承自Animal父类。就像生物学分类中「犬科→狗」「猫科→猫」的继承关系，子类自动获得父类的属性和方法。
+
+### 继承实战四步法：
+1. 定义父类公共属性和方法（如Animal的name属性和speak方法）
+2. 创建子类继承父类（class Dog(Animal)）
+3. 重写父类方法（在Dog中定义自己的speak实现）
+4. 扩展子类特有功能（可添加bark()等狗专属方法）
+
+# 应用场景示例：
+**插件系统开发**
+```python
+class BasePlugin:
+    def init(self):
+        print("插件初始化")
+
+class ChatGPTPlugin(BasePlugin):
+    def run(self):
+        print("调用GPT接口处理请求")
+```
+当需要扩展新功能时，只需继承BasePlugin实现具体逻辑，系统自动加载所有子类插件。
