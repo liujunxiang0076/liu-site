@@ -182,7 +182,7 @@ onUpdated(checkDescriptionOverflow);
 
     .post-content {
       flex: 1;
-      padding: 1.6rem 2rem;
+      padding: 1rem 2rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between; /* Changed to space-between to push meta to bottom */
