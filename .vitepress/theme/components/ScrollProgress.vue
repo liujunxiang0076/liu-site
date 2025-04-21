@@ -4,20 +4,24 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { isClient } from '../utils/helper.mjs'
 
 const progress = ref(0)
 
 const calculateProgress = () => {
+  if (!isClient) return
   const winScroll = window.scrollY
   const height = document.documentElement.scrollHeight - document.documentElement.clientHeight
   progress.value = (winScroll / height) * 100
 }
 
 onMounted(() => {
+  if (!isClient) return
   window.addEventListener('scroll', calculateProgress)
 })
 
 onUnmounted(() => {
+  if (!isClient) return
   window.removeEventListener('scroll', calculateProgress)
 })
 </script>
