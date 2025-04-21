@@ -20,6 +20,8 @@
 </template>
 
 <script setup>
+import { isClient } from '../utils/helper.mjs'
+
 // 消息数据
 const messageType = ref("info");
 const messageShow = ref(false);
@@ -84,7 +86,9 @@ const closeMessage = () => {
 
 onMounted(() => {
   // 挂载全局
-  window.$message = message;
+  if (isClient) {
+    window.$message = message;
+  }
 });
 </script>
 
