@@ -274,3 +274,32 @@ export const specialDayGray = () => {
     }
   }
 };
+
+export const isClient = typeof window !== 'undefined'
+
+export const getScrollProgress = () => {
+  if (!isClient) return 0
+  const scrollY = window.scrollY || window.pageYOffset
+  const totalHeight = document.documentElement.scrollHeight - window.innerHeight
+  return Math.round((scrollY / totalHeight) * 100)
+}
+
+export const scrollToTarget = (target) => {
+  if (!isClient) return
+  window.scrollTo({ top: target, behavior: "smooth" })
+}
+
+export const scrollToTop = (top) => {
+  if (!isClient) return
+  window.scrollTo({ top, behavior: "smooth" })
+}
+
+export const scrollToComment = (top) => {
+  if (!isClient) return
+  window.scrollTo({ top, behavior: "smooth" })
+}
+
+export const backToTop = () => {
+  if (!isClient) return
+  window.scrollTo({ top: 0, behavior: "smooth" })
+}
