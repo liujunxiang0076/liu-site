@@ -116,6 +116,7 @@ export default {
 <script setup>
 import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
 import { useRoute, useData } from 'vitepress'
+import { isClient } from '../../../utils/helper.mjs'
 
 // 定义props
 const props = defineProps({
@@ -206,32 +207,35 @@ const commentRef = ref(null)
 const walineInstance = ref(null)
 
 // 拦截Fetch请求以捕获特定错误
-const originalFetch = window.fetch
-window.fetch = function(...args) {
-  return originalFetch.apply(this, args)
-    .then(response => {
-      // 检查是否访问Waline API
-      if (args[0] && typeof args[0] === 'string' && args[0].includes(effectiveServerURL.value)) {
-        if (response.status === 500) {
-          errorMessage.value = '评论服务器内部错误 (500)，请稍后再试'
-          retryable.value = true
-          console.error('Waline server error:', response)
-        } else if (response.status === 401) {
-          errorMessage.value = '评论服务未授权 (401)，请检查服务配置'
-          retryable.value = false
-          console.error('Waline unauthorized error:', response)
+let originalFetch = null
+if (isClient) {
+  originalFetch = window.fetch
+  window.fetch = function(...args) {
+    return originalFetch.apply(this, args)
+      .then(response => {
+        // 检查是否访问Waline API
+        if (args[0] && typeof args[0] === 'string' && args[0].includes(effectiveServerURL.value)) {
+          if (response.status === 500) {
+            errorMessage.value = '评论服务器内部错误 (500)，请稍后再试'
+            retryable.value = true
+            console.error('Waline server error:', response)
+          } else if (response.status === 401) {
+            errorMessage.value = '评论服务未授权 (401)，请检查服务配置'
+            retryable.value = false
+            console.error('Waline unauthorized error:', response)
+          }
         }
-      }
-      return response
-    })
-    .catch(error => {
-      if (args[0] && typeof args[0] === 'string' && args[0].includes(effectiveServerURL.value)) {
-        errorMessage.value = `评论加载失败: ${error.message}`
-        retryable.value = true
-        console.error('Waline fetch error:', error)
-      }
-      throw error
-    })
+        return response
+      })
+      .catch(error => {
+        if (args[0] && typeof args[0] === 'string' && args[0].includes(effectiveServerURL.value)) {
+          errorMessage.value = `评论加载失败: ${error.message}`
+          retryable.value = true
+          console.error('Waline fetch error:', error)
+        }
+        throw error
+      })
+  }
 }
 
 // 重试waline
@@ -321,15 +325,19 @@ const updateWaline = async () => {
 // 挂载时更新评论
 onMounted(() => {
   // 延迟加载以确保DOM已准备好
-  setTimeout(() => {
-    updateWaline()
-  }, 100)
+  if (isClient) {
+    setTimeout(() => {
+      updateWaline()
+    }, 100)
+  }
 })
 
 // 卸载时恢复原始fetch方法并销毁waline实例
 onBeforeUnmount(() => {
+  if (!isClient) return
+  
   // 恢复原始fetch方法
-  if (window.fetch !== originalFetch) {
+  if (originalFetch && window.fetch !== originalFetch) {
     window.fetch = originalFetch
   }
   // 销毁waline实例
