@@ -13,6 +13,7 @@
 import { ref, onMounted, onUnmounted, reactive } from 'vue';
 import { storeToRefs } from "pinia";
 import { mainStore } from "../store/index";
+import { isClient } from '../utils/helper.mjs'
 
 const store = mainStore();
 const { backgroundType, backgroundUrl, themeValue } = storeToRefs(store);
@@ -82,36 +83,20 @@ let animationPhase = 0;
 
 // 初始化画布和粒子
 const initCanvas = () => {
-  const canvas = particleCanvas.value;
-  if (!canvas) return () => { };
+  if (!isClient || !particleCanvas.value) return () => { };
 
-  ctx = canvas.getContext('2d', { alpha: false }); // 禁用 alpha 以提高性能
+  ctx = particleCanvas.value.getContext('2d', { alpha: false }); // 禁用 alpha 以提高性能
   if (!ctx) return () => { };
 
   // 设置画布大小
-  const updateCanvasSize = () => {
-    if (!canvas) return;
-    const dpr = window.devicePixelRatio || 1;
-    canvasWidth = window.innerWidth;
-    canvasHeight = window.innerHeight;
-    canvas.width = canvasWidth * dpr;
-    canvas.height = canvasHeight * dpr;
-    canvas.style.width = `${canvasWidth}px`;
-    canvas.style.height = `${canvasHeight}px`;
-    ctx?.scale(dpr, dpr);
-  };
-
-  // 使用节流函数处理resize
-  let resizeTimeout: number | null = null;
-  const handleResize = () => {
-    if (resizeTimeout) window.clearTimeout(resizeTimeout);
-    resizeTimeout = window.setTimeout(() => {
-      updateCanvasSize();
-    }, 100);
-  };
-
-  updateCanvasSize();
-  window.addEventListener('resize', handleResize);
+  const dpr = window.devicePixelRatio || 1;
+  canvasWidth = window.innerWidth;
+  canvasHeight = window.innerHeight;
+  particleCanvas.value.width = canvasWidth * dpr;
+  particleCanvas.value.height = canvasHeight * dpr;
+  particleCanvas.value.style.width = `${canvasWidth}px`;
+  particleCanvas.value.style.height = `${canvasHeight}px`;
+  ctx?.scale(dpr, dpr);
 
   // 使用节流函数处理鼠标移动
   let mouseMoveTimeout: number | null = null;
@@ -140,19 +125,16 @@ const initCanvas = () => {
   animate();
 
   return () => {
-    window.removeEventListener('resize', handleResize);
     window.removeEventListener('mousemove', handleMouseMove);
     if (animationFrameId.value) {
       cancelAnimationFrame(animationFrameId.value);
     }
-    if (resizeTimeout) window.clearTimeout(resizeTimeout);
-    if (mouseMoveTimeout) window.clearTimeout(mouseMoveTimeout);
   };
 };
 
 // 绘制背景
 const drawBackground = () => {
-  if (!ctx) return;
+  if (!ctx || !isClient) return;
 
   // 获取当前主题模式（浅色/深色）
   const isDark = document.documentElement.classList.contains('dark');
@@ -168,7 +150,7 @@ const drawBackground = () => {
 
 // 绘制光效
 const drawSpotlights = () => {
-  if (!ctx) return;
+  if (!ctx || !isClient) return;
 
   ctx!.save();
   ctx!.globalCompositeOperation = 'lighter';
@@ -198,7 +180,7 @@ const drawSpotlights = () => {
 
 // 动画循环
 const animate = () => {
-  if (!ctx) return;
+  if (!ctx || !isClient) return;
 
   // 获取当前主题模式
   const isDark = document.documentElement.classList.contains('dark');
@@ -308,14 +290,42 @@ const animate = () => {
 
   ctx.restore();
 
-  animationFrameId.value = requestAnimationFrame(animate);
+  if (isClient) {
+    animationFrameId.value = requestAnimationFrame(animate);
+  }
 };
 
+// 处理窗口大小变化
+const handleResize = () => {
+  if (!isClient || !particleCanvas.value) return
+  
+  particleCanvas.value.width = window.innerWidth
+  particleCanvas.value.height = window.innerHeight
+}
+
 // 生命周期钩子
+let cleanup = () => {}
+
 onMounted(() => {
-  const cleanup = initCanvas();
-  onUnmounted(cleanup);
-});
+  if (!isClient) return
+  
+  cleanup = initCanvas()
+  window.addEventListener('resize', handleResize)
+  
+  // 确保只在客户端执行
+  if (isClient) {
+    animate()
+  }
+})
+
+onUnmounted(() => {
+  if (!isClient) return
+  window.removeEventListener('resize', handleResize)
+  cleanup()
+  if (animationFrameId.value) {
+    cancelAnimationFrame(animationFrameId.value)
+  }
+})
 </script>
 
 <style lang="scss" scoped>
