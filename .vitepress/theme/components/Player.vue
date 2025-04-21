@@ -10,6 +10,7 @@ import { storeToRefs } from 'pinia';
 import { mainStore } from '@/store';
 import { getMusicList } from '@/api';
 import "aplayer/dist/APlayer.min.css";
+import { isClient } from '../utils/helper.mjs'
 
 const store = mainStore();
 const { theme } = useData();
@@ -63,7 +64,9 @@ const initAPlayer = async (list) => {
         });
         getMusicData();
         // 挂载播放器
-        window.$player = player.value;
+        if (isClient) {
+            window.$player = player.value;
+        }
     } catch (error) {
         console.error('初始化播放器出错：', error);
     }
@@ -92,6 +95,7 @@ const getMusicData = () => {
 
 // 初始化媒体会话控制
 const initMediaSession = (title, artist) => {
+    if (!isClient) return
     if ('mediaSession' in navigator) {
         // 歌曲信息
         navigator.mediaSession.metadata = new MediaMetadata({ title, artist });
@@ -130,6 +134,7 @@ watch(
 );
 
 onMounted(() => {
+    if (!isClient) return
     if (window.innerWidth >= 768 && playerShow.value && enable) getMusicListData();
 });
 
