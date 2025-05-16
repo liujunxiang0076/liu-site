@@ -351,7 +351,7 @@ export const themeConfig = {
      * 音乐播放器配置
      */
     music: {
-        enable: false,
+        enable: true,
         // API 地址
         url: 'https://api-meting.example.com',
         // 播放列表 ID
