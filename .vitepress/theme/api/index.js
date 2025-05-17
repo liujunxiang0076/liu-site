@@ -62,15 +62,47 @@ export const getSiteInfo = async (url) => {
  * @returns {Promise<Object>} - 音乐详情
  */
 export const getMusicList = async (url, id, server = "netease", type = "playlist") => {
-  const result = await fetch(`${url}?server=${server}&type=${type}&id=${id}`);
-  const list = await result.json();
-  return list.map((song) => {
-    const { pic, ...data } = song;
-    return {
-      ...data,
-      cover: pic,
-    };
-  });
+  try {
+    console.log(`正在请求音乐API: ${url}?server=${server}&type=${type}&id=${id}`);
+    
+    const response = await fetch(`${url}?server=${server}&type=${type}&id=${id}`);
+    
+    if (!response.ok) {
+      throw new Error(`音乐API请求失败: ${response.status} ${response.statusText}`);
+    }
+    
+    const list = await response.json();
+    
+    if (!Array.isArray(list)) {
+      console.warn('API返回的数据不是数组格式', list);
+      return [];
+    }
+    
+    console.log(`成功获取到${list.length}首歌曲`);
+    
+    return list.map((song) => {
+      // 防止解构出错，先进行检查
+      if (!song || typeof song !== 'object') {
+        console.warn('歌曲数据无效', song);
+        return {
+          name: '未知歌曲',
+          artist: '未知艺术家',
+          url: '',
+          cover: '',
+          lrc: ''
+        };
+      }
+      
+      const { pic, ...data } = song;
+      return {
+        ...data,
+        cover: pic || '',
+      };
+    });
+  } catch (error) {
+    console.error('获取音乐列表失败:', error);
+    return [];
+  }
 };
 
 /**
