@@ -24,11 +24,16 @@ const playerDom = ref(null);
 // 获取播放列表
 const getMusicListData = async () => {
     try {
+        console.log('正在获取音乐列表，API参数：', { url, id, server, type });
         const musicList = await getMusicList(url, id, server, type);
-        // console.log(musicList);
+        console.log('获取到的音乐列表：', musicList);
         initAPlayer(musicList?.length ? musicList : []);
     } catch (error) {
-        $message.error('获取播放列表失败，请重试');
+        console.error('获取播放列表失败：', error);
+        // 检查$message是否定义
+        if (typeof $message !== 'undefined') {
+            $message.error('获取播放列表失败，请重试');
+        }
         initAPlayer([]);
     }
 };
@@ -37,9 +42,15 @@ const getMusicListData = async () => {
 const initAPlayer = async (list) => {
     try {
         const playlist = [...list];
-        if (!playlist?.length) return false;
+        if (!playlist?.length) {
+            console.warn('播放列表为空，无法初始化播放器');
+            return false;
+        }
+        console.log('正在初始化播放器，播放列表长度：', playlist.length);
+        
         const module = await import('aplayer');
         const APlayer = module.default;
+        
         player.value = new APlayer({
             container: playerDom.value,
             volume: playerVolume.value,
@@ -48,48 +59,84 @@ const initAPlayer = async (list) => {
             order: 'random',
             audio: playlist
         });
+        
         console.info('🎵 播放器挂载完成', player.value);
+        
         // 播放器事件
         player.value?.on('canplay', () => {
+            console.log('音乐可以播放，更新信息');
             // 更新信息
             getMusicData();
         });
+        
         player.value?.on('play', () => {
-            // console.log('开始播放');
+            console.log('开始播放音乐');
             playState.value = true;
         });
+        
         player.value?.on('pause', () => {
-            // console.log('暂停播放');
+            console.log('暂停播放音乐');
             playState.value = false;
         });
+        
+        player.value?.on('error', (e) => {
+            console.error('播放器发生错误：', e);
+        });
+        
         getMusicData();
+        
         // 挂载播放器
         if (isClient) {
             window.$player = player.value;
         }
+        
+        return true;
     } catch (error) {
         console.error('初始化播放器出错：', error);
+        return false;
     }
 };
 
 // 获取当前播放歌曲信息
 const getMusicData = () => {
     try {
-        if (!playerDom.value) return false;
+        if (!playerDom.value) {
+            console.warn('playerDom不存在，无法获取音乐信息');
+            return false;
+        }
+        
         const songInfo = playerDom.value.querySelector('.aplayer-info');
+        if (!songInfo) {
+            console.warn('找不到.aplayer-info元素，可能播放器尚未完全加载');
+            return false;
+        }
+        
         // 歌曲信息
-        const songName = songInfo.querySelector('.aplayer-title').innerText;
-        const songArtist = songInfo.querySelector('.aplayer-author').innerText.replace(' - ', '');
-        // console.log(songName, songArtist);
+        const titleEl = songInfo.querySelector('.aplayer-title');
+        const artistEl = songInfo.querySelector('.aplayer-author');
+        
+        if (!titleEl || !artistEl) {
+            console.warn('找不到歌曲标题或艺术家元素');
+            return false;
+        }
+        
+        const songName = titleEl.innerText;
+        const songArtist = artistEl.innerText.replace(' - ', '');
+        
+        console.log('当前播放歌曲信息：', songName, songArtist);
+        
         // 更新信息
         playerData.value = {
             name: songName || '未知曲目',
             artist: songArtist || '未知艺术家'
         };
+        
         // 更新媒体信息
         initMediaSession(playerData.value?.name, playerData.value?.artist);
+        return true;
     } catch (error) {
         console.error('获取播放信息出错：', error);
+        return false;
     }
 };
 
@@ -134,8 +181,21 @@ watch(
 );
 
 onMounted(() => {
-    if (!isClient) return
-    if (window.innerWidth >= 768 && playerShow.value && enable) getMusicListData();
+    if (!isClient) return;
+    
+    console.log('播放器组件挂载，配置：', {
+        enable,
+        playerShow: playerShow.value,
+        windowWidth: window.innerWidth
+    });
+    
+    // 只有在启用音乐、显示播放器且窗口宽度大于768px时才初始化
+    if (window.innerWidth >= 768 && playerShow.value && enable) {
+        console.log('符合播放器初始化条件，开始获取音乐列表');
+        getMusicListData();
+    } else {
+        console.log('不满足播放器初始化条件，跳过初始化');
+    }
 });
 
 onBeforeUnmount(() => {
