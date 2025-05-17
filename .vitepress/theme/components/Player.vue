@@ -1,6 +1,6 @@
 <!-- 全局播放器 -->
 <template>
-    <div v-if="playerShow" :class="['player', { playing: playState }]" @click="player?.toggle()">
+    <div v-if="playerShow" class="music-player-container">
         <div ref="playerDom" class="player-content" />
     </div>
 </template>
@@ -11,6 +11,7 @@ import { mainStore } from '@/store';
 import { getMusicList } from '@/api';
 import "aplayer/dist/APlayer.min.css";
 import { isClient } from '../utils/helper.mjs'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 
 const store = mainStore();
 const { theme } = useData();
@@ -20,6 +21,16 @@ const { playerShow, playerVolume, playState, playerData } = storeToRefs(store);
 // APlayer
 const player = ref(null);
 const playerDom = ref(null);
+const playlist = ref([]);
+const currentIndex = ref(0);
+
+// 播放指定歌曲
+const playSong = (index) => {
+    if (!player.value) return;
+    player.value.list.switch(index);
+    player.value.play();
+    currentIndex.value = index;
+};
 
 // 获取播放列表
 const getMusicListData = async () => {
@@ -27,6 +38,7 @@ const getMusicListData = async () => {
         console.log('正在获取音乐列表，API参数：', { url, id, server, type });
         const musicList = await getMusicList(url, id, server, type);
         console.log('获取到的音乐列表：', musicList);
+        playlist.value = musicList || [];
         initAPlayer(musicList?.length ? musicList : []);
     } catch (error) {
         console.error('获取播放列表失败：', error);
@@ -41,12 +53,11 @@ const getMusicListData = async () => {
 // 初始化播放器
 const initAPlayer = async (list) => {
     try {
-        const playlist = [...list];
-        if (!playlist?.length) {
+        if (!list?.length) {
             console.warn('播放列表为空，无法初始化播放器');
             return false;
         }
-        console.log('正在初始化播放器，播放列表长度：', playlist.length);
+        console.log('正在初始化播放器，播放列表长度：', list.length);
         
         const module = await import('aplayer');
         const APlayer = module.default;
@@ -55,9 +66,9 @@ const initAPlayer = async (list) => {
             container: playerDom.value,
             volume: playerVolume.value,
             lrcType: 3,
-            listFolded: true,
-            order: 'random',
-            audio: playlist
+            listFolded: false,
+            order: 'list',
+            audio: list
         });
         
         console.info('🎵 播放器挂载完成', player.value);
@@ -72,11 +83,17 @@ const initAPlayer = async (list) => {
         player.value?.on('play', () => {
             console.log('开始播放音乐');
             playState.value = true;
+            currentIndex.value = player.value.list.index;
         });
         
         player.value?.on('pause', () => {
             console.log('暂停播放音乐');
             playState.value = false;
+        });
+        
+        player.value?.on('listswitch', (index) => {
+            console.log('切换到列表中的第', index, '首歌');
+            currentIndex.value = index;
         });
         
         player.value?.on('error', (e) => {
@@ -189,8 +206,8 @@ onMounted(() => {
         windowWidth: window.innerWidth
     });
     
-    // 只有在启用音乐、显示播放器且窗口宽度大于768px时才初始化
-    if (window.innerWidth >= 768 && playerShow.value && enable) {
+    // 只有在启用音乐、显示播放器时才初始化
+    if (playerShow.value && enable) {
         console.log('符合播放器初始化条件，开始获取音乐列表');
         getMusicListData();
     } else {
@@ -204,188 +221,83 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-.player {
-    height: 42px;
-    margin-top: 12px;
-    transition: transform 0.3s;
-    cursor: pointer;
+.music-player-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--main-card-background);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+
     .player-content {
-        margin: 0;
-        width: fit-content;
-        border-radius: 50px;
-        overflow: hidden;
-        color: var(--main-font-color);
-        font-family: var(--main-font-family);
-        background-color: var(--main-card-background);
-        border: 1px solid var(--main-card-border);
-        box-shadow: 0 6px 10px -4px var(--main-dark-shadow);
-        transition: all 0.3s;
-        :deep(.aplayer-body) {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            padding: 6px;
-            padding-right: 12px;
-            pointer-events: none;
-            .aplayer-pic {
-                width: 30px;
-                height: 30px;
-                min-width: 30px;
-                border-radius: 50%;
-                margin-right: 8px;
-                outline: 1px solid var(--main-card-border);
-                animation: rotate 20s linear infinite;
-                animation-play-state: paused;
-                z-index: 2;
-                .aplayer-button {
-                    display: none;
-                }
-            }
-            .aplayer-info {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                height: auto;
-                margin: 0;
-                padding: 0;
-                border: none;
-                .aplayer-music {
-                    margin: 0;
-                    padding: 0;
-                    height: auto;
-                    display: flex;
-                    line-height: normal;
-                    z-index: 2;
-                    .aplayer-title {
-                        line-height: normal;
-                        display: inline-block;
-                        white-space: nowrap;
-                        max-width: 120px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                    }
-                    .aplayer-author {
-                        display: none;
-                    }
-                }
-                .aplayer-lrc {
-                    margin: 0;
-                    opacity: 0;
-                    margin-left: 12px;
-                    width: 0;
-                    z-index: 2;
-                    transition: width 0.3s, opacity 0.3s;
-                    &::before,
-                    &::after {
-                        display: none;
-                    }
-                    .aplayer-lrc-contents {
-                        p {
-                            text-align: center;
-                            color: var(--main-card-background);
-                            filter: blur(0.8px);
-                            transition: filter 0.3s, opacity 0.3s;
-                            &.aplayer-lrc-current {
-                                filter: blur(0);
-                            }
-                        }
-                    }
-                }
-                .aplayer-controller {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    z-index: 0;
-                    .aplayer-time {
-                        display: none;
-                    }
-                    .aplayer-bar-wrap {
-                        margin: 0;
-                        padding: 0;
-                        opacity: 0;
-                        transition: opacity 0.3s;
-                        .aplayer-bar {
-                            height: 100%;
-                            background: transparent;
-                            .aplayer-loaded {
-                                display: none;
-                            }
-                            .aplayer-played {
-                                height: 100%;
-                                background: var(--main-color-white) !important;
-                                transition: width 0.3s;
-                            }
-                        }
-                    }
-                }
-            }
-            .aplayer-notice,
-            .aplayer-miniswitcher {
-                display: none;
-            }
-        }
-        :deep(.aplayer-list) {
-            display: none;
-        }
-        &::after {
-            content: '播放音乐';
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            font-size: 14px;
-            opacity: 0;
-            color: var(--main-card-background);
-            background-color: var(--main-color);
-            pointer-events: none;
-            transition: opacity 0.3s;
-            z-index: 3;
-        }
-        &:hover {
-            border-color: var(--main-color);
-            box-shadow: 0 8px 16px -4px var(--main-color-bg);
-            &::after {
-                opacity: 1;
-            }
-        }
-    }
-    &.playing {
-        .player-content {
-            color: var(--main-card-background);
-            background-color: var(--main-color);
-            border: 1px solid var(--main-color);
-            :deep(.aplayer-body) {
+        width: 100%;
+        height: auto;
+        :deep(.aplayer) {
+            background-color: transparent;
+            margin: 0;
+            box-shadow: none;
+            
+            .aplayer-body {
+                padding: 10px;
+                background-color: var(--main-color);
                 .aplayer-pic {
-                    animation-play-state: running;
+                    height: 40px;
+                    width: 40px;
                 }
                 .aplayer-info {
-                    .aplayer-lrc {
-                        opacity: 1;
-                        width: 200px;
+                    margin-left: 10px;
+                    .aplayer-music {
+                        .aplayer-title {
+                            color: white;
+                        }
+                        .aplayer-author {
+                            color: rgba(255, 255, 255, 0.8);
+                        }
                     }
                     .aplayer-controller {
                         .aplayer-bar-wrap {
-                            opacity: 1;
+                            .aplayer-bar {
+                                .aplayer-played {
+                                    background: white !important;
+                                    .aplayer-thumb {
+                                        background: white !important;
+                                    }
+                                }
+                            }
+                        }
+                        .aplayer-time {
+                            .aplayer-icon {
+                                path {
+                                    fill: white;
+                                }
+                            }
+                            .aplayer-time-inner {
+                                color: white;
+                            }
                         }
                     }
                 }
             }
-            &::after {
-                opacity: 0;
+            .aplayer-list {
+                display: none; // 隐藏原始列表
             }
         }
     }
-    &:active {
-        transform: scale(0.98);
-    }
-    @media (max-width: 768px) {
-        display: none;
+
+    
+}
+
+@media (max-width: 768px) {
+    .music-player-container {
+        max-width: 100%;
+        .music-list {
+            .music-item {
+                .music-source {
+                    width: 80px;
+                }
+            }
+        }
     }
 }
 </style>
