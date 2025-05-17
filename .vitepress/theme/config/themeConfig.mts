@@ -353,7 +353,7 @@ export const themeConfig = {
     music: {
         enable: true,
         // API 地址
-        url: 'https://api-meting.example.com',
+        url: 'https://api.injahow.cn/meting/',
         // 播放列表 ID
         id: 9379831714,
         // 音乐服务商：netease / tencent / kugou
