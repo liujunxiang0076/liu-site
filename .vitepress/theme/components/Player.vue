@@ -229,7 +229,8 @@ onBeforeUnmount(() => {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-
+    padding-right: 10px;
+    margin-top: 10px;
     .player-content {
         width: 100%;
         height: auto;
