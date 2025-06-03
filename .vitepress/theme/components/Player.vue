@@ -63,11 +63,53 @@ const initAPlayer = async (list) => {
         const APlayer = module.default;
         
         player.value = new APlayer({
+            // 容器元素 - 播放器容器DOM元素
             container: playerDom.value,
-            volume: playerVolume.value,
-            lrcType: 3,
-            listFolded: false,
+
+            // 吸底模式 - 开启后播放器会固定在页面底部
+            fixed: false,
+
+            // 迷你模式 - 开启后播放器会显示为迷你模式
+            mini: false,
+
+            // 自动播放 - 音频自动播放（注意：大多数浏览器会阻止自动播放）
+            autoplay: false,
+
+            // 主题色 - 播放器主题颜色
+            theme: '#b7daff',
+
+            // 循环播放 - 音频循环播放模式
+            // 可选值: 'all'(列表循环), 'one'(单曲循环), 'none'(不循环)
+            loop: 'all',
+
+            // 播放顺序 - 音频播放顺序
+            // 可选值: 'list'(列表播放), 'random'(随机播放)
             order: 'list',
+
+            // 预加载 - 音频预加载
+            // 可选值: 'none'(不预加载), 'metadata'(预加载元数据), 'auto'(预加载整个音频)
+            preload: 'auto',
+
+            // 音量 - 默认音量，范围 0-1
+            volume: playerVolume.value,
+
+            // 互斥播放 - 阻止多个播放器同时播放，当前播放器播放时暂停其他播放器
+            mutex: true,
+
+            // 列表默认折叠 - 播放列表是否默认折叠
+            listFolded: false,
+
+            // 列表最大高度 - 播放列表的最大高度
+            listMaxHeight: '200px',
+
+            // 歌词类型 - 歌词显示类型
+            // 0: 不显示歌词, 1: 显示歌词但不滚动, 2: 显示歌词并滚动, 3: 显示歌词、滚动并高亮
+            lrcType: 3,
+
+            // 本地存储键名 - 用于存储播放器设置的localStorage键名
+            storageName: 'aplayer-setting',
+
+            // 播放列表 - 音频文件列表
             audio: list
         });
         
@@ -80,6 +122,7 @@ const initAPlayer = async (list) => {
             getMusicData();
         });
         
+        // 播放器事件
         player.value?.on('play', () => {
             console.log('开始播放音乐');
             playState.value = true;
@@ -90,12 +133,12 @@ const initAPlayer = async (list) => {
             console.log('暂停播放音乐');
             playState.value = false;
         });
-        
+        // 
         player.value?.on('listswitch', (index) => {
             console.log('切换到列表中的第', index, '首歌');
             currentIndex.value = index;
         });
-        
+        // 
         player.value?.on('error', (e) => {
             console.error('播放器发生错误：', e);
         });
