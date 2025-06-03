@@ -97,7 +97,7 @@ const initAPlayer = async (list) => {
             mutex: true,
 
             // 列表默认折叠 - 播放列表是否默认折叠
-            listFolded: false,
+            listFolded: true,
 
             // 列表最大高度 - 播放列表的最大高度
             listMaxHeight: '200px',
