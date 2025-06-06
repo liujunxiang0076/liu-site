@@ -429,5 +429,25 @@ export const themeConfig = {
             // 统计 ID
             id: ''
         }
+    },
+
+    /**
+     * 文章密码保护配置
+     */
+    articlePassword: {
+        // 是否启用文章密码保护功能
+        enable: true,
+        // 默认密码（可选，如果文章没有设置密码则使用此密码）
+        defaultPassword: '',
+        // 密码有效期（小时）
+        expireHours: 24,
+        // 密码提示文本
+        placeholder: '请输入文章访问密码',
+        // 错误提示文本
+        errorMessage: '密码错误，请重新输入',
+        // 确认按钮文本
+        confirmText: '确认',
+        // 取消按钮文本
+        cancelText: '取消'
     }
 };

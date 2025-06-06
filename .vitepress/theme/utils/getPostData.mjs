@@ -60,7 +60,7 @@ export const getAllPosts = async () => {
           const { birthtimeMs, mtimeMs } = stat;
           // 解析 front matter
           const { data } = matter(content);
-          const { title, date, categories, description, tags, top, cover } = data;
+          const { title, date, categories, description, tags, top, cover, password } = data;
           // 计算文章的过期天数
           const expired = Math.floor(
             (new Date().getTime() - new Date(date).getTime()) / (1000 * 60 * 60 * 24),
@@ -78,6 +78,7 @@ export const getAllPosts = async () => {
             regularPath: `/${item.replace(".md", ".html")}`,
             top,
             cover,
+            password, // 添加密码字段
           };
         } catch (error) {
           console.error(`处理文章文件 '${item}' 时出错:`, error);

@@ -53,6 +53,8 @@ export const mainStore = defineStore("main", {
       // 站点背景
       backgroundType: "patterns",
       backgroundUrl: "https://tuapi.eees.cc/api.php?category={dongman,fengjing}&type=302",
+      // 文章密码验证状态
+      articlePasswords: {}, // 存储已验证的文章密码 { articleId: { password: 'xxx', expireTime: timestamp } }
     };
   },
   // 计算
@@ -111,6 +113,73 @@ export const mainStore = defineStore("main", {
         });
       }
     },
+
+    /**
+     * 验证文章密码
+     * @param {string} articleId - 文章ID
+     * @param {string} password - 输入的密码
+     * @param {string} correctPassword - 正确的密码
+     * @param {number} expireHours - 过期时间（小时）
+     * @returns {boolean} - 验证是否成功
+     */
+    verifyArticlePassword(articleId, password, correctPassword, expireHours = 24) {
+      // 确保密码都转换为字符串进行比较
+      const inputPasswordStr = String(password).trim()
+      const correctPasswordStr = String(correctPassword).trim()
+
+      console.log('Store验证:', inputPasswordStr, '===', correctPasswordStr, '结果:', inputPasswordStr === correctPasswordStr)
+
+      if (inputPasswordStr === correctPasswordStr) {
+        const expireTime = Date.now() + expireHours * 60 * 60 * 1000;
+        this.articlePasswords[articleId] = {
+          password: inputPasswordStr,
+          expireTime
+        };
+        return true;
+      }
+      return false;
+    },
+
+    /**
+     * 检查文章密码是否已验证且未过期
+     * @param {string} articleId - 文章ID
+     * @returns {boolean} - 是否已验证
+     */
+    isArticlePasswordValid(articleId) {
+      const passwordData = this.articlePasswords[articleId];
+      if (!passwordData) return false;
+
+      // 检查是否过期
+      if (Date.now() > passwordData.expireTime) {
+        // 删除过期的密码记录
+        delete this.articlePasswords[articleId];
+        return false;
+      }
+
+      return true;
+    },
+
+    /**
+     * 清除文章密码验证状态
+     * @param {string} articleId - 文章ID
+     */
+    clearArticlePassword(articleId) {
+      if (this.articlePasswords[articleId]) {
+        delete this.articlePasswords[articleId];
+      }
+    },
+
+    /**
+     * 清除所有过期的密码验证状态
+     */
+    clearExpiredPasswords() {
+      const now = Date.now();
+      Object.keys(this.articlePasswords).forEach(articleId => {
+        if (this.articlePasswords[articleId].expireTime <= now) {
+          delete this.articlePasswords[articleId];
+        }
+      });
+    },
   },
   // 数据持久化
   persist: [
@@ -128,6 +197,7 @@ export const mainStore = defineStore("main", {
         "fontSize",
         "infoPosition",
         "backgroundUrl",
+        "articlePasswords",
       ],
     },
   ],
