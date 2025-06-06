@@ -25,6 +25,7 @@ Modern blog theme built on VitePress 1.x with integrated features including arti
 - Enhanced Markdown (flowcharts, equations, custom containers)
 - Automatic article categorization
 - Update time tracking
+- **Article password protection** (individual article access control)
 
 ### 🎛 System Features
 - Multilingual support (Chinese/English toggle)
@@ -101,7 +102,28 @@ $theme-colors: (
 ```
 
 ### Extending Blog Features
-1. Add comment system:
+
+#### Article Password Protection
+Protect specific articles with passwords. Add to article frontmatter:
+```yaml
+---
+title: Your Article Title
+password: 123456
+passwordHint: Password is 6 digits
+---
+```
+
+Configuration in `.vitepress/theme/config/themeConfig.mts`:
+```ts
+articlePassword: {
+  enable: true,
+  expireHours: 24,
+  placeholder: 'Enter article access password',
+  errorMessage: 'Incorrect password, please try again'
+}
+```
+
+#### Comment System
 ```ts
 // config.mts
 export default defineConfig({
