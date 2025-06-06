@@ -6,6 +6,8 @@ date: 2025-03-31
 description: 本文介绍Oracle数据库的基本使用方法，包括安装、连接、表的创建与管理、基础查询等内容，适合Oracle初学者参考。
 articleGPT: Oracle数据库是世界上最流行的关系型数据库管理系统之一，以其高性能、高可靠性和强大的企业级功能而闻名。本文将介绍Oracle数据库的基本使用方法，帮助初学者快速掌握Oracle的基础操作和核心概念。
 cover: https://imgbed.liujunxiang0076.site/file/1743471282500_image.png
+password: 123456
+passwordHint: 密码是6位数字
 ---
 
 # Oracle数据库基本用法指南
