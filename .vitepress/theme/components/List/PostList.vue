@@ -25,9 +25,24 @@
           </span>
         </div>
         <div class="post-title-wrapper" style="width: 100%">
-          <h3 class="post-title" style="margin: 0.6rem 0; font-size: 20px; font-weight: bold; white-space: normal; overflow: visible;">{{ item.title }}</h3>
+          <h3 class="post-title" style="margin: 0.6rem 0; font-size: 20px; font-weight: bold; white-space: normal; overflow: visible;">
+            {{ item.title }}
+            <!-- 密码保护图标 -->
+            <i v-if="item?.password" class="iconfont icon-lock password-icon" title="此文章需要密码访问"></i>
+          </h3>
         </div>
-        <div v-if="item?.description" class="post-desc-wrapper" style="width: 100%">
+
+        <!-- 密码保护文章显示特殊提示 -->
+        <div v-if="item?.password" class="post-desc-wrapper password-protected" style="width: 100%">
+          <div class="password-notice">
+            <i class="iconfont icon-lock"></i>
+            <span class="notice-text">此文章已加密，需要密码才能访问</span>
+            <span v-if="item?.passwordHint" class="password-hint">提示：{{ item.passwordHint }}</span>
+          </div>
+        </div>
+
+        <!-- 普通文章显示描述 -->
+        <div v-else-if="item?.description" class="post-desc-wrapper" style="width: 100%">
           <p class="post-desc" style="margin-top: 0.5rem; margin-bottom: 1.2rem; opacity: 0.8; white-space: normal; overflow: visible;">{{ item.description }}</p>
         </div>
         <div v-if="!simple" class="post-meta">
@@ -54,6 +69,7 @@
 import { mainStore } from "@/store";
 import { formatTimestamp } from "@/utils/helper";
 import { onMounted, onUpdated, nextTick } from 'vue';
+import { useRouter } from 'vitepress';
 
 const store = mainStore();
 const router = useRouter();
@@ -229,8 +245,16 @@ onUpdated(checkDescriptionOverflow);
         overflow: visible;
         white-space: normal;
         word-wrap: break-word;
-        display: block;
+        display: flex;
+        align-items: center;
         width: 100%;
+
+        .password-icon {
+          margin-left: 8px;
+          color: #f59e0b;
+          font-size: 16px;
+          opacity: 0.8;
+        }
       }
       .post-desc-wrapper {
         width: 100%;
@@ -262,6 +286,43 @@ onUpdated(checkDescriptionOverflow);
           pointer-events: none;
           /* Will be controlled by JavaScript using CSS variable */
           display: var(--fade-display, none);
+        }
+      }
+
+      // 密码保护提示样式
+      .post-desc-wrapper.password-protected {
+        .password-notice {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 1.5rem 1rem;
+          background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+          border: 1px solid #f59e0b;
+          border-radius: 12px;
+          margin-top: 0.5rem;
+          margin-bottom: 1.2rem;
+
+          .iconfont {
+            font-size: 24px;
+            color: #d97706;
+            margin-bottom: 8px;
+          }
+
+          .notice-text {
+            font-size: 14px;
+            color: #92400e;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 4px;
+          }
+
+          .password-hint {
+            font-size: 12px;
+            color: #a16207;
+            opacity: 0.8;
+            text-align: center;
+            font-style: italic;
+          }
         }
       }
       .post-meta {
@@ -403,6 +464,34 @@ onUpdated(checkDescriptionOverflow);
 
     @media (max-width: 768px) {
       grid-template-columns: 1fr;
+    }
+  }
+}
+
+// 暗色模式适配
+@media (prefers-color-scheme: dark) {
+  .post-lists {
+    .post-item {
+      .post-content {
+        .post-desc-wrapper.password-protected {
+          .password-notice {
+            background: linear-gradient(135deg, #451a03 0%, #78350f 100%);
+            border-color: #d97706;
+
+            .iconfont {
+              color: #f59e0b;
+            }
+
+            .notice-text {
+              color: #fbbf24;
+            }
+
+            .password-hint {
+              color: #fcd34d;
+            }
+          }
+        }
+      }
     }
   }
 }
