@@ -66,50 +66,53 @@
     <!-- 文章内容区域 -->
     <div class="post-content">
       <article class="post-article s-card">
-        <!-- 文章过期提醒 -->
-        <div class="expired s-card" v-if="postMetaData?.expired >= 180">
-          本文发表于 <strong>{{ postMetaData?.expired }}</strong> 天前，其中的信息可能已经事过境迁
-        </div>
-        <!-- AI 文章摘要 -->
-        <ArticleGPT />
-        <!-- 文章正文内容 -->
-        <Content id="page-content" class="markdown-main-style" />
-        <!-- 参考资料 -->
-        <References />
-        <!-- 版权信息 -->
-        <Copyright v-if="frontmatter.copyright !== false" :postData="postMetaData" />
-        <!-- 文章底部信息 -->
-        <div class="other-meta">
-          <!-- 文章标签列表 -->
-          <div class="all-tags">
+        <!-- 密码保护的文章内容 -->
+        <ProtectedContent :postData="postMetaData">
+          <!-- 文章过期提醒 -->
+          <div class="expired s-card" v-if="postMetaData?.expired >= 180">
+            本文发表于 <strong>{{ postMetaData?.expired }}</strong> 天前，其中的信息可能已经事过境迁
+          </div>
+          <!-- AI 文章摘要 -->
+          <ArticleGPT />
+          <!-- 文章正文内容 -->
+          <Content id="page-content" class="markdown-main-style" />
+          <!-- 参考资料 -->
+          <References />
+          <!-- 版权信息 -->
+          <Copyright v-if="frontmatter.copyright !== false" :postData="postMetaData" />
+          <!-- 文章底部信息 -->
+          <div class="other-meta">
+            <!-- 文章标签列表 -->
+            <div class="all-tags">
+              <a
+                v-for="(item, index) in postMetaData.tags"
+                :key="index"
+                :href="`/src/pages/tags/${item}`"
+                class="tag-item"
+              >
+                <i class="iconfont icon-hashtag" />
+                <span class="name">{{ item }}</span>
+              </a>
+            </div>
+            <!-- 反馈按钮 -->
             <a
-              v-for="(item, index) in postMetaData.tags"
-              :key="index"
-              :href="`/src/pages/tags/${item}`"
-              class="tag-item"
+              href="https://eqnxweimkr5.feishu.cn/share/base/form/shrcnCXCPmxCKKJYI3RKUfefJre"
+              class="report"
+              target="_blank"
             >
-              <i class="iconfont icon-hashtag" />
-              <span class="name">{{ item }}</span>
+              <i class="iconfont icon-report" />
+              反馈与投诉
             </a>
           </div>
-          <!-- 反馈按钮 -->
-          <a
-            href="https://eqnxweimkr5.feishu.cn/share/base/form/shrcnCXCPmxCKKJYI3RKUfefJre"
-            class="report"
-            target="_blank"
-          >
-            <i class="iconfont icon-report" />
-            反馈与投诉
-          </a>
-        </div>
-        <!-- 打赏按钮 -->
-        <RewardBtn />
-        <!-- 下一篇 -->
-        <NextPost />
-        <!-- 相关文章 -->
-        <RelatedPost />
-        <!-- 评论区 -->
-        <Comments ref="commentRef" />
+          <!-- 打赏按钮 -->
+          <RewardBtn />
+          <!-- 下一篇 -->
+          <NextPost />
+          <!-- 相关文章 -->
+          <RelatedPost />
+          <!-- 评论区 -->
+          <Comments ref="commentRef" />
+        </ProtectedContent>
       </article>
       <!-- 侧边栏 -->
       <Aside showToc />
@@ -121,6 +124,7 @@
 import { formatTimestamp } from "@/utils/helper";
 import { generateId } from "@/utils/commonTools";
 import initFancybox from "@/utils/initFancybox";
+import ProtectedContent from "@/components/ProtectedContent.vue";
 
 // 获取页面数据
 const { page, theme, frontmatter } = useData();

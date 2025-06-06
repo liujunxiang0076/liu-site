@@ -7,6 +7,8 @@ import DefaultTheme from "vitepress/theme";
 import Icon from "./components/Icon.vue";
 import App from "./MyApp.vue";
 import ScrollProgress from "./components/ScrollProgress.vue";
+import PasswordModal from "./components/PasswordModal.vue";
+import ProtectedContent from "./components/ProtectedContent.vue";
 // 全局样式
 import "./style/main.scss";
 import "./style/animations.scss";
@@ -40,6 +42,8 @@ export default {
     // 注册组件
     app.component("Icon", Icon);
     app.component("ScrollProgress", ScrollProgress);
+    app.component("PasswordModal", PasswordModal);
+    app.component("ProtectedContent", ProtectedContent);
 
     // 挂载
     app.use(pinia);
