@@ -22,14 +22,24 @@
             <input
               ref="passwordInput"
               v-model="password"
-              type="password"
+              :type="showPassword ? 'text' : 'password'"
               :placeholder="config.placeholder || '请输入文章访问密码'"
               class="password-input"
               @keyup.enter="handleConfirm"
               @input="clearError"
+              spellcheck="false"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
             />
-            <button class="show-password-btn" @click="togglePasswordVisibility">
-              <i :class="['iconfont', showPassword ? 'icon-close' : 'icon-style']"></i>
+            <button
+              class="show-password-btn"
+              @click="togglePasswordVisibility"
+              title=""
+              data-tooltip=""
+              aria-label=""
+            >
+              <span>{{ showPassword ? '👁️' : '🙈' }}</span>
             </button>
           </div>
           
@@ -97,10 +107,15 @@ watch(() => props.visible, async (newVal) => {
 // 切换密码显示/隐藏
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
-  const input = passwordInput.value
-  if (input) {
-    input.type = showPassword.value ? 'text' : 'password'
-  }
+  // 切换后重新聚焦输入框，保持光标位置
+  nextTick(() => {
+    const input = passwordInput.value
+    if (input) {
+      const cursorPosition = input.selectionStart
+      input.focus()
+      input.setSelectionRange(cursorPosition, cursorPosition)
+    }
+  })
 }
 
 // 清除错误信息
@@ -236,7 +251,7 @@ defineExpose({
 
     .password-input {
       width: 100%;
-      padding: 16px 48px 16px 20px;
+      padding: 16px 52px 16px 20px;
       border: 2px solid var(--main-card-border, #e3e8f7);
       border-radius: 12px;
       font-size: 16px;
@@ -244,6 +259,27 @@ defineExpose({
       color: var(--main-font-color, #363636);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       font-family: var(--main-font-family);
+
+      /* 禁用拼写检查和自动完成 */
+      -webkit-text-decoration-skip: none;
+      text-decoration: none;
+
+      /* 禁用浏览器原生的密码显示按钮 */
+      &::-ms-reveal,
+      &::-ms-clear {
+        display: none !important;
+      }
+
+      &::-webkit-credentials-auto-fill-button,
+      &::-webkit-strong-password-auto-fill-button {
+        display: none !important;
+      }
+
+      /* 移除浏览器默认样式 */
+      &::-webkit-input-placeholder { color: var(--main-font-second-color, #3c3c43cc); opacity: 0.8; }
+      &::-moz-placeholder { color: var(--main-font-second-color, #3c3c43cc); opacity: 0.8; }
+      &:-ms-input-placeholder { color: var(--main-font-second-color, #3c3c43cc); opacity: 0.8; }
+      &:-moz-placeholder { color: var(--main-font-second-color, #3c3c43cc); opacity: 0.8; }
 
       &:focus {
         outline: none;
@@ -263,21 +299,78 @@ defineExpose({
 
     .show-password-btn {
       position: absolute;
-      right: 16px;
+      right: 8px;
       top: 50%;
       transform: translateY(-50%);
-      background: none;
+      background: transparent;
       border: none;
       padding: 8px;
       cursor: pointer;
       color: var(--main-font-second-color, #3c3c43cc);
-      border-radius: 6px;
+      border-radius: 8px;
       transition: all 0.3s ease;
+      font-size: 16px;
+      width: 36px;
+      height: 36px;
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      outline: none;
+      z-index: 100;
+
+      /* 确保按钮可见 */
+      visibility: visible !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+
+      /* 重置所有可能的样式冲突 */
+      box-shadow: none;
+      text-decoration: none;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+
+      /* 强制禁用所有可能的 tooltip */
+      &::before,
+      &::after {
+        display: none !important;
+        content: none !important;
+      }
+
+      span {
+        font-size: 18px;
+        line-height: 1;
+        display: block;
+        opacity: 0.7;
+        transition: all 0.3s ease;
+      }
 
       &:hover {
-        color: var(--main-color, #425aef);
-        background: var(--main-color-bg, #4259ef0d);
+        background: var(--main-card-second-background, #f7f7f9);
         transform: translateY(-50%) scale(1.1);
+
+        span {
+          opacity: 1;
+          transform: scale(1.1);
+        }
+
+        /* 禁用 hover 状态下的 tooltip */
+        &::before,
+        &::after {
+          display: none !important;
+          content: none !important;
+        }
+      }
+
+      &:active {
+        transform: translateY(-50%) scale(0.95);
+        background: var(--main-card-border, #e3e8f7);
+      }
+
+      &:focus {
+        outline: none;
+        background: var(--main-card-second-background, #f7f7f9);
+        box-shadow: 0 0 0 2px var(--main-color-bg, #4259ef0d);
       }
     }
   }
@@ -441,9 +534,22 @@ defineExpose({
   .modal-body {
     padding: 24px;
 
-    .password-input-group .password-input {
-      padding: 14px 44px 14px 18px;
-      font-size: 16px;
+    .password-input-group {
+      .password-input {
+        padding: 14px 40px 14px 18px;
+        font-size: 16px;
+      }
+
+      .show-password-btn {
+        right: 4px;
+        width: 28px;
+        height: 28px;
+        padding: 4px;
+
+        .iconfont {
+          font-size: 14px;
+        }
+      }
     }
   }
 
@@ -470,6 +576,31 @@ defineExpose({
   .error-message {
     background: rgba(239, 68, 68, 0.1);
     color: #fca5a5;
+  }
+}
+
+/* 全局禁用密码模态框中的所有 tooltip */
+.password-modal-overlay {
+  /* 禁用所有可能的 tooltip 组件 */
+  .tooltip,
+  .el-tooltip,
+  .ant-tooltip,
+  .v-tooltip,
+  [data-tooltip],
+  [title]:not([title=""]) {
+    pointer-events: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    display: none !important;
+  }
+
+  /* 禁用浏览器原生 tooltip */
+  * {
+    &::before,
+    &::after {
+      content: none !important;
+      display: none !important;
+    }
   }
 }
 </style>
