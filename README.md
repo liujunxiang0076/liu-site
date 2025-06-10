@@ -32,6 +32,15 @@ Modern blog theme built on VitePress 1.x with integrated features including arti
 - Automatic RSS generation
 - Progressive Web App (PWA)
 - Page analytics integration
+- **Comment system** (Artalk, Twikoo, Waline)
+- **Music player** (Netease, Tencent, Kugou, playlist/album/song)
+- **Image lightbox** (Fancybox integration)
+- **External link redirect** (with class exclusion)
+- **Reward/Donation** (WeChat, Alipay QR code)
+- **Weather widget** (QWeather API)
+- **Countdown widget**
+- **Site data/statistics** (51la, Baidu, CNZZ)
+- **Friend links** (dynamic, circle of friends)
 
 ### ⚙ Development Experience
 - Hot Module Replacement (HMR)
@@ -119,21 +128,120 @@ articlePassword: {
   enable: true,
   expireHours: 24,
   placeholder: 'Enter article access password',
-  errorMessage: 'Incorrect password, please try again'
+  errorMessage: 'Incorrect password, please try again',
+  confirmText: 'Confirm',
+  cancelText: 'Cancel'
 }
 ```
 
 #### Comment System
+Supports Artalk, Twikoo, Waline. Example (Waline):
 ```ts
-// config.mts
-export default defineConfig({
-  themeConfig: {
-    comments: {
-      service: 'giscus',
-      repo: 'your-repo'
+comment: {
+  enable: true,
+  type: 'waline',
+  waline: {
+    serverURL: 'https://waline.liujunxiang0076.site/',
+    comment: true,
+    pageview: true,
+    locale: { placeholder: 'Leave a comment?' },
+    meta: ['nick'],
+    noCopyright: true,
+    reaction: true
+  }
+}
+```
+
+#### Music Player
+```ts
+music: {
+  enable: true,
+  url: 'https://api.injahow.cn/meting/',
+  id: 9379831714,
+  server: 'netease', // netease / tencent / kugou
+  type: 'playlist'   // playlist / album / song
+}
+```
+
+#### Image Lightbox
+```ts
+fancybox: {
+  enable: true,
+  js: 'https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/fancyapps-ui/5.0.36/fancybox/fancybox.umd.min.js',
+  css: 'https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/fancyapps-ui/5.0.36/fancybox/fancybox.min.css'
+}
+```
+
+#### External Link Redirect
+```ts
+jumpRedirect: {
+  enable: true,
+  exclude: ['cf-friends-link', 'upyun', ...]
+}
+```
+
+#### Reward/Donation
+```ts
+rewardData: {
+  enable: true,
+  wechat: 'WeChat QR code image url',
+  alipay: 'Alipay QR code image url'
+}
+```
+
+#### Weather Widget
+```ts
+aside: {
+  weather: {
+    enable: true,
+    type: 'qweather',
+    params: {
+      location: '',
+      days: '3',
+      isFree: true,
+      unit: 'm',
+      lang: 'zh'
     }
   }
-})
+}
+```
+
+#### Countdown Widget
+```ts
+aside: {
+  countDown: {
+    enable: true,
+    data: {
+      name: 'Event',
+      date: 'YYYY-MM-DD'
+    }
+  }
+}
+```
+
+#### Site Statistics
+```ts
+tongji: {
+  '51la': '',
+  // Baidu and CNZZ in thirdParty
+}
+thirdParty: {
+  qweather: { key: '...' },
+  baiduTongji: { id: '' },
+  cnzz: { id: '' }
+}
+```
+
+#### Friend Links
+```ts
+friends: {
+  circleOfFriends: '',
+  dynamicLink: {
+    server: '',
+    app_token: '',
+    table_id: ''
+  }
+}
 ```
 
 ## 🛠 Tech Stack
