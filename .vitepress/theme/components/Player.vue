@@ -1,7 +1,37 @@
 <!-- 全局播放器 -->
 <template>
     <div v-if="playerShow" class="music-player-container">
-        <div ref="playerDom" class="player-content" />
+        <!-- 收起状态的圆形按钮 -->
+        <div
+            v-if="playerCollapsed"
+            class="player-collapsed"
+            @mouseenter="handleCollapsedHover"
+            @mouseleave="handleCollapsedLeave"
+        >
+            <div :class="['collapsed-btn', { 'playing-rotate': playState }]" @click="togglePlayerCollapse">
+                <div class="album-cover">
+                    <img v-if="currentSong?.pic" :src="currentSong.pic" alt="专辑封面" />
+                    <i v-else class="iconfont icon-music"></i>
+                </div>
+                <div class="play-control" @click.stop="togglePlay">
+                    <i :class="`iconfont icon-${playState ? 'pause' : 'play'}`"></i>
+                </div>
+            </div>
+            <div class="expand-hint" @click="togglePlayerCollapse">
+                <i class="iconfont icon-right"></i>
+            </div>
+        </div>
+
+        <!-- 展开状态的完整播放器 -->
+        <div class="player-expanded" v-show="!playerCollapsed">
+            <div class="player-header">
+                <span class="player-title">音乐播放器</span>
+                <div class="player-controls">
+                    <i class="iconfont icon-music" @click="togglePlayerCollapse" title="收起播放器"></i>
+                </div>
+            </div>
+            <div ref="playerDom" class="player-content" />
+        </div>
     </div>
 </template>
 
@@ -16,7 +46,7 @@ import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 const store = mainStore();
 const { theme } = useData();
 const { enable, url, id, server, type } = theme.value.music;
-const { playerShow, playerVolume, playState, playerData } = storeToRefs(store);
+const { playerShow, playerCollapsed, playerVolume, playState, playerData } = storeToRefs(store);
 
 // APlayer
 const player = ref(null);
@@ -24,12 +54,47 @@ const playerDom = ref(null);
 const playlist = ref([]);
 const currentIndex = ref(0);
 
+// 播放器状态
+const currentSong = ref(null);
+const isHoveringCollapsed = ref(false);
+
 // 播放指定歌曲
 const playSong = (index) => {
     if (!player.value) return;
     player.value.list.switch(index);
     player.value.play();
     currentIndex.value = index;
+};
+
+// 切换播放器收起状态
+const togglePlayerCollapse = () => {
+    playerCollapsed.value = !playerCollapsed.value;
+    console.log('播放器收起状态切换为：', playerCollapsed.value);
+};
+
+// 切换播放/暂停
+const togglePlay = () => {
+    if (!player.value) return;
+    console.log('切换播放状态，当前状态：', playState.value);
+    player.value.toggle();
+};
+
+// 处理收起状态下的鼠标悬停
+const handleCollapsedHover = () => {
+    isHoveringCollapsed.value = true;
+};
+
+const handleCollapsedLeave = () => {
+    isHoveringCollapsed.value = false;
+};
+
+// 更新当前歌曲信息
+const updateCurrentSong = () => {
+    if (!player.value || !playlist.value.length) return;
+    const current = playlist.value[currentIndex.value];
+    if (current) {
+        currentSong.value = current;
+    }
 };
 
 // 获取播放列表
@@ -138,6 +203,7 @@ const initAPlayer = async (list) => {
             }, 100);
             // 更新信息
             getMusicData();
+            updateCurrentSong();
         });
 
         // 播放器事件
@@ -145,16 +211,18 @@ const initAPlayer = async (list) => {
             console.log('开始播放音乐');
             playState.value = true;
             currentIndex.value = player.value.list.index;
+            updateCurrentSong();
         });
 
         player.value?.on('pause', () => {
             console.log('暂停播放音乐');
             playState.value = false;
         });
-        // 
+        //
         player.value?.on('listswitch', (index) => {
             console.log('切换到列表中的第', index, '首歌');
             currentIndex.value = index;
+            updateCurrentSong();
         });
         // 
         player.value?.on('error', (e) => {
@@ -166,6 +234,8 @@ const initAPlayer = async (list) => {
         // 挂载播放器
         if (isClient) {
             window.$player = player.value;
+            // 添加全局测试方法
+            window.$togglePlayerCollapse = togglePlayerCollapse;
         }
 
         return true;
@@ -258,6 +328,17 @@ watch(
     }
 );
 
+// 监听播放器收起/展开，展开时如有必要重新初始化播放器
+watch(
+  () => playerCollapsed.value,
+  (collapsed) => {
+    if (!collapsed && !player.value) {
+      // 展开且播放器未初始化，重新初始化
+      getMusicListData();
+    }
+  }
+);
+
 onMounted(() => {
     if (!isClient) return;
 
@@ -286,82 +367,162 @@ onBeforeUnmount(() => {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-    background-color: var(--main-card-background);
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-    padding-right: 10px;
     margin-top: 10px;
 
-    .player-content {
-        width: 100%;
-        height: auto;
+    // 收起状态的圆形按钮
+    .player-collapsed {
+        position: relative;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        width: fit-content;
 
-        :deep(.aplayer) {
-            background-color: transparent;
-            margin: 0;
-            box-shadow: none;
+        .collapsed-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: var(--main-card-background);
+            box-shadow: 0 6px 10px -4px var(--main-dark-shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
 
-            .aplayer-body {
-                padding: 10px;
-                background-color: var(--main-color);
+            &.playing-rotate {
+                animation: rotate 3s linear infinite;
+            }
 
-                .aplayer-pic {
-                    height: 40px;
-                    width: 40px;
+            .album-cover {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: 50%;
                 }
 
-                .aplayer-info {
-                    margin-left: 10px;
-
-
-                    .aplayer-music {
-                        .aplayer-title {
-                            color: white;
-                        }
-
-                        .aplayer-author {
-                            color: rgba(255, 255, 255, 0.8);
-                        }
-                    }
-
-                    .aplayer-controller {
-                        .aplayer-bar-wrap {
-                            .aplayer-bar {
-                                .aplayer-played {
-                                    background: white !important;
-
-                                    .aplayer-thumb {
-                                        background: white !important;
-                                    }
-                                }
-                            }
-                        }
-
-                        .aplayer-time {
-                            .aplayer-icon {
-                                path {
-                                    fill: white;
-                                }
-                            }
-
-                            .aplayer-time-inner {
-                                color: white;
-                            }
-                        }
-                    }
+                .iconfont {
+                    font-size: 20px;
+                    color: var(--main-color);
                 }
             }
 
-            .aplayer-list {
-                display: none; // 隐藏原始列表
+            .play-control {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.6);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+
+                .iconfont {
+                    font-size: 16px;
+                    color: white;
+                }
+            }
+
+            &:hover .play-control {
+                opacity: 1;
             }
         }
 
-        // 确保aplayer-info元素显示 - 移到:deep()外面以提高优先级
-        :deep(.aplayer-info) {
-            display: block !important;
+        .expand-hint {
+            margin-left: 8px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+            background-color: var(--main-card-background);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+            .iconfont {
+                font-size: 12px;
+                color: var(--main-color);
+            }
         }
+
+        &:hover {
+            .collapsed-btn {
+                transform: scale(1.05);
+                border-color: var(--main-color);
+                box-shadow: 0 8px 16px -4px var(--main-dark-shadow);
+            }
+
+            .expand-hint {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    }
+
+    // 展开状态的完整播放器
+    .player-expanded {
+        display: flex;
+        flex-direction: column;
+        background: var(--main-card-background);
+        border-radius: 8px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+        padding: 0;
+        min-width: 320px;
+        min-height: 100px;
+        .player-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px 5px;
+            border-bottom: 1px solid var(--main-card-border);
+            .player-title {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--main-font-color);
+            }
+            .player-controls .iconfont {
+                font-size: 18px;
+                color: var(--main-font-color);
+                cursor: pointer;
+                transition: color 0.2s;
+                &:hover {
+                    color: var(--main-color);
+                }
+            }
+        }
+        .player-content {
+            min-height: 60px;
+            padding: 0 10px 10px 10px;
+            box-sizing: border-box;
+            display: block;
+        }
+    }
+}
+
+// 旋转动画
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
     }
 }
 
