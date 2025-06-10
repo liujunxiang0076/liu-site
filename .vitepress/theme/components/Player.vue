@@ -27,7 +27,7 @@
             <div class="player-header">
                 <span class="player-title">音乐播放器</span>
                 <div class="player-controls">
-                    <i class="iconfont icon-music" @click="togglePlayerCollapse" title="收起播放器"></i>
+                    <i class="iconfont icon-minus" @click="togglePlayerCollapse" title="收起播放器"></i>
                 </div>
             </div>
             <div ref="playerDom" class="player-content" />
