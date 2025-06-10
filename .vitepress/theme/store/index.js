@@ -31,6 +31,7 @@ export const mainStore = defineStore("main", {
       // 播放器数据
       playState: true,
       playerShow: true,
+      playerCollapsed: true, // 播放器收起状态
       playerVolume: 0.7,
       playerData: {
         name: "未知曲目",
