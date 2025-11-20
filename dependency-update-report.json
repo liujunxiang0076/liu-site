@@ -7,10 +7,11 @@
     "totalDependencies": 47,
     "devDependencies": 24,
     "dependencies": 18,
-    "updatesAvailable": 29,
-    "majorUpdates": 9,
+    "updatesAvailable": 28,
+    "majorUpdates": 8,
     "minorUpdates": 15,
-    "patchUpdates": 5
+    "patchUpdates": 5,
+    "excludedUpdates": ["eslint - 暂不更新"]
   },
   "updates": {
     "highRisk": [
@@ -20,8 +21,9 @@
         "latest": "9.39.1",
         "type": "major",
         "risk": "high",
+        "status": "excluded",
         "impact": "ESLint 9 有重大配置变更，需要更新配置文件",
-        "recommendation": "需要迁移到新的 flat config 格式，建议在测试环境先行验证"
+        "recommendation": "根据用户要求保持当前版本，暂时不更新"
       },
       {
         "name": "@vite-pwa/vitepress",
@@ -300,13 +302,6 @@
       "packages": ["@types/node", "markdown-it-mathjax3", "path-to-regexp", "unplugin-auto-import", "unplugin-vue-components", "vue", "vercel", "vitepress-plugin-tabs"],
       "command": "npm update @types/node markdown-it-mathjax3 path-to-regexp unplugin-auto-import unplugin-vue-components vue vercel vitepress-plugin-tabs",
       "manualUpdates": [
-        {
-          "name": "eslint",
-          "current": "8.57.1",
-          "target": "9.39.1",
-          "requiresManual": true,
-          "reason": "需要配置迁移到 flat config 格式"
-        },
         {
           "name": "@vite-pwa/vitepress",
           "current": "0.5.4",
