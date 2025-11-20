@@ -57,8 +57,8 @@ case $STAGE in
       npm update vitepress-plugin-tabs
       
       echo "✅ 高风险更新完成"
-      echo "⚠️  请注意：以下手动更新需要特别注意："
-      echo "   - eslint: 8.57.1 → 9.39.1 (需要配置迁移)"
+      echo "⚠️  请注意：ESLint 保持当前版本 8.57.1，暂不更新"
+      echo "   以下手动更新需要特别注意："
       echo "   - @vite-pwa/vitepress: 0.5.4 → 1.0.1 (需要 PWA 测试)"
       echo "   - @vueuse/core: 13.2.0 → 14.0.0 (需要兼容性测试)"
       echo "   - feed: 4.2.2 → 5.1.0 (需要 RSS 测试)"
