@@ -1,0 +1,360 @@
+{
+  "reportGenerated": "2025-06-20",
+  "projectVersion": "1.6.0",
+  "nodeRequirement": ">=20",
+  "vitepressVersion": "1.6.3",
+  "summary": {
+    "totalDependencies": 47,
+    "devDependencies": 24,
+    "dependencies": 18,
+    "updatesAvailable": 28,
+    "majorUpdates": 8,
+    "minorUpdates": 15,
+    "patchUpdates": 5,
+    "excludedUpdates": ["eslint - 暂不更新"]
+  },
+  "updates": {
+    "highRisk": [
+      {
+        "name": "eslint",
+        "current": "8.57.1",
+        "latest": "9.39.1",
+        "type": "major",
+        "risk": "high",
+        "status": "excluded",
+        "impact": "ESLint 9 有重大配置变更，需要更新配置文件",
+        "recommendation": "根据用户要求保持当前版本，暂时不更新"
+      },
+      {
+        "name": "@vite-pwa/vitepress",
+        "current": "0.5.4",
+        "latest": "1.0.1",
+        "type": "major",
+        "risk": "high",
+        "impact": "PWA 配置可能有 breaking changes",
+        "recommendation": "需要检查 PWA 配置兼容性"
+      },
+      {
+        "name": "@vueuse/core",
+        "current": "13.2.0",
+        "latest": "14.0.0",
+        "type": "major",
+        "risk": "high",
+        "impact": "VueUse 14 可能有 API 变更",
+        "recommendation": "需要检查使用的 composables 是否有变更"
+      },
+      {
+        "name": "feed",
+        "current": "4.2.2",
+        "latest": "5.1.0",
+        "type": "major",
+        "risk": "high",
+        "impact": "RSS 生成可能有 API 变更",
+        "recommendation": "需要测试 RSS 生成功能"
+      },
+      {
+        "name": "globby",
+        "current": "14.1.0",
+        "latest": "16.0.0",
+        "type": "major",
+        "risk": "high",
+        "impact": "文件匹配 API 可能有变更",
+        "recommendation": "需要检查文件 glob 模式是否兼容"
+      },
+      {
+        "name": "@types/node",
+        "current": "22.15.18",
+        "latest": "24.10.1",
+        "type": "major",
+        "risk": "medium",
+        "impact": "TypeScript 类型定义更新",
+        "recommendation": "通常安全，但需要检查类型兼容性"
+      },
+      {
+        "name": "unplugin-auto-import",
+        "current": "19.2.0",
+        "latest": "20.2.0",
+        "type": "major",
+        "risk": "medium",
+        "impact": "自动导入配置可能需要调整",
+        "recommendation": "需要检查导入规则是否正常工作"
+      },
+      {
+        "name": "unplugin-vue-components",
+        "current": "28.5.0",
+        "latest": "30.0.0",
+        "type": "major",
+        "risk": "medium",
+        "impact": "组件自动解析可能有变更",
+        "recommendation": "需要测试组件自动导入功能"
+      },
+      {
+        "name": "vue-slider-component",
+        "current": "4.1.0-beta.7",
+        "latest": "3.2.24",
+        "type": "major",
+        "risk": "high",
+        "impact": "当前使用 beta 版本，最新稳定版是 3.x",
+        "recommendation": "需要评估是否降级到稳定版或寻找替代方案"
+      }
+    ],
+    "mediumRisk": [
+      {
+        "name": "@waline/client",
+        "current": "3.5.7",
+        "latest": "3.8.0",
+        "type": "minor",
+        "risk": "medium",
+        "impact": "评论功能组件更新",
+        "recommendation": "通常安全，但需要测试评论功能"
+      },
+      {
+        "name": "algoliasearch",
+        "current": "5.25.0",
+        "latest": "5.44.0",
+        "type": "minor",
+        "risk": "medium",
+        "impact": "搜索功能 SDK 更新",
+        "recommendation": "搜索功能通常向后兼容"
+      },
+      {
+        "name": "esbuild",
+        "current": "0.25.4",
+        "latest": "0.27.0",
+        "type": "minor",
+        "risk": "medium",
+        "impact": "构建工具更新",
+        "recommendation": "构建工具更新，通常安全"
+      },
+      {
+        "name": "eslint-plugin-import",
+        "current": "2.31.0",
+        "latest": "2.32.0",
+        "type": "minor",
+        "risk": "medium",
+        "impact": "ESLint 导入规则插件更新",
+        "recommendation": "ESLint 插件更新，通常安全"
+      },
+      {
+        "name": "eslint-plugin-vue",
+        "current": "10.1.0",
+        "latest": "10.5.1",
+        "type": "minor",
+        "risk": "medium",
+        "impact": "Vue ESLint 规则更新",
+        "recommendation": "Vue ESLint 规则更新"
+      },
+      {
+        "name": "instantsearch.js",
+        "current": "4.78.3",
+        "latest": "4.84.0",
+        "type": "minor",
+        "risk": "medium",
+        "impact": "搜索 UI 组件更新",
+        "recommendation": "搜索 UI 组件更新"
+      },
+      {
+        "name": "markdown-it-mathjax3",
+        "current": "4.3.2",
+        "latest": "5.2.0",
+        "type": "minor",
+        "risk": "medium",
+        "impact": "数学公式渲染可能有变更",
+        "recommendation": "需要测试数学公式显示"
+      },
+      {
+        "name": "path-to-regexp",
+        "current": "8.2.0",
+        "latest": "8.3.0",
+        "type": "minor",
+        "risk": "medium",
+        "impact": "路径匹配库更新",
+        "recommendation": "路径匹配库更新"
+      },
+      {
+        "name": "pinia",
+        "current": "3.0.2",
+        "latest": "3.0.4",
+        "type": "patch",
+        "risk": "low",
+        "impact": "状态管理库补丁更新",
+        "recommendation": "状态管理库补丁更新"
+      },
+      {
+        "name": "pinia-plugin-persistedstate",
+        "current": "4.3.0",
+        "latest": "4.7.1",
+        "type": "minor",
+        "risk": "medium",
+        "impact": "持久化插件更新",
+        "recommendation": "持久化插件更新"
+      },
+      {
+        "name": "prettier",
+        "current": "3.5.3",
+        "latest": "3.6.2",
+        "type": "patch",
+        "risk": "low",
+        "impact": "代码格式化工具更新",
+        "recommendation": "代码格式化工具更新"
+      },
+      {
+        "name": "sass",
+        "current": "1.89.0",
+        "latest": "1.94.2",
+        "type": "minor",
+        "risk": "medium",
+        "impact": "CSS 预处理器更新",
+        "recommendation": "CSS 预处理器更新"
+      },
+      {
+        "name": "terser",
+        "current": "5.39.2",
+        "latest": "5.44.1",
+        "type": "minor",
+        "risk": "medium",
+        "impact": "JS 压缩工具更新",
+        "recommendation": "JS 压缩工具更新"
+      },
+      {
+        "name": "undici",
+        "current": "7.9.0",
+        "latest": "7.16.0",
+        "type": "minor",
+        "risk": "medium",
+        "impact": "HTTP 客户端更新",
+        "recommendation": "HTTP 客户端更新"
+      },
+      {
+        "name": "vue-instantsearch",
+        "current": "4.20.8",
+        "latest": "4.22.3",
+        "type": "minor",
+        "risk": "medium",
+        "impact": "Vue 搜索组件更新",
+        "recommendation": "Vue 搜索组件更新"
+      }
+    ],
+    "lowRisk": [
+      {
+        "name": "cheerio",
+        "current": "1.0.0",
+        "latest": "1.1.2",
+        "type": "minor",
+        "risk": "low",
+        "impact": "HTML 解析库补丁更新",
+        "recommendation": "HTML 解析库补丁更新"
+      },
+      {
+        "name": "dayjs",
+        "current": "1.11.13",
+        "latest": "1.11.19",
+        "type": "patch",
+        "risk": "low",
+        "impact": "日期处理库补丁更新",
+        "recommendation": "日期处理库补丁更新"
+      },
+      {
+        "name": "fs-extra",
+        "current": "11.3.0",
+        "latest": "11.3.2",
+        "type": "patch",
+        "risk": "low",
+        "impact": "文件系统工具补丁更新",
+        "recommendation": "文件系统工具补丁更新"
+      },
+      {
+        "name": "vitepress",
+        "current": "1.6.3",
+        "latest": "1.6.4",
+        "type": "patch",
+        "risk": "low",
+        "impact": "VitePress 补丁更新",
+        "recommendation": "VitePress 补丁更新"
+      },
+      {
+        "name": "vue-eslint-parser",
+        "current": "10.1.3",
+        "latest": "10.2.0",
+        "type": "minor",
+        "risk": "low",
+        "impact": "Vue ESLint 解析器更新",
+        "recommendation": "Vue ESLint 解析器更新"
+      }
+    ]
+  },
+  "updatePlan": {
+    "stage1": {
+      "name": "安全更新",
+      "risk": "low",
+      "packages": ["cheerio", "dayjs", "fs-extra", "prettier", "pinia", "vitepress", "vue-eslint-parser"],
+      "command": "npm update cheerio dayjs fs-extra prettier pinia vitepress vue-eslint-parser"
+    },
+    "stage2": {
+      "name": "中等风险更新",
+      "risk": "medium",
+      "packages": ["@waline/client", "algoliasearch", "esbuild", "eslint-plugin-import", "eslint-plugin-vue", "instantsearch.js", "pinia-plugin-persistedstate", "sass", "terser", "undici", "vue-instantsearch"],
+      "command": "npm update @waline/client algoliasearch esbuild eslint-plugin-import eslint-plugin-vue instantsearch.js pinia-plugin-persistedstate sass terser undici vue-instantsearch"
+    },
+    "stage3": {
+      "name": "高风险更新",
+      "risk": "high",
+      "packages": ["@types/node", "markdown-it-mathjax3", "path-to-regexp", "unplugin-auto-import", "unplugin-vue-components", "vue", "vercel", "vitepress-plugin-tabs"],
+      "command": "npm update @types/node markdown-it-mathjax3 path-to-regexp unplugin-auto-import unplugin-vue-components vue vercel vitepress-plugin-tabs",
+      "manualUpdates": [
+        {
+          "name": "@vite-pwa/vitepress",
+          "current": "0.5.4",
+          "target": "1.0.1",
+          "requiresManual": true,
+          "reason": "需要 PWA 功能测试"
+        },
+        {
+          "name": "@vueuse/core",
+          "current": "13.2.0",
+          "target": "14.0.0",
+          "requiresManual": true,
+          "reason": "需要兼容性测试"
+        },
+        {
+          "name": "feed",
+          "current": "4.2.2",
+          "target": "5.1.0",
+          "requiresManual": true,
+          "reason": "需要 RSS 生成测试"
+        },
+        {
+          "name": "globby",
+          "current": "14.1.0",
+          "target": "16.0.0",
+          "requiresManual": true,
+          "reason": "需要文件匹配测试"
+        },
+        {
+          "name": "vue-slider-component",
+          "current": "4.1.0-beta.7",
+          "target": "3.2.24",
+          "requiresManual": true,
+          "reason": "需要评估降级到稳定版或寻找替代方案"
+        }
+      ]
+    }
+  },
+  "compatibility": {
+    "node": "20+ (所有依赖都支持)",
+    "vue": "3.5.14 → 3.5.24 (补丁更新，应该安全)",
+    "vitepress": "1.6.3 (当前版本较新，保持稳定)",
+    "criticalDependencies": {
+      "vue": "compatible",
+      "vitepress": "compatible",
+      "pinia": "compatible",
+      "@vueuse/core": "needs_verification"
+    }
+  },
+  "recommendations": {
+    "immediate": ["补丁版本更新可以立即执行"],
+    "soon": ["次版本更新建议在测试环境验证后更新"],
+    "careful": ["主版本更新需要详细测试和文档查阅"],
+    "testing": ["重点测试 PWA、搜索、RSS、评论等核心功能"]
+  }
+}
