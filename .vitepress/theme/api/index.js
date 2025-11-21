@@ -3,7 +3,11 @@
  * @param {string} [rule="updated"] - 文章的排序规则，可以是 "created" 或 "updated"
  */
 export const getHitokoto = async () => {
-  const result = await fetch("https://v1.hitokoto.cn");
+  // 在开发环境使用代理,生产环境使用CORS代理
+  const apiUrl = import.meta.env.DEV 
+    ? "/api/hitokoto" 
+    : "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://v1.hitokoto.cn");
+  const result = await fetch(apiUrl);
   const hitokoto = await result.json();
   return hitokoto;
 };
