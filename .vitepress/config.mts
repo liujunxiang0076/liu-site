@@ -147,6 +147,13 @@ export default withPwa(
       // 开发服务器配置
       server: {
         port: 2912,
+        proxy: {
+          '/api/hitokoto': {
+            target: 'https://v1.hitokoto.cn',
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/api\/hitokoto/, ''),
+          },
+        },
       },
       // 构建优化
       build: {
