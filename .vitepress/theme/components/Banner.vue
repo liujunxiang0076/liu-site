@@ -147,9 +147,9 @@ watch(
 
 onMounted(() => {
   if (props.type === "text") {
-    hitokotoTimeOut.value = setTimeout(() => {
-      getHitokotoData();
-    }, 2000);
+    // hitokotoTimeOut.value = setTimeout(() => {
+    //   getHitokotoData();
+    // }, 2000);
     badsoupTimeOut.value = setTimeout(() => {
       geBadsouptoData();
     }, 2000);
