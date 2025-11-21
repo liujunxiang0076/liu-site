@@ -12,7 +12,7 @@ export const getHitokoto = async () => {
   获取毒鸡汤
 */
 export const geBadsoup = async () => {
-  const result = await fetch("https://api.7ed.net/soup/api");
+  const result = await fetch("https://www.7ed.net/soup/api");
   const badsoup = await result.json();
   return badsoup;
 }
