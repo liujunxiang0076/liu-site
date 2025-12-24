@@ -134,8 +134,13 @@ export default withPwa(
       resolve: {
         // 路径别名
         alias: {
-          '@': path.resolve(__dirname, './theme')
+          '@': path.resolve(__dirname, './theme'),
+          '~': path.resolve(__dirname, '..')
         }
+      },
+      // TypeScript 配置
+      esbuild: {
+        target: 'es2020'
       },
       css: {
         preprocessorOptions: {
