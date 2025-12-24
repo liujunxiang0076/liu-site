@@ -1,4 +1,4 @@
-import { themeConfig } from "./theme/config/themeConfig.mts";
+import { themeConfig } from "./theme/config/themeConfig.mjs";
 import { existsSync } from "fs";
 import path from "path";
 
