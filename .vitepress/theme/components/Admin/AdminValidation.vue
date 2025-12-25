@@ -10,53 +10,14 @@
         </div>
         
         <div class="card-content">
-          <!-- 后端地址输入 -->
-          <div class="input-group">
-            <label for="backend-url">后端服务地址</label>
-            <div class="input-wrapper">
-              <input
-                id="backend-url"
-                v-model="backendUrl"
-                type="url"
-                placeholder="https://api.yourdomain.com"
-                class="url-input"
-                :class="{ error: validationState.validationError }"
-                @keyup.enter="handleValidate"
-              />
-              <button 
-                @click="handleValidate"
-                :disabled="!backendUrl || isValidating"
-                class="validate-btn"
-              >
-                <Icon v-if="isValidating" name="loading" class="spinning" />
-                <Icon v-else name="check" />
-                {{ isValidating ? '验证中...' : '验证' }}
-              </button>
-            </div>
-          </div>
-          
-          <!-- 错误信息显示 -->
-          <div v-if="validationState.validationError" class="error-message">
-            <Icon name="alert-circle" />
-            <span>{{ validationState.validationError }}</span>
-          </div>
-          
-          <!-- 允许的后端地址提示 -->
-          <div v-if="backendConfig?.allowedOrigins?.length" class="allowed-urls">
-            <h4>允许的后端地址：</h4>
-            <div class="url-list">
-              <div 
-                v-for="url in backendConfig.allowedOrigins" 
-                :key="url"
-                class="url-item"
-                @click="selectUrl(url)"
-              >
-                <Icon name="server" />
-                <span>{{ url }}</span>
-                <Icon name="copy" class="copy-icon" />
-              </div>
-            </div>
-          </div>
+          <!-- 使用新的后端配置组件 -->
+          <AdminBackendConfig
+            :backend-config="backendConfig"
+            :validation-state="validationState"
+            @validate="handleValidate"
+            @use-git-hub-mode="handleUseGitHub"
+            @config-update="handleConfigUpdate"
+          />
         </div>
         
         <div class="card-footer">
@@ -141,6 +102,7 @@
 import { ref, computed } from 'vue'
 import { useData } from 'vitepress'
 import Icon from '../Icon.vue'
+import AdminBackendConfig from './AdminBackendConfig.vue'
 
 // Props
 interface Props {
@@ -190,6 +152,11 @@ const handleValidate = async () => {
       isValidating.value = false
     }, 1000)
   }
+}
+
+// 配置更新处理
+const handleConfigUpdate = (config: BackendConfig) => {
+  console.log('Config updated:', config)
 }
 
 // 选择URL

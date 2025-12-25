@@ -26,34 +26,19 @@
           :backend-config="backendConfig"
           @validate="handleValidateBackend"
           @configure="handleConfigure"
+          @use-github-mode="() => handleSwitchMode('github')"
         />
         
         <!-- 管理功能区域 -->
-        <div v-else class="admin-dashboard">
-          <!-- 路由内容将在这里渲染 -->
-          <router-view v-if="false" />
-          
-          <!-- 临时仪表板内容 -->
-          <div class="dashboard-welcome">
-            <h2>欢迎使用博客管理系统</h2>
-            <p>后端连接状态：{{ backendStatus.connected ? '已连接' : '未连接' }}</p>
-            <p>当前模式：{{ currentMode }}</p>
-            
-            <div class="quick-actions">
-              <button @click="handleNavigate('editor')" class="action-btn">
-                <Icon name="edit" />
-                新建文章
-              </button>
-              <button @click="handleNavigate('posts')" class="action-btn">
-                <Icon name="article" />
-                文章管理
-              </button>
-              <button @click="handleNavigate('media')" class="action-btn">
-                <Icon name="image" />
-                媒体管理
-              </button>
-            </div>
-          </div>
+        <div v-else class="admin-content-area">
+          <!-- 使用AdminRouter组件处理路由 -->
+          <AdminRouter 
+            :current-route="currentRoute"
+            :validation-state="validationState"
+            :backend-status="backendStatus"
+            @navigate="handleNavigate"
+            @route-change="handleRouteChange"
+          />
         </div>
       </div>
     </div>
@@ -77,7 +62,10 @@ import AdminSidebar from '../components/Admin/AdminSidebar.vue'
 import AdminValidation from '../components/Admin/AdminValidation.vue'
 import AdminNotification from '../components/Admin/AdminNotification.vue'
 import AdminLoading from '../components/Admin/AdminLoading.vue'
+import AdminRouter from '../components/Admin/AdminRouter.vue'
 import Icon from '../components/Icon.vue'
+import { createBackendValidator, formatValidationError } from '../utils/backendValidator'
+import type { AdminRoute } from '../types/admin'
 
 // VitePress 数据
 const { theme } = useData()
@@ -103,7 +91,7 @@ const backendStatus = reactive({
 const backendConfig = computed(() => theme.value.adminBackend || {})
 
 // 当前路由
-const currentRoute = ref('dashboard')
+const currentRoute = ref<AdminRoute>('dashboard')
 
 // 当前模式
 const currentMode = ref<'github' | 'backend'>('github')
@@ -125,32 +113,13 @@ const handleValidateBackend = async (inputUrl: string) => {
   validationState.validationError = ''
   
   try {
-    // 检查输入URL是否在允许列表中
-    const allowedUrls = backendConfig.value.allowedOrigins || []
-    const configUrl = backendConfig.value.url
+    // 创建后端验证器
+    const validator = createBackendValidator(theme.value, backendConfig.value)
     
-    if (!allowedUrls.includes(inputUrl) && inputUrl !== configUrl) {
-      throw new Error('输入的后端地址不在博客配置的允许列表中')
-    }
+    // 执行验证
+    const result = await validator.validateAssociation(inputUrl)
     
-    // 向后端发送验证请求
-    const response = await fetch(`${inputUrl}/api/validate-blog`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        blogUrl: theme.value.siteMeta.site,
-        blogTitle: theme.value.siteMeta.title,
-        timestamp: Date.now()
-      })
-    })
-    
-    if (!response.ok) {
-      throw new Error(`验证请求失败: ${response.status}`)
-    }
-    
-    const result = await response.json()
-    
-    if (result.valid && result.configMatches) {
+    if (result.success && result.configMatches) {
       // 验证成功
       validationState.isValidated = true
       validationState.backendUrl = inputUrl
@@ -161,15 +130,29 @@ const handleValidateBackend = async (inputUrl: string) => {
       backendStatus.blogAssociated = true
       backendStatus.lastCheck = new Date()
       
+      // 测试连接获取延迟
+      const connectionTest = await validator.testConnection(inputUrl)
+      if (connectionTest.success && connectionTest.latency) {
+        backendStatus.latency = connectionTest.latency
+      }
+      
       currentMode.value = 'backend'
+      
+      // 保存验证状态到本地存储
+      localStorage.setItem('admin-validation-state', JSON.stringify({
+        isValidated: true,
+        backendUrl: inputUrl,
+        timestamp: Date.now()
+      }))
       
       addNotification('success', '后端验证成功，已切换到后端模式')
     } else {
+      // 验证失败
       throw new Error(result.error || '后端验证失败')
     }
   } catch (error) {
     console.error('Backend validation failed:', error)
-    validationState.validationError = error instanceof Error ? error.message : '验证失败'
+    validationState.validationError = formatValidationError(error)
     addNotification('error', validationState.validationError)
   } finally {
     isLoading.value = false
@@ -198,9 +181,14 @@ const handleConfigure = () => {
 }
 
 // 导航处理
-const handleNavigate = (route: string) => {
+const handleNavigate = (route: AdminRoute) => {
   currentRoute.value = route
   addNotification('info', `导航到: ${route}`)
+}
+
+// 路由变化处理
+const handleRouteChange = (newRoute: AdminRoute, previousRoute: AdminRoute) => {
+  console.log(`Route changed from ${previousRoute} to ${newRoute}`)
 }
 
 // 添加通知
@@ -234,12 +222,20 @@ onMounted(() => {
   if (savedState) {
     try {
       const parsed = JSON.parse(savedState)
-      if (parsed.isValidated && parsed.backendUrl) {
+      const now = Date.now()
+      const stateAge = now - (parsed.timestamp || 0)
+      
+      // 验证状态有效期为24小时
+      if (parsed.isValidated && parsed.backendUrl && stateAge < 24 * 60 * 60 * 1000) {
         // 尝试重新验证
         handleValidateBackend(parsed.backendUrl)
+      } else {
+        // 清除过期状态
+        localStorage.removeItem('admin-validation-state')
       }
     } catch (error) {
       console.error('Failed to restore validation state:', error)
+      localStorage.removeItem('admin-validation-state')
     }
   }
   
@@ -247,7 +243,37 @@ onMounted(() => {
   if (!validationState.isValidated) {
     handleSwitchMode('github')
   }
+  
+  // 监听网络状态变化
+  window.addEventListener('online', handleNetworkStatusChange)
+  window.addEventListener('offline', handleNetworkStatusChange)
+  
+  // 监听自定义事件
+  window.addEventListener('admin:switch-mode', handleCustomSwitchMode)
 })
+
+// 网络状态变化处理
+const handleNetworkStatusChange = () => {
+  const isOnline = navigator.onLine
+  
+  if (isOnline && backendStatus.connected) {
+    // 网络恢复且有后端连接，重新验证
+    if (validationState.backendUrl) {
+      handleValidateBackend(validationState.backendUrl)
+    }
+  } else if (!isOnline) {
+    // 网络断开
+    addNotification('warning', '网络连接已断开，已切换到离线模式')
+  }
+}
+
+// 自定义模式切换事件处理
+const handleCustomSwitchMode = (event: any) => {
+  const mode = event.detail?.mode
+  if (mode === 'github' || mode === 'backend') {
+    handleSwitchMode(mode)
+  }
+}
 </script>
 
 <style scoped>
@@ -268,56 +294,10 @@ onMounted(() => {
   overflow-y: auto;
 }
 
-.admin-dashboard {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.dashboard-welcome {
-  text-align: center;
-  padding: 40px 20px;
-}
-
-.dashboard-welcome h2 {
-  margin-bottom: 20px;
-  color: var(--vp-c-brand-1);
-}
-
-.dashboard-welcome p {
-  margin-bottom: 10px;
-  color: var(--vp-c-text-2);
-}
-
-.quick-actions {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  margin-top: 40px;
-  flex-wrap: wrap;
-}
-
-.action-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  background: var(--vp-c-brand-1);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.action-btn:hover {
-  background: var(--vp-c-brand-2);
-  transform: translateY(-2px);
-}
-
-.action-btn:active {
-  transform: translateY(0);
+.admin-content-area {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--vp-c-bg);
 }
 
 /* 响应式设计 */
@@ -326,18 +306,8 @@ onMounted(() => {
     flex-direction: column;
   }
   
-  .admin-content {
-    padding: 15px;
-  }
-  
-  .quick-actions {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .action-btn {
-    width: 200px;
-    justify-content: center;
+  .admin-content-area {
+    padding: 0;
   }
 }
 </style>
