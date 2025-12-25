@@ -81,7 +81,7 @@ export const generators = {
     }),
     editState: fc.record({
       isDirty: fc.boolean(),
-      lastSaved: fc.date({ min: new Da020-01-01'), max: new Date() }),
+      lastSaved: fc.date({ min: new Date('2020-01-01'), max: new Date() }),
       autoSaveEnabled: fc.boolean()
     })
   }),
