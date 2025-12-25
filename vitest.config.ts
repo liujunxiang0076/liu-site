@@ -22,13 +22,6 @@ export default defineConfig({
     // 属性基础测试配置
     testTimeout: 15000, // 15秒超时，适合属性测试
     hookTimeout: 15000,
-    // 并发配置
-    pool: 'threads',
-    poolOptions: {
-      threads: {
-        singleThread: false
-      }
-    },
     // 测试文件匹配模式
     include: [
       'tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
