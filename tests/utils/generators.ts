@@ -205,9 +205,15 @@ export const constrainedGenerators = {
   
   // 有效的JWT令牌格式
   jwtToken: () => fc.tuple(
-    fc.base64String(),
-    fc.base64String(),
-    fc.base64String()
+    fc.string({ minLength: 8, maxLength: 32 }).map(s => 
+      Buffer.from(s).toString('base64url')
+    ),
+    fc.string({ minLength: 8, maxLength: 64 }).map(s => 
+      Buffer.from(s).toString('base64url')
+    ),
+    fc.string({ minLength: 8, maxLength: 32 }).map(s => 
+      Buffer.from(s).toString('base64url')
+    )
   ).map(([header, payload, signature]) => `${header}.${payload}.${signature}`),
   
   // 有效的文件大小（不超过限制）
