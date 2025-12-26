@@ -5,7 +5,6 @@
 import type { BlogPost, CreatePostRequest, UpdatePostRequest, PostQuery } from './blog'
 import type { MediaFile, UploadResult, MediaQuery } from './media'
 import type { AuthUser, LoginCredentials, AuthResponse } from './auth'
-import type { BatchResult } from './index'
 
 // 文件内容接口
 export interface FileContent {
