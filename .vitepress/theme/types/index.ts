@@ -20,7 +20,7 @@ export type {
   AdminConfig,
   BlogValidationRequest,
   BlogValidationResponse,
-  ValidationResult,
+  ValidationResult as AdminValidationResult,
   ConnectionResult,
   AdminNotification,
   AdminRouteConfig,
@@ -283,7 +283,7 @@ export interface DebugInfo {
   environment: string
   userAgent: string
   features: string[]
-  config: Partial<SystemConfig>
+  config: Partial<any> // Use any to avoid circular dependency
   performance: PerformanceMetrics
 }
 
