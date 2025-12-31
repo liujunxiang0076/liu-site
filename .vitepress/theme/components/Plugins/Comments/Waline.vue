@@ -200,6 +200,18 @@ const effectiveLocale = computed(() => {
   const defaultLocale = { placeholder: '请留下您的评论~' }
   return props.locale || walineConfig.value.locale || defaultLocale
 })
+// 计算最终使用的版权设置
+const effectiveNoCopyright = computed(() => {
+  return props.noCopyright !== undefined ? props.noCopyright : (walineConfig.value.noCopyright || false)
+})
+// 计算最终使用的其他配置
+const effectiveMeta = computed(() => props.meta || walineConfig.value.meta || ['nick', 'mail', 'link'])
+const effectiveRequiredMeta = computed(() => props.requiredMeta || walineConfig.value.requiredMeta || [])
+const effectiveReaction = computed(() => props.reaction !== undefined ? props.reaction : walineConfig.value.reaction)
+const effectiveEmoji = computed(() => props.emoji !== undefined ? props.emoji : walineConfig.value.emoji)
+const effectiveLogin = computed(() => props.login || walineConfig.value.login || 'enable')
+const effectiveWordLimit = computed(() => props.wordLimit || walineConfig.value.wordLimit || 0)
+const effectivePageSize = computed(() => props.pageSize || walineConfig.value.pageSize || 10)
 
 // 评论DOM
 const commentRef = ref(null)
@@ -271,17 +283,17 @@ const updateWaline = async () => {
       comment: effectiveComment.value,
       pageview: effectivePageview.value,
       locale: effectiveLocale.value,
-      dark: props.dark || 'html.dark',
-      commentSorting: props.commentSorting,
-      meta: props.meta,
-      requiredMeta: props.requiredMeta,
-      reaction: props.reaction,
-      emoji: props.emoji,
-      lang: props.lang,
-      copyright: !props.noCopyright,
-      login: props.login,
-      wordLimit: props.wordLimit,
-      pageSize: props.pageSize,
+      dark: props.dark || walineConfig.value.dark || 'html.dark',
+      commentSorting: props.commentSorting || walineConfig.value.commentSorting || 'latest',
+      meta: effectiveMeta.value,
+      requiredMeta: effectiveRequiredMeta.value,
+      reaction: effectiveReaction.value,
+      emoji: effectiveEmoji.value,
+      lang: props.lang || walineConfig.value.lang || '',
+      copyright: !effectiveNoCopyright.value,
+      login: effectiveLogin.value,
+      wordLimit: effectiveWordLimit.value,
+      pageSize: effectivePageSize.value,
       search: props.search,
       recaptchaV3Key: props.recaptchaV3Key,
       turnstileKey: props.turnstileKey,
@@ -380,8 +392,8 @@ onBeforeUnmount(() => {
 }
 
 /* 隐藏评论版权 */
-.wl-power {
-  display: none;
-}
+/* .wl-power {
+  display: none !important;
+} */
 
 </style>

@@ -264,7 +264,8 @@ export const themeConfig = {
         // Waline 配置
         waline: {
             // Waline 服务端地址
-            serverURL: 'https://waline.liujunxiang0076.site/',
+            // serverURL: 'https://waline.liujunxiang0076.site/',
+            serverURL: 'https://waline.020076.xyz/',
             // 评论数统计
             comment: true,
             // 页面访问量统计
@@ -274,11 +275,28 @@ export const themeConfig = {
                 placeholder: '来都来了，不留下点什么吗？'
             },
             // 评论者信息
-            meta: ['nick'],
+            // meta: ['nick'],
+            // 设置必填项，默认匿名
+            // requiredMeta: [],
+            // 登录模式状态
+            // login: 'disable',
             // 是否禁用版权
             noCopyright: true,
             // 是否禁用评论表情
-            reaction: true
+            // reaction: true,
+            // emoji
+            // emoji: [
+            //     '//unpkg.com/@waline/emojis@1.4.0/alus',
+            //     '//unpkg.com/@waline/emojis@1.4.0/bilibili',
+            //     '//unpkg.com/@waline/emojis@1.4.0/bmoji',
+            //     '//unpkg.com/@waline/emojis@1.4.0/qq',
+            //     '//unpkg.com/@waline/emojis@1.4.0/tieba',
+            //     '//unpkg.com/@waline/emojis@1.4.0/tw-emoji',
+            //     '//unpkg.com/@waline/emojis@1.4.0/weibo',
+            //     '//unpkg.com/@waline/emojis@1.4.0/soul-emoji',
+            // ],
+
+            
         }
     },
 
