@@ -25,7 +25,7 @@ export const createRssFile = async (config, themeConfig) => {
     updated: new Date(),
   });
   // 加载文章
-  let posts = await createContentLoader("posts/**/*.md", {
+  let posts = await createContentLoader("src/posts/**/*.md", {
     render: true,
   }).load();
   // 日期降序排序
@@ -44,8 +44,8 @@ export const createRssFile = async (config, themeConfig) => {
     // 添加文章
     feed.addItem({
       title,
-      id: `${hostLink}${url}`,
-      link: `${hostLink}${url}`,
+      id: `${hostLink}${url.replace('/src/posts/', '/posts/').replace('.md', '')}`,
+      link: `${hostLink}${url.replace('/src/posts/', '/posts/').replace('.md', '')}`,
       description,
       date,
       // updated,
