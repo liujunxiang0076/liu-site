@@ -5,7 +5,7 @@
       <div class="count-left" @click="toggleCalendarView">
         <span class="text">距离</span>
         <span class="name">{{ nextHoliday }}</span>
-        <span class="time">{{ getDaysUntil(nextHolidayDate) }}天</span>
+        <span class="time">{{ getDaysUntil(nextHolidayDate) === 0 ? '不到1天' : getDaysUntil(nextHolidayDate) + '天' }}</span>
         <span class="date">{{ nextHolidayDate }}</span>
       </div>
       <div v-if="remainData" class="count-right">
