@@ -165,21 +165,21 @@ export const themeConfig = {
                     icon: 'technical'
                 },
                 { text: '我的项目', link: 'src/pages/project', icon: 'code' },
-                { text: '效率工具', link: 'src/pages/tools', icon: 'tools' }
+                // { text: '效率工具', link: 'src/pages/tools', icon: 'tools' }
             ]
         },
-        {
-            text: '友链',
-            items: [
-                { text: '友链鱼塘', link: 'src/pages/friends', icon: 'fish' },
-                { text: '友情链接', link: 'src/pages/link', icon: 'people' }
-            ]
-        },
+        // {
+        //     text: '友链',
+        //     items: [
+        //         { text: '友链鱼塘', link: 'src/pages/friends', icon: 'fish' },
+        //         { text: '友情链接', link: 'src/pages/link', icon: 'people' }
+        //     ]
+        // },
         {
             text: '我的',
             items: [
-                { text: '畅所欲言', link: 'src/pages/message', icon: 'chat' },
-                { text: '致谢名单', link: 'src/pages/thanks', icon: 'reward' },
+                // { text: '畅所欲言', link: 'src/pages/message', icon: 'chat' },
+                // { text: '致谢名单', link: 'src/pages/thanks', icon: 'reward' },
                 { text: '关于本站', link: 'src/pages/about', icon: 'about' }
             ]
         }
