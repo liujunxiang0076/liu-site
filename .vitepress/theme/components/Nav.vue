@@ -70,10 +70,9 @@
           </div>
           <!-- 搜索 -->
           <div
-            v-if="theme.search.enable"
             class="menu-btn nav-btn"
-            title="全站搜索"
-            @click="store.changeShowStatus('searchShow')"
+            title="全站搜索 (Ctrl+K)"
+            @click="openSearch"
           >
             <i class="iconfont icon-search"></i>
           </div>
@@ -118,10 +117,6 @@
     </nav>
     <!-- 移动端菜单 -->
     <MobileMenu />
-    <!-- 全局搜索 -->
-    <ClientOnly>
-      <Search v-if="theme.search.enable" />
-    </ClientOnly>
   </header>
 </template>
 
@@ -134,6 +129,9 @@ const router = useRouter();
 const store = mainStore();
 const { scrollData } = storeToRefs(store);
 const { site, theme, frontmatter, page } = useData();
+
+// 获取打开搜索的方法
+const openSearch = inject('openSearch', () => {});
 </script>
 
 <style lang="scss" scoped>
