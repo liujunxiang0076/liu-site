@@ -50,7 +50,7 @@
     "@types/node": "^22.15.18",
     "@vite-pwa/vitepress": "^0.5.4",
     "@vueuse/core": "^13.2.0",
-    "@waline/client": "^3.5.7",
+    "@waline/client": "^3.8.0",
     "algoliasearch": "^5.25.0",
     "aplayer": "^1.10.1",
     "dayjs": "^1.11.13",
