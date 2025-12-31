@@ -11,6 +11,12 @@
     <Nav />
     <!-- 滚动进度条 -->
     <ScrollProgress />
+    <!-- VitePress 内置搜索 -->
+    <Teleport to="body">
+        <ClientOnly>
+            <VPLocalSearchBox v-if="showSearch" @close="showSearch = false" />
+        </ClientOnly>
+    </Teleport>
     <!-- 主内容 -->
     <main :class="['mian-layout', { loading: loadingStatus, 'is-post': isPostPage }]">
         <!-- 404 -->
@@ -48,11 +54,28 @@
 import { storeToRefs } from 'pinia';
 import { mainStore } from './store/index';
 import { calculateScroll, specialDayGray } from './utils/helper';
+import { defineAsyncComponent } from 'vue';
+
+// 异步加载 VitePress 本地搜索组件
+const VPLocalSearchBox = defineAsyncComponent(() =>
+    import('vitepress/dist/client/theme-default/components/VPLocalSearchBox.vue')
+);
 
 const route = useRoute();
 const store = mainStore();
 const { frontmatter, page, theme } = useData();
 const { loadingStatus, footerIsShow, themeValue, themeType, backgroundType, fontFamily, fontSize } = storeToRefs(store);
+
+// 搜索框显示状态
+const showSearch = ref(false);
+
+// 暴露给外部调用
+defineExpose({ showSearch });
+
+// 提供给子组件调用
+provide('openSearch', () => {
+    showSearch.value = true;
+});
 
 // 右键菜单
 const rightMenuRef = ref(null);

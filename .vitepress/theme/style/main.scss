@@ -325,3 +325,358 @@ a {
   border-radius: 4px;
   margin: 0 2px;
 }
+
+
+/* VitePress 本地搜索样式 */
+.VPLocalSearchBox {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999 !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  padding-top: 8vh !important;
+  
+  // 遮罩背景
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: -1;
+  }
+  
+  .shell {
+    position: relative !important;
+    inset: unset !important;
+    transform: none !important;
+    width: 94% !important;
+    max-width: 580px !important;
+    max-height: 75vh !important;
+    background-color: var(--main-card-background) !important;
+    border: 1px solid var(--main-card-border) !important;
+    border-radius: 20px !important;
+    box-shadow: 
+      0 25px 50px -12px rgba(0, 0, 0, 0.15),
+      0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    animation: searchBoxIn 0.25s ease-out;
+  }
+  
+  @keyframes searchBoxIn {
+    from {
+      opacity: 0;
+      transform: scale(0.96) translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  
+  // 搜索输入框区域
+  .search-bar {
+    padding: 20px !important;
+    border-bottom: 1px solid var(--main-card-border) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    background-color: var(--main-card-background) !important;
+    
+    form {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      gap: 12px;
+      background-color: var(--main-card-second-background);
+      border-radius: 12px;
+      padding: 12px 16px;
+      transition: box-shadow 0.2s, border-color 0.2s;
+      border: 1px solid transparent;
+      
+      &:focus-within {
+        border-color: var(--main-color);
+        box-shadow: 0 0 0 3px var(--main-color-bg);
+      }
+      
+      // 搜索图标 - 使用伪元素
+      &::before {
+        content: '';
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
+        opacity: 0.6;
+      }
+    }
+    
+    .search-icon {
+      display: none !important;
+    }
+    
+    label {
+      flex: 1;
+    }
+    
+    input,
+    #localsearch-input {
+      width: 100% !important;
+      border: none !important;
+      outline: none !important;
+      background: transparent !important;
+      font-size: 15px !important;
+      color: var(--main-font-color) !important;
+      font-family: var(--main-font-family) !important;
+      
+      &::placeholder {
+        color: var(--main-font-second-color) !important;
+        opacity: 0.7;
+      }
+    }
+    
+    // 操作按钮
+    .actions {
+      display: flex;
+      gap: 6px;
+    }
+    
+    button {
+      background: var(--main-card-background) !important;
+      border: 1px solid var(--main-card-border) !important;
+      border-radius: 8px !important;
+      padding: 6px 10px !important;
+      color: var(--main-font-second-color) !important;
+      cursor: pointer !important;
+      font-size: 12px !important;
+      transition: all 0.2s !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      svg {
+        width: 14px;
+        height: 14px;
+      }
+      
+      &:hover {
+        background: var(--main-color) !important;
+        border-color: var(--main-color) !important;
+        color: #fff !important;
+        
+        svg {
+          stroke: #fff;
+        }
+      }
+    }
+  }
+  
+  // 搜索结果区域
+  .results {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    padding: 12px !important;
+    background-color: var(--main-card-background) !important;
+    
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    li {
+      margin-bottom: 6px !important;
+      
+      &:last-child {
+        margin-bottom: 0 !important;
+      }
+    }
+    
+    a {
+      display: flex !important;
+      flex-direction: column !important;
+      padding: 14px 16px !important;
+      border-radius: 12px !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease !important;
+      border: 1px solid transparent !important;
+      text-decoration: none !important;
+      gap: 6px !important;
+      
+      &:hover {
+        background-color: var(--main-card-second-background) !important;
+        border-color: var(--main-card-border) !important;
+      }
+      
+      &[aria-selected="true"] {
+        background-color: var(--main-color-bg) !important;
+        border-color: var(--main-color) !important;
+        
+        .titles > span:last-child,
+        .title {
+          color: var(--main-color) !important;
+        }
+      }
+    }
+    
+    .titles {
+      font-weight: 600 !important;
+      color: var(--main-font-color) !important;
+      font-size: 14px !important;
+      line-height: 1.4 !important;
+      display: flex !important;
+      align-items: center !important;
+      flex-wrap: wrap !important;
+      gap: 0 !important;
+      
+      > span {
+        display: inline-flex;
+        align-items: center;
+        
+        &:not(:last-child)::after {
+          content: '›';
+          margin: 0 8px;
+          color: var(--main-font-second-color);
+          opacity: 0.4;
+          font-weight: 400;
+        }
+        
+        &:last-child {
+          color: var(--main-font-color);
+        }
+      }
+      
+      // 隐藏原有图标
+      svg {
+        display: none;
+      }
+      
+      // 添加文档图标
+      &::before {
+        content: '';
+        width: 16px;
+        height: 16px;
+        margin-right: 10px;
+        flex-shrink: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z'/%3E%3Cpolyline points='14 2 14 8 20 8'/%3E%3Cline x1='16' y1='13' x2='8' y2='13'/%3E%3Cline x1='16' y1='17' x2='8' y2='17'/%3E%3Cline x1='10' y1='9' x2='8' y2='9'/%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
+        opacity: 0.5;
+      }
+    }
+    
+    .excerpt,
+    .text {
+      font-size: 13px !important;
+      color: var(--main-font-second-color) !important;
+      line-height: 1.6 !important;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      padding-left: 26px;
+      
+      mark {
+        background: linear-gradient(120deg, var(--main-color-bg) 0%, var(--main-color-bg) 100%) !important;
+        color: var(--main-color) !important;
+        padding: 2px 5px !important;
+        border-radius: 4px !important;
+        font-weight: 500;
+      }
+    }
+  }
+  
+  // 无结果提示
+  .no-results {
+    padding: 50px 20px !important;
+    text-align: center !important;
+    color: var(--main-font-second-color) !important;
+    background-color: var(--main-card-background) !important;
+    
+    // 添加空状态图标
+    &::before {
+      content: '';
+      display: block;
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='none' stroke='%23ccc' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3Cpath d='M8 8l6 6'/%3E%3Cpath d='M14 8l-6 6'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      opacity: 0.5;
+    }
+  }
+  
+  // 底部快捷键提示
+  footer,
+  .search-keyboard-shortcuts {
+    padding: 14px 20px !important;
+    border-top: 1px solid var(--main-card-border) !important;
+    font-size: 12px !important;
+    color: var(--main-font-second-color) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 20px !important;
+    background-color: var(--main-card-second-background) !important;
+    
+    span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    // 隐藏原有图标，用文字代替
+    svg {
+      display: none;
+    }
+    
+    kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      height: 24px;
+      background-color: var(--main-card-background) !important;
+      padding: 0 8px !important;
+      border-radius: 6px !important;
+      font-family: inherit !important;
+      font-size: 11px !important;
+      font-weight: 500;
+      border: 1px solid var(--main-card-border) !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+// 暗色模式下的搜索框优化
+html.dark .VPLocalSearchBox {
+  &::before {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  
+  .shell {
+    box-shadow: 
+      0 25px 50px -12px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+  }
+  
+  .search-bar form::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+  }
+  
+  .results .titles::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z'/%3E%3Cpolyline points='14 2 14 8 20 8'/%3E%3Cline x1='16' y1='13' x2='8' y2='13'/%3E%3Cline x1='16' y1='17' x2='8' y2='17'/%3E%3Cline x1='10' y1='9' x2='8' y2='9'/%3E%3C/svg%3E");
+  }
+  
+  .no-results::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3Cpath d='M8 8l6 6'/%3E%3Cpath d='M14 8l-6 6'/%3E%3C/svg%3E");
+  }
+}

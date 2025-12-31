@@ -52,6 +52,43 @@ export default withPwa(
       tagsData: getAllType(postData),
       categoriesData: getAllCategories(postData),
       archivesData: getAllArchives(postData),
+      // VitePress 内置本地搜索
+      search: {
+        provider: 'local',
+        options: {
+          locales: {
+            root: {
+              translations: {
+                button: {
+                  buttonText: '搜索',
+                  buttonAriaLabel: '搜索文档'
+                },
+                modal: {
+                  noResultsText: '无法找到相关结果',
+                  resetButtonTitle: '清除查询条件',
+                  displayDetails: '显示详情',
+                  footer: {
+                    selectText: '选择',
+                    navigateText: '切换',
+                    closeText: '关闭'
+                  }
+                }
+              }
+            }
+          },
+          // 优化中文搜索
+          miniSearch: {
+            options: {
+              tokenize: (text) => text.split(/[\s\-_]+|(?=[A-Z])|(?<=[a-z])(?=[A-Z])/),
+            },
+            searchOptions: {
+              fuzzy: 0.2,
+              prefix: true,
+              boost: { title: 4, text: 2, titles: 1 }
+            }
+          }
+        }
+      }
     } as any, // 使用类型断言绕过类型检查
     
     // Markdown配置
