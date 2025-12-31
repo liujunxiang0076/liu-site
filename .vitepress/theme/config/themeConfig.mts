@@ -271,6 +271,7 @@ export const themeConfig = {
             // 页面访问量统计
             pageview: true,
             // 语言设置
+            lang: 'zh-CN',
             locale: {
                 placeholder: '来都来了，不留下点什么吗？'
             },
