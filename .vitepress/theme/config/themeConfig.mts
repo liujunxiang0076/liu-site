@@ -264,7 +264,6 @@ export const themeConfig = {
         // Waline 配置
         waline: {
             // Waline 服务端地址
-            // serverURL: 'https://waline.liujunxiang0076.site/',
             serverURL: 'https://waline.020076.xyz/',
             // 评论数统计
             comment: true,
@@ -272,32 +271,50 @@ export const themeConfig = {
             pageview: true,
             // 语言设置
             lang: 'zh-CN',
+            // 本地化配置
             locale: {
                 placeholder: '来都来了，不留下点什么吗？'
             },
-            // 评论者信息
-            // meta: ['nick'],
-            // 设置必填项，默认匿名
-            // requiredMeta: [],
-            // 登录模式状态
-            // login: 'disable',
-            // 是否禁用版权
-            noCopyright: true,
-            // 启用评论表情反应
-            reaction: true,
-            // 启用 emoji 表情包
+            // 评论者信息字段
+            meta: ['nick', 'mail', 'link'],
+            // 必填字段（空数组表示都不必填）
+            requiredMeta: [],
+            // 登录模式
+            login: 'enable',
+            // 字数限制（0表示无限制）
+            wordLimit: 0,
+            // 每页评论数
+            pageSize: 10,
+            // 评论排序
+            commentSorting: 'latest',
+            // 是否禁用版权信息
+            copyright: false,
+            // 启用表情反应功能
+            reaction: [
+                '//unpkg.com/@waline/emojis@1.4.0/tieba/tieba_agree.png',
+                '//unpkg.com/@waline/emojis@1.4.0/tieba/tieba_look_down.png',
+                '//unpkg.com/@waline/emojis@1.4.0/tieba/tieba_sunglasses.png',
+                '//unpkg.com/@waline/emojis@1.4.0/tieba/tieba_pick_nose.png',
+                '//unpkg.com/@waline/emojis@1.4.0/tieba/tieba_awkward.png',
+                '//unpkg.com/@waline/emojis@1.4.0/tieba/tieba_sleep.png'
+            ],
+            // 表情包配置
             emoji: [
+                '//unpkg.com/@waline/emojis@1.4.0/weibo',
                 '//unpkg.com/@waline/emojis@1.4.0/alus',
                 '//unpkg.com/@waline/emojis@1.4.0/bilibili',
-                '//unpkg.com/@waline/emojis@1.4.0/bmoji',
                 '//unpkg.com/@waline/emojis@1.4.0/qq',
                 '//unpkg.com/@waline/emojis@1.4.0/tieba',
-                '//unpkg.com/@waline/emojis@1.4.0/tw-emoji',
-                '//unpkg.com/@waline/emojis@1.4.0/weibo',
-                '//unpkg.com/@waline/emojis@1.4.0/soul-emoji',
+                '//unpkg.com/@waline/emojis@1.4.0/tw-emoji'
             ],
-
-            
+            // 搜索功能（默认启用 Giphy 搜索）
+            search: {},
+            // 图片上传功能
+            imageUploader: false,
+            // 代码高亮
+            highlighter: false,
+            // 数学公式渲染
+            texRenderer: false
         }
     },
 
