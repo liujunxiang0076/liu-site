@@ -5,7 +5,7 @@ categories: [技术分享]
 date: 2025-12-31
 description: 本文全面介绍JavaScript异步编程的核心概念和实践技巧，从回调函数到Promise，再到Async/Await，帮助开发者掌握现代JavaScript异步编程模式。
 articleGPT: JavaScript异步编程是前端开发中的核心技能之一。本文将深入浅出地讲解异步编程的演进历程，包括回调函数、Promise、Async/Await等关键技术，并提供大量实战案例，帮助开发者彻底理解和掌握JavaScript异步编程。
-cover: https://imgbed.liujunxiang0076.site/file/1735632000000_javascript-async.jpg
+cover: https://imgbed.liujunxiang0076.site/file/1767165234460_javascript-async.png
 ---
 
 # JavaScript异步编程完全指南：从回调到Async/Await
