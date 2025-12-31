@@ -193,14 +193,14 @@ export const themeConfig = {
             name: '服务',
             list: [
                 {
-                    icon: 'https://imgbed.liujunxiang0076.site/file/1734072586316_image.svg',
+                    icon: 'https://imgbed.liujunxiang0076.site/file/1767160890794_imgbed-if.svg',
                     name: '图床',
                     url: 'https://imgbed.liujunxiang0076.site/'
                 },
                 {
-                    icon: 'https://imgbed.liujunxiang0076.site/file/1734072616643_email.svg',
-                    name: '图床',
-                    url: 'https://imgbed.liujunxiang0076.site/'
+                    icon: 'https://imgbed.liujunxiang0076.site/file/1767160926833_icon-tools.svg',
+                    name: '在线工具',
+                    url: 'https://mytool.liujunxiang0076.site/'
                 },
             ]
         },
