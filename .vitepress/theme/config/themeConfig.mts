@@ -287,8 +287,8 @@ export const themeConfig = {
             pageSize: 10,
             // 评论排序
             commentSorting: 'latest',
-            // 是否禁用版权信息
-            copyright: false,
+            // 是否显示版权信息
+            copyright: true,
             // 启用表情反应功能
             reaction: [
                 '//unpkg.com/@waline/emojis@1.4.0/tieba/tieba_agree.png',
@@ -305,16 +305,17 @@ export const themeConfig = {
                 '//unpkg.com/@waline/emojis@1.4.0/bilibili',
                 '//unpkg.com/@waline/emojis@1.4.0/qq',
                 '//unpkg.com/@waline/emojis@1.4.0/tieba',
-                '//unpkg.com/@waline/emojis@1.4.0/tw-emoji'
+                '//unpkg.com/@waline/emojis@1.4.0/tw-emoji',
+                '//unpkg.com/@waline/emojis@1.4.0/bmoji'
             ],
-            // 搜索功能（默认启用 Giphy 搜索）
+            // 搜索功能（启用 Giphy 搜索）
             search: {},
-            // 图片上传功能
-            imageUploader: false,
-            // 代码高亮
-            highlighter: false,
+            // 图片上传功能（启用默认 Base64 上传）
+            imageUploader: true,
+            // 代码高亮功能
+            highlighter: true,
             // 数学公式渲染
-            texRenderer: false
+            texRenderer: true
         }
     },
 
