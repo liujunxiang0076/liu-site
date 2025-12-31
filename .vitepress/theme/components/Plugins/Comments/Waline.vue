@@ -207,11 +207,33 @@ const effectiveNoCopyright = computed(() => {
 // 计算最终使用的其他配置
 const effectiveMeta = computed(() => props.meta || walineConfig.value.meta || ['nick', 'mail', 'link'])
 const effectiveRequiredMeta = computed(() => props.requiredMeta || walineConfig.value.requiredMeta || [])
-const effectiveReaction = computed(() => props.reaction !== undefined ? props.reaction : walineConfig.value.reaction)
-const effectiveEmoji = computed(() => props.emoji !== undefined ? props.emoji : walineConfig.value.emoji)
+const effectiveReaction = computed(() => {
+  if (props.reaction !== undefined) return props.reaction
+  if (walineConfig.value.reaction !== undefined) return walineConfig.value.reaction
+  return false
+})
+const effectiveEmoji = computed(() => {
+  if (props.emoji !== undefined) return props.emoji
+  if (walineConfig.value.emoji !== undefined) return walineConfig.value.emoji
+  return false
+})
 const effectiveLogin = computed(() => props.login || walineConfig.value.login || 'enable')
 const effectiveWordLimit = computed(() => props.wordLimit || walineConfig.value.wordLimit || 0)
 const effectivePageSize = computed(() => props.pageSize || walineConfig.value.pageSize || 10)
+const effectiveSearch = computed(() => {
+  if (props.search !== undefined) return props.search
+  if (walineConfig.value.search !== undefined) return walineConfig.value.search
+  return false
+})
+const effectiveImageUploader = computed(() => {
+  if (props.imageUploader !== undefined) return props.imageUploader
+  if (walineConfig.value.imageUploader !== undefined) return walineConfig.value.imageUploader
+  return false
+})
+const effectiveCopyright = computed(() => {
+  if (walineConfig.value.copyright !== undefined) return walineConfig.value.copyright
+  return !effectiveNoCopyright.value
+})
 
 // 评论DOM
 const commentRef = ref(null)
@@ -289,14 +311,17 @@ const updateWaline = async () => {
       requiredMeta: effectiveRequiredMeta.value,
       reaction: effectiveReaction.value,
       emoji: effectiveEmoji.value,
-      lang: props.lang || walineConfig.value.lang || '',
-      copyright: !effectiveNoCopyright.value,
+      lang: props.lang || walineConfig.value.lang || 'zh-CN',
+      copyright: effectiveCopyright.value,
       login: effectiveLogin.value,
       wordLimit: effectiveWordLimit.value,
       pageSize: effectivePageSize.value,
-      search: props.search,
-      recaptchaV3Key: props.recaptchaV3Key,
-      turnstileKey: props.turnstileKey,
+      search: effectiveSearch.value,
+      imageUploader: effectiveImageUploader.value,
+      highlighter: props.highlighter || walineConfig.value.highlighter,
+      texRenderer: props.texRenderer || walineConfig.value.texRenderer,
+      recaptchaV3Key: props.recaptchaV3Key || walineConfig.value.recaptchaV3Key,
+      turnstileKey: props.turnstileKey || walineConfig.value.turnstileKey,
       // 添加错误处理回调
       errorHandler: (err) => {
         console.error('Waline error:', err)
@@ -313,17 +338,6 @@ const updateWaline = async () => {
           retryable.value = true
         }
       }
-    }
-
-    // 只在值为函数类型时添加相关属性
-    if (typeof props.imageUploader === 'function') {
-      initOptions.imageUploader = props.imageUploader
-    }
-    if (typeof props.highlighter === 'function') {
-      initOptions.highlighter = props.highlighter
-    }
-    if (typeof props.texRenderer === 'function') {
-      initOptions.texRenderer = props.texRenderer
     }
 
     walineInstance.value = init(initOptions)
