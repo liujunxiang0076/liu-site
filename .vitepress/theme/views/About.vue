@@ -1,30 +1,33 @@
 <template>
   <div class="about">
     <h1 class="title">关于本站</h1>
-    <div>等想好了再写</div>
-    <div v-if="false" class="about-content" style="grid-template-columns: 3fr 2fr">
+    <div class="about-content" style="grid-template-columns: 3fr 2fr">
       <!-- 介绍 -->
       <div class="about-item hello">
         <span class="text1">你好，很高兴认识你👋</span>
         <span class="text2 title2">我是 liu</span>
         <span class="text3">是一名 工程师</span>
       </div>
-      <!-- 追求 -->
-      <div class="about-item pursuit">
-        <span class="tip">追求</span>
-        <span class="title2">源于</span>
-        <span class="title2">热爱而去开发</span>
-        <span class="title2">优秀的作品</span>
+      <!-- 建站初衷 -->
+      <div class="about-item">
+        <span class="tip">建站初衷</span>
+        <span class="title2">记录与分享</span>
+        <p class="text">
+          这个站点是我的<strong>技术笔记本</strong>和<strong>知识分享平台</strong>。
+        </p>
+        <p class="text">
+          希望通过记录学习过程，帮助自己成长，也能为其他开发者提供一些参考。
+        </p>
       </div>
     </div>
-    <div v-if="false" class="about-content" style="grid-template-columns: 2fr 3fr">
+    <div class="about-content" style="grid-template-columns: 2fr 3fr">
       <!-- 技能 -->
       <div class="about-item skills">
-        <span class="tip">技能</span>
-        <span class="title2">开启创造力</span>
+        <span class="tip">技能栈</span>
+        <span class="title2">持续学习中</span>
         <div class="skills-list">
           <a
-            v-for="(item, index) in skillsData"
+            v-for="(item, index) in skillsData.slice(0, 8)"
             :key="index"
             :style="{ '--color': item.color }"
             :href="item.link"
@@ -38,23 +41,39 @@
           </a>
         </div>
       </div>
-      <!-- 生涯 -->
-      <div class="about-item career">
-        <span class="tip">生涯</span>
-        <span class="title2">
-          <i>無限進步</i>
-        </span>
-        <div class="list">
-          <span class="list-item" style="--color: #357ef5">ZZRVTC · 计算机应用技术</span>
-          <span class="list-item" style="--color: #eb372a">FE · 前端开发工程师</span>
+      <!-- 联系方式 -->
+      <div class="about-item">
+        <span class="tip">联系方式</span>
+        <span class="title2">欢迎交流</span>
+        <div class="contact-list">
+          <div class="contact-item">
+            <i class="iconfont icon-email"></i>
+            <span>liujunxiang0076@foxmail.com</span>
+          </div>
+          <div class="contact-item">
+            <i class="iconfont icon-github"></i>
+            <a href="https://github.com/liujunxiang0076" target="_blank">GitHub</a>
+          </div>
         </div>
-        <img
-          class="career-img"
-          src="https://imgbed.liujunxiang0076.site/file/1733710884726_wallpaper1733710565967.jpg"
-          alt="career"
-        />
       </div>
     </div>
+    <!-- 心路历程 -->
+    <div class="about-content" style="display: flex">
+      <div class="about-item">
+        <span class="tip">心路历程</span>
+        <span class="title2">为什么建站？</span>
+        <p class="text">
+          创建这个站的时候，想要就是能够有一个自己能够<strong>积累知识</strong>、<strong>积累兴趣</strong>的地方。和他人分享，会让这些成为<strong>积累和沉淀</strong>。如果能够帮助到更多的人，帮助更多人解决问题，那一定是非常棒的事情。
+        </p>
+        <p class="text">
+          这里大多都是<strong>技术向</strong>的文章，可能不太会有很多人看，权当是做个自我记录吧。当然，如果某篇文章能够帮助到你，那我也是很开心的。
+        </p>
+        <p class="text">
+          这些就是创造这个小站的本意，<strong>也是我分享生活的方式</strong>。有幸能和你相遇在这里，相信我们能共同留下一段美好记忆。
+        </p>
+      </div>
+    </div>
+    <!-- 隐藏的其他内容，可以后续启用 -->
     <div v-if="false" class="about-content" style="grid-template-columns: 3fr 2fr">
       <!-- 性格 -->
       <div class="about-item character" style="--color: #4298b4">
@@ -157,22 +176,6 @@
             <span class="info-num" style="--color: #dfac46">工程师</span>
           </div>
         </div>
-      </div>
-    </div>
-    <!-- 心路历程 -->
-    <div v-if="false" class="about-content" style="display: flex">
-      <div class="about-item">
-        <span class="tip">心路历程</span>
-        <span class="title2">为什么建站？</span>
-        <p class="text">
-          创建这个站的时候，想要就是能够有一个自己能够<strong>积累知识</strong>、<strong>积累兴趣</strong>的地方。和他人分享，会让这些成为<strong>积累和沉淀</strong>。如果能够帮助到更多的人，帮助更多人解决问题，那一定是非常棒的事情。
-        </p>
-        <p class="text">
-          这里大多都是<strong>技术向</strong>的文章，可能不太会有很多人看，权当是做个自我记录吧。当然，如果某篇文章能够帮助到你，那我也是很开心的。
-        </p>
-        <p class="text">
-          这些就是创造这个小站的本意，<strong>也是我分享生活的方式</strong>。有幸能和你相遇在这里，相信我们能共同留下一段美好记忆。
-        </p>
       </div>
     </div>
   </div>
@@ -373,6 +376,29 @@ onMounted(() => {
         &:hover {
           .male {
             transform: scale(1.2);
+          }
+        }
+      }
+      &.contact {
+        .contact-list {
+          margin-top: 20px;
+          .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 16px;
+            .iconfont {
+              margin-right: 12px;
+              font-size: 20px;
+              color: var(--main-color);
+            }
+            a {
+              color: var(--main-font-color);
+              text-decoration: none;
+              &:hover {
+                color: var(--main-color);
+              }
+            }
           }
         }
       }
