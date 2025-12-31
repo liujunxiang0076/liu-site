@@ -387,9 +387,9 @@ onBeforeUnmount(() => {
 }
 
 /* 隐藏评论点赞 */
-.wl-reaction {
+/* .wl-reaction {
   display: none;
-}
+} */
 
 /* 隐藏评论版权 */
 /* .wl-power {

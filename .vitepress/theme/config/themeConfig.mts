@@ -283,19 +283,19 @@ export const themeConfig = {
             // login: 'disable',
             // 是否禁用版权
             noCopyright: true,
-            // 是否禁用评论表情
-            // reaction: true,
-            // emoji
-            // emoji: [
-            //     '//unpkg.com/@waline/emojis@1.4.0/alus',
-            //     '//unpkg.com/@waline/emojis@1.4.0/bilibili',
-            //     '//unpkg.com/@waline/emojis@1.4.0/bmoji',
-            //     '//unpkg.com/@waline/emojis@1.4.0/qq',
-            //     '//unpkg.com/@waline/emojis@1.4.0/tieba',
-            //     '//unpkg.com/@waline/emojis@1.4.0/tw-emoji',
-            //     '//unpkg.com/@waline/emojis@1.4.0/weibo',
-            //     '//unpkg.com/@waline/emojis@1.4.0/soul-emoji',
-            // ],
+            // 启用评论表情反应
+            reaction: true,
+            // 启用 emoji 表情包
+            emoji: [
+                '//unpkg.com/@waline/emojis@1.4.0/alus',
+                '//unpkg.com/@waline/emojis@1.4.0/bilibili',
+                '//unpkg.com/@waline/emojis@1.4.0/bmoji',
+                '//unpkg.com/@waline/emojis@1.4.0/qq',
+                '//unpkg.com/@waline/emojis@1.4.0/tieba',
+                '//unpkg.com/@waline/emojis@1.4.0/tw-emoji',
+                '//unpkg.com/@waline/emojis@1.4.0/weibo',
+                '//unpkg.com/@waline/emojis@1.4.0/soul-emoji',
+            ],
 
             
         }
