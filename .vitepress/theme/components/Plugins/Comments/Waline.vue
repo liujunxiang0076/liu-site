@@ -374,11 +374,12 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
-/* 评论内容 */
+/* 评论样式优化 */
 .comment-content {
   margin: 2rem 0 0 0;
 }
-/* 评论错误 */
+
+/* 错误提示样式 */
 .waline-error {
   margin: 1rem 0;
   padding: 1rem;
@@ -386,7 +387,8 @@ onBeforeUnmount(() => {
   background-color: rgba(255, 0, 0, 0.1);
   color: #ff0000;
 }
-/* 重试按钮 */
+
+/* 重试按钮样式 */
 .retry-button {
   margin-top: 0.5rem;
   padding: 0.25rem 0.75rem;
@@ -395,19 +397,9 @@ onBeforeUnmount(() => {
   border-radius: 0.25rem;
   cursor: pointer;
 }
-/* 重试按钮hover */
+
 .retry-button:hover {
   background-color: #e0e0e0;
 }
-
-/* 隐藏评论点赞 */
-/* .wl-reaction {
-  display: none;
-} */
-
-/* 隐藏评论版权 */
-/* .wl-power {
-  display: none !important;
-} */
 
 </style>
