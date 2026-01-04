@@ -401,12 +401,13 @@ a {
     display: flex !important;
     align-items: center !important;
     padding: 14px 20px !important;
-    border-bottom: 1px solid var(--main-card-border) !important;
+    border-bottom: 2px solid var(--main-color) !important;
     background-color: var(--main-card-background) !important;
     gap: 0 !important;
     position: relative !important;
     z-index: 10 !important;
     flex-shrink: 0 !important;
+    margin-bottom: 0 !important;
     
     // 搜索图标 - 用 emoji
     .search-icon {
@@ -465,6 +466,8 @@ a {
     overscroll-behavior: contain !important;
     padding: 8px 20px !important;
     min-height: 100px !important;
+    margin-top: 0 !important;
+    position: relative !important;
     
     // 隐藏摘要的渐变遮罩
     .excerpt-gradient-bottom,
@@ -669,64 +672,12 @@ a {
     }
   }
   
-  // 底部快捷键
+  // 底部快捷键 - 完全隐藏
   footer.search-keyboard-shortcuts {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 20px !important;
-    padding: 10px 20px !important;
-    border-top: 1px solid var(--main-card-border) !important;
-    background-color: var(--main-card-second-background) !important;
-    font-size: 12px !important;
-    color: var(--main-font-second-color) !important;
-    
-    > span {
-      display: inline-flex !important;
-      align-items: center !important;
-      gap: 6px !important;
-      
-      &::before {
-        content: none !important;
-      }
-    }
-    
-    kbd {
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      min-width: 24px !important;
-      height: 24px !important;
-      padding: 0 6px !important;
-      background-color: var(--main-card-background) !important;
-      border: 1px solid var(--main-card-border) !important;
-      border-radius: 6px !important;
-      font-size: 11px !important;
-      font-family: inherit !important;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
-      
-      // 切换（上下箭头）- 第一个 span 的第一个 kbd
-      &:has(+ kbd) {
-        background-image: url('/images/icon/updown.svg') !important;
-        background-size: 14px !important;
-        background-repeat: no-repeat !important;
-        background-position: center !important;
-        width: 32px !important;
-        font-size: 0 !important;
-        color: transparent !important;
-      }
-    }
-    
-    // 选择（回车）- 第二个 span 的 kbd
-    > span:nth-child(2) kbd:first-child {
-      background-image: url('/images/icon/enter.svg') !important;
-      background-size: 12px !important;
-      background-repeat: no-repeat !important;
-      background-position: center !important;
-      width: 28px !important;
-      font-size: 0 !important;
-      color: transparent !important;
-    }
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
   }
 }
 
@@ -739,4 +690,10 @@ html.dark .VPLocalSearchBox {
   > .shell {
     box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.5) !important;
   }
+}
+
+// 全局隐藏搜索框底部快捷键
+.VPLocalSearchBox[data-v-15f4dd16] footer.search-keyboard-shortcuts[data-v-15f4dd16],
+.VPLocalSearchBox footer.search-keyboard-shortcuts {
+  display: none !important;
 }
