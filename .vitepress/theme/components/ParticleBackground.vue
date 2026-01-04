@@ -1,16 +1,24 @@
 <template>
   <Teleport to="body">
     <!-- 站点背景 -->
-    <div v-if="(backgroundType === 'patterns' || backgroundType === 'dynamic') && particleConfig" :class="['background', backgroundType, themeValue]">
+    <div v-if="(backgroundType === 'patterns' || backgroundType === 'dynamic') && particleConfig" 
+         :key="`particle-bg-${backgroundType}`"
+         :class="['background', backgroundType, themeValue]">
       <div class="particle-network-container">
         <canvas ref="particleCanvas" class="particle-network-canvas"></canvas>
+      </div>
+      <!-- 调试信息 -->
+      <div v-if="false" style="position: fixed; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; z-index: 9999;">
+        Background: {{ backgroundType }}<br>
+        Config: {{ particleConfig ? 'loaded' : 'null' }}<br>
+        Particles: {{ particles.length }}
       </div>
     </div>
   </Teleport>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted, reactive, computed } from 'vue';
+import { ref, onMounted, onUnmounted, reactive, computed, watch, nextTick } from 'vue';
 import { useData } from 'vitepress';
 import { storeToRefs } from "pinia";
 import { mainStore } from "../store/index";
@@ -123,6 +131,10 @@ const initCanvas = () => {
   particleCanvas.value.style.height = `${canvasHeight}px`;
   ctx?.scale(dpr, dpr);
 
+  // 重置动画相关变量
+  animationPhase = 0;
+  hasMouseMoved.value = false;
+
   // 使用节流函数处理鼠标移动
   let mouseMoveTimeout: number | null = null;
   const handleMouseMove = (e: MouseEvent) => {
@@ -131,7 +143,7 @@ const initCanvas = () => {
       mousePosition.x = e.clientX;
       mousePosition.y = e.clientY;
       hasMouseMoved.value = true;
-    }, 3); // 减少延迟时间，提高响应速度
+    }, 3);
   };
 
   window.addEventListener('mousemove', handleMouseMove);
@@ -140,6 +152,7 @@ const initCanvas = () => {
   const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
   const actualParticleCount = isMobile ? Math.floor(config.particleCount * 0.6) : config.particleCount
   
+  // 创建粒子数组
   particles.value = Array.from({ length: actualParticleCount }, () => ({
     x: Math.random() * canvasWidth,
     y: Math.random() * canvasHeight,
@@ -156,6 +169,7 @@ const initCanvas = () => {
     window.removeEventListener('mousemove', handleMouseMove);
     if (animationFrameId.value) {
       cancelAnimationFrame(animationFrameId.value);
+      animationFrameId.value = null;
     }
   };
 };
@@ -237,10 +251,6 @@ const animate = () => {
   animationPhase += config.pulseSpeed;
 
   ctx.save();
-
-  // 更新和绘制粒子 - 使用性能优化
-  // const now = performance.now()
-  // const shouldSkipComplexCalculations = isResizing || (now % 3 !== 0) // 每3帧才进行复杂计算
   
   particles.value.forEach((particle, i) => {
     // 基础移动
@@ -251,7 +261,7 @@ const animate = () => {
     particle.x = (particle.x + canvasWidth) % canvasWidth;
     particle.y = (particle.y + canvasHeight) % canvasHeight;
 
-    // 鼠标交互 - 只在非resize状态下计算&& !shouldSkipComplexCalculations
+    // 鼠标交互
     if (hasMouseMoved.value) {
       const dx = mousePosition.x - particle.x;
       const dy = mousePosition.y - particle.y;
@@ -277,7 +287,7 @@ const animate = () => {
       particle.vy *= scale;
     }
 
-    // 绘制连线（只检查后面的粒子以避免重复）- 跳过复杂计算时不绘制连线 && !shouldSkipComplexCalculations
+    // 绘制连线（只检查后面的粒子以避免重复）
     if (ctx) {
       for (let j = i + 1; j < particles.value.length; j++) {
         const particle2 = particles.value[j];
@@ -389,22 +399,38 @@ const handleResize = () => {
   }, 150) // 稍微增加防抖时间，减少频繁重绘
 }
 
+// 监听背景类型变化，确保正确清理
+watch(() => backgroundType.value, (newType, oldType) => {
+  console.log('Background type changed:', oldType, '->', newType);
+  // 当背景类型改变时，由于使用了 key，Vue 会自动销毁和重建组件
+  // 这里只需要确保清理当前的动画帧
+  if (animationFrameId.value) {
+    cancelAnimationFrame(animationFrameId.value);
+    animationFrameId.value = null;
+  }
+});
+
+// 监听 particleConfig 变化
+watch(() => particleConfig.value, (newConfig) => {
+  console.log('Particle config changed:', newConfig);
+}, { deep: true });
+
 // 生命周期钩子
 let cleanup = () => {}
 
 onMounted(() => {
+  console.log('ParticleBackground mounted, backgroundType:', backgroundType.value);
   if (!isClient) return
   
-  cleanup = initCanvas()
+  // 使用 nextTick 确保 DOM 完全渲染后再初始化
+  nextTick(() => {
+    cleanup = initCanvas()
+  })
   window.addEventListener('resize', handleResize)
-  
-  // 确保只在客户端执行
-  if (isClient) {
-    animate()
-  }
 })
 
 onUnmounted(() => {
+  console.log('ParticleBackground unmounted');
   if (!isClient) return
   window.removeEventListener('resize', handleResize)
   cleanup()
