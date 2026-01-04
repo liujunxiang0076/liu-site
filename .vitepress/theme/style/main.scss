@@ -649,6 +649,13 @@ a {
   .no-results {
     padding: 48px 24px !important;
     text-align: center !important;
+    list-style: none !important;
+    
+    &::before,
+    &::marker {
+      display: none !important;
+      content: none !important;
+    }
     
     // 空状态图标 - 用图片
     .no-results-icon {
