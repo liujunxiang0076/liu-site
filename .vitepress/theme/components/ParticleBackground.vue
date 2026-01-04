@@ -209,7 +209,7 @@ const animate = () => {
     particle.x = (particle.x + canvasWidth) % canvasWidth;
     particle.y = (particle.y + canvasHeight) % canvasHeight;
 
-    // 鼠标交互
+    // 鼠标交互 - 只在非resize状态下计算&& !shouldSkipComplexCalculations
     if (hasMouseMoved.value) {
       const dx = mousePosition.x - particle.x;
       const dy = mousePosition.y - particle.y;
