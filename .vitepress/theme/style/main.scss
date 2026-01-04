@@ -673,11 +673,17 @@ a {
   }
   
   // 底部快捷键 - 完全隐藏
-  footer.search-keyboard-shortcuts {
+  footer,
+  footer.search-keyboard-shortcuts,
+  .search-keyboard-shortcuts {
     display: none !important;
     visibility: hidden !important;
     height: 0 !important;
+    width: 0 !important;
     overflow: hidden !important;
+    position: absolute !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 }
 
@@ -692,8 +698,20 @@ html.dark .VPLocalSearchBox {
   }
 }
 
-// 全局隐藏搜索框底部快捷键
-.VPLocalSearchBox[data-v-15f4dd16] footer.search-keyboard-shortcuts[data-v-15f4dd16],
-.VPLocalSearchBox footer.search-keyboard-shortcuts {
+// 全局隐藏搜索框底部快捷键 - 使用多种选择器确保生效
+.VPLocalSearchBox footer,
+.VPLocalSearchBox .search-keyboard-shortcuts,
+.VPLocalSearchBox footer.search-keyboard-shortcuts,
+.VPLocalSearchBox[data-v-15f4dd16] footer,
+.VPLocalSearchBox[data-v-15f4dd16] footer.search-keyboard-shortcuts,
+.VPLocalSearchBox[data-v-15f4dd16] .search-keyboard-shortcuts,
+footer[data-v-15f4dd16].search-keyboard-shortcuts {
   display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
