@@ -1,6 +1,6 @@
 <template>
     <!-- 背景图片 -->
-    <!-- <Background /> -->
+    <Background />
     <!-- 粒子效果背景 -->
     <ParticleBackground />
     <!-- 加载提示 -->

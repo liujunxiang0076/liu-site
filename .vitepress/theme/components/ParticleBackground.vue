@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <!-- 站点背景 -->
-    <div v-if="backgroundType !== 'close' && particleConfig" :class="['background', backgroundType, themeValue]">
+    <div v-if="(backgroundType === 'patterns' || backgroundType === 'dynamic') && particleConfig" :class="['background', backgroundType, themeValue]">
       <div class="particle-network-container">
         <canvas ref="particleCanvas" class="particle-network-canvas"></canvas>
       </div>
@@ -48,46 +48,50 @@ const particleConfig = computed(() => {
     selectedConfig = config.presets?.[config.performance] || config.presets?.balanced;
   }
   
+  // 动态背景模式的特殊配置
+  const isDynamicMode = backgroundType.value === 'dynamic';
+  const dynamicMultiplier = isDynamicMode ? 1.3 : 1; // 动态模式增强效果
+  
   return {
-    // 核心设置
-    particleCount: selectedConfig?.particleCount || 80,
+    // 核心设置 - 动态模式增强
+    particleCount: Math.floor((selectedConfig?.particleCount || 80) * dynamicMultiplier),
     particleColor: 'rgba(255, 255, 255, 0.7)',
     lineColor: 'rgba(255, 255, 255, 0.2)',
     highlightLineColor: 'rgba(255, 255, 255, 0.5)',
     backgroundColor: {
       dark: {
-        start: '#0f1a2c',
-        end: '#162339'
+        start: isDynamicMode ? '#0a1428' : '#0f1a2c',
+        end: isDynamicMode ? '#1a2332' : '#162339'
       },
       light: {
-        start: '#f1f5fa',
-        end: '#e6f0fb'
+        start: isDynamicMode ? '#f0f4f9' : '#f1f5fa',
+        end: isDynamicMode ? '#e2ecf7' : '#e6f0fb'
       }
     },
 
-    // 粒子属性
+    // 粒子属性 - 动态模式增强
     particleMinRadius: selectedConfig?.particleMinRadius || 1,
-    particleMaxRadius: selectedConfig?.particleMaxRadius || 2.5,
-    baseSpeed: selectedConfig?.baseSpeed || 0.3,
+    particleMaxRadius: (selectedConfig?.particleMaxRadius || 2.5) * (isDynamicMode ? 1.2 : 1),
+    baseSpeed: (selectedConfig?.baseSpeed || 0.3) * (isDynamicMode ? 1.5 : 1),
 
-    // 连线属性
-    lineWidth: selectedConfig?.lineWidth || 0.5,
-    connectDistance: selectedConfig?.connectDistance || 135,
+    // 连线属性 - 动态模式增强
+    lineWidth: (selectedConfig?.lineWidth || 0.5) * (isDynamicMode ? 1.3 : 1),
+    connectDistance: (selectedConfig?.connectDistance || 135) * (isDynamicMode ? 1.2 : 1),
 
-    // 交互设置
-    interactiveDistance: selectedConfig?.interactiveDistance || 275,
-    interactiveForce: selectedConfig?.interactiveForce || 90,
-    baseBrightness: selectedConfig?.baseBrightness || 0.4,
+    // 交互设置 - 动态模式增强
+    interactiveDistance: (selectedConfig?.interactiveDistance || 275) * (isDynamicMode ? 1.3 : 1),
+    interactiveForce: (selectedConfig?.interactiveForce || 90) * (isDynamicMode ? 1.4 : 1),
+    baseBrightness: (selectedConfig?.baseBrightness || 0.4) * (isDynamicMode ? 1.2 : 1),
 
-    // 光效设置
+    // 光效设置 - 动态模式增强
     spotlights: [
-      { x: 0.2, y: 0, radius: 200, intensity: 0.3 },
-      { x: 0.8, y: 0, radius: 200, intensity: 0.3 }
+      { x: 0.2, y: 0, radius: 200 * (isDynamicMode ? 1.3 : 1), intensity: 0.3 * (isDynamicMode ? 1.4 : 1) },
+      { x: 0.8, y: 0, radius: 200 * (isDynamicMode ? 1.3 : 1), intensity: 0.3 * (isDynamicMode ? 1.4 : 1) }
     ],
 
-    // 动画设置
-    pulseSpeed: selectedConfig?.pulseSpeed || 0.002,
-    pulseIntensity: selectedConfig?.pulseIntensity || 0.1
+    // 动画设置 - 动态模式增强
+    pulseSpeed: (selectedConfig?.pulseSpeed || 0.002) * (isDynamicMode ? 1.5 : 1),
+    pulseIntensity: (selectedConfig?.pulseIntensity || 0.1) * (isDynamicMode ? 1.3 : 1)
   };
 });
 

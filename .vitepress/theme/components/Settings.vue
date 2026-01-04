@@ -57,8 +57,14 @@
               纹理
             </span>
             <span
+              :class="['options', { choose: backgroundType === 'dynamic' }]"
+              @click="backgroundType = 'dynamic'"
+            >
+              动态
+            </span>
+            <span
               :class="['options', { choose: backgroundType === 'image' }]"
-              @click="(backgroundType = 'image'), (themeType = 'dark')"
+              @click="backgroundType = 'image'"
             >
               图片
             </span>

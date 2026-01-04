@@ -52,8 +52,8 @@ export const mainStore = defineStore("main", {
       // 上次滚动位置
       lastScrollY: 0,
       // 站点背景
-      backgroundType: "patterns",
-      backgroundUrl: "https://tuapi.eees.cc/api.php?category={dongman,fengjing}&type=302",
+      backgroundType: "dynamic",
+      backgroundUrl: "https://picsum.photos/1920/1080?random=1",
       // 文章密码验证状态
       articlePasswords: {}, // 存储已验证的文章密码 { articleId: { password: 'xxx', expireTime: timestamp } }
     };
