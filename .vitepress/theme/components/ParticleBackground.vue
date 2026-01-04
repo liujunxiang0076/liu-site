@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <!-- 站点背景 -->
-    <div v-if="backgroundType !== 'close'" :class="['background', backgroundType, themeValue]">
+    <div v-if="backgroundType !== 'close' && particleConfig" :class="['background', backgroundType, themeValue]">
       <div class="particle-network-container">
         <canvas ref="particleCanvas" class="particle-network-canvas"></canvas>
       </div>
@@ -10,13 +10,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted, reactive } from 'vue';
+import { ref, onMounted, onUnmounted, reactive, computed } from 'vue';
+import { useData } from 'vitepress';
 import { storeToRefs } from "pinia";
 import { mainStore } from "../store/index";
 import { isClient } from '../utils/helper.mjs'
 
 const store = mainStore();
 const { backgroundType, backgroundUrl, themeValue } = storeToRefs(store);
+const { theme } = useData();
 const particleCanvas = ref<HTMLCanvasElement | null>(null);
 const animationFrameId = ref<number | null>(null);
 const mousePosition = reactive({ x: 0, y: 0 });
@@ -31,48 +33,66 @@ interface Particle {
   brightness: number;
 }
 
-// 网络配置
-const config = {
-  // 核心设置
-  particleCount: 100, // 增加粒子数量以提高视觉效果
-  particleColor: 'rgba(255, 255, 255, 0.7)',
-  lineColor: 'rgba(255, 255, 255, 0.2)',
-  highlightLineColor: 'rgba(255, 255, 255, 0.5)',
-  backgroundColor: {
-    dark: {
-      start: '#0f1a2c',
-      end: '#162339'
+// 从主题配置获取粒子背景配置
+const particleConfig = computed(() => {
+  const config = theme.value?.particleBackground || {};
+  
+  // 如果禁用了粒子背景，返回null
+  if (!config.enable) return null;
+  
+  // 根据性能模式选择配置
+  let selectedConfig;
+  if (config.performance === 'custom') {
+    selectedConfig = config.custom;
+  } else {
+    selectedConfig = config.presets?.[config.performance] || config.presets?.balanced;
+  }
+  
+  return {
+    // 核心设置
+    particleCount: selectedConfig?.particleCount || 80,
+    particleColor: 'rgba(255, 255, 255, 0.7)',
+    lineColor: 'rgba(255, 255, 255, 0.2)',
+    highlightLineColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: {
+      dark: {
+        start: '#0f1a2c',
+        end: '#162339'
+      },
+      light: {
+        start: '#f1f5fa',
+        end: '#e6f0fb'
+      }
     },
-    light: {
-      start: '#f1f5fa',
-      end: '#e6f0fb'
-    }
-  },
 
-  // 粒子属性
-  particleMinRadius: 1,
-  particleMaxRadius: 2.5, // 增加部分粒子的最大尺寸
-  baseSpeed: 0.3, // 稍微提高基础速度
+    // 粒子属性
+    particleMinRadius: selectedConfig?.particleMinRadius || 1,
+    particleMaxRadius: selectedConfig?.particleMaxRadius || 2.5,
+    baseSpeed: selectedConfig?.baseSpeed || 0.3,
 
-  // 连线属性
-  lineWidth: 0.5,
-  connectDistance: 150, // 增加连线距离，让网络更密集
+    // 连线属性
+    lineWidth: selectedConfig?.lineWidth || 0.5,
+    connectDistance: selectedConfig?.connectDistance || 135,
 
-  // 交互设置
-  interactiveDistance: 300, // 增加交互影响范围
-  interactiveForce: 100, // 增强鼠标交互力度
-  baseBrightness: 0.4,
+    // 交互设置
+    interactiveDistance: selectedConfig?.interactiveDistance || 275,
+    interactiveForce: selectedConfig?.interactiveForce || 90,
+    baseBrightness: selectedConfig?.baseBrightness || 0.4,
 
-  // 光效设置
-  spotlights: [
-    { x: 0.2, y: 0, radius: 200, intensity: 0.3 },
-    { x: 0.8, y: 0, radius: 200, intensity: 0.3 }
-  ],
+    // 光效设置
+    spotlights: [
+      { x: 0.2, y: 0, radius: 200, intensity: 0.3 },
+      { x: 0.8, y: 0, radius: 200, intensity: 0.3 }
+    ],
 
-  // 动画设置
-  pulseSpeed: 0.002,
-  pulseIntensity: 0.1
-};
+    // 动画设置
+    pulseSpeed: selectedConfig?.pulseSpeed || 0.002,
+    pulseIntensity: selectedConfig?.pulseIntensity || 0.1
+  };
+});
+
+// 获取当前配置的辅助函数
+const getConfig = () => particleConfig.value;
 
 // 修复：使用ref而不是直接数组
 const particles = ref<Particle[]>([]);
@@ -83,7 +103,8 @@ let animationPhase = 0;
 
 // 初始化画布和粒子
 const initCanvas = () => {
-  if (!isClient || !particleCanvas.value) return () => { };
+  const config = getConfig();
+  if (!isClient || !particleCanvas.value || !config) return () => { };
 
   ctx = particleCanvas.value.getContext('2d', { alpha: false }); // 禁用 alpha 以提高性能
   if (!ctx) return () => { };
@@ -111,8 +132,11 @@ const initCanvas = () => {
 
   window.addEventListener('mousemove', handleMouseMove);
 
-  // 创建粒子
-  particles.value = Array.from({ length: config.particleCount }, () => ({
+  // 创建粒子 - 根据设备性能调整数量
+  const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  const actualParticleCount = isMobile ? Math.floor(config.particleCount * 0.6) : config.particleCount
+  
+  particles.value = Array.from({ length: actualParticleCount }, () => ({
     x: Math.random() * canvasWidth,
     y: Math.random() * canvasHeight,
     vx: (Math.random() - 0.5) * config.baseSpeed,
@@ -134,7 +158,8 @@ const initCanvas = () => {
 
 // 绘制背景
 const drawBackground = () => {
-  if (!ctx || !isClient) return;
+  const config = getConfig();
+  if (!ctx || !isClient || !config) return;
 
   // 获取当前主题模式（浅色/深色）
   const isDark = document.documentElement.classList.contains('dark');
@@ -150,7 +175,8 @@ const drawBackground = () => {
 
 // 绘制光效
 const drawSpotlights = () => {
-  if (!ctx || !isClient) return;
+  const config = getConfig();
+  if (!ctx || !isClient || !config) return;
 
   ctx!.save();
   ctx!.globalCompositeOperation = 'lighter';
@@ -180,7 +206,16 @@ const drawSpotlights = () => {
 
 // 动画循环
 const animate = () => {
-  if (!ctx || !isClient) return;
+  const config = getConfig();
+  if (!ctx || !isClient || !config) return;
+
+  // 如果正在resize，只绘制简单背景，跳过粒子计算
+  if (isResizing) {
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    drawBackground();
+    animationFrameId.value = requestAnimationFrame(animate);
+    return;
+  }
 
   // 获取当前主题模式
   const isDark = document.documentElement.classList.contains('dark');
@@ -199,7 +234,10 @@ const animate = () => {
 
   ctx.save();
 
-  // 更新和绘制粒子
+  // 更新和绘制粒子 - 使用性能优化
+  // const now = performance.now()
+  // const shouldSkipComplexCalculations = isResizing || (now % 3 !== 0) // 每3帧才进行复杂计算
+  
   particles.value.forEach((particle, i) => {
     // 基础移动
     particle.x += particle.vx;
@@ -235,7 +273,7 @@ const animate = () => {
       particle.vy *= scale;
     }
 
-    // 绘制连线（只检查后面的粒子以避免重复）
+    // 绘制连线（只检查后面的粒子以避免重复）- 跳过复杂计算时不绘制连线 && !shouldSkipComplexCalculations
     if (ctx) {
       for (let j = i + 1; j < particles.value.length; j++) {
         const particle2 = particles.value[j];

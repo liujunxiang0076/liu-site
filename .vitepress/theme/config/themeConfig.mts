@@ -486,5 +486,84 @@ export const themeConfig = {
         confirmText: '确认',
         // 取消按钮文本
         cancelText: '取消'
+    },
+
+    /**
+     * 粒子背景配置
+     */
+    particleBackground: {
+        // 是否启用粒子背景
+        enable: true,
+        // 性能模式：high(高性能) / balanced(平衡) / low(低性能)
+        performance: 'high',
+        // 自定义配置（当performance为custom时使用）
+        custom: {
+            // 粒子数量
+            particleCount: 80,
+            // 连线距离
+            connectDistance: 135,
+            // 交互距离
+            interactiveDistance: 275,
+            // 交互力度
+            interactiveForce: 90,
+            // 基础速度
+            baseSpeed: 0.3,
+            // 粒子大小范围
+            particleMinRadius: 1,
+            particleMaxRadius: 2.5,
+            // 线条宽度
+            lineWidth: 0.5,
+            // 基础亮度
+            baseBrightness: 0.4,
+            // 脉冲速度
+            pulseSpeed: 0.002,
+            // 脉冲强度
+            pulseIntensity: 0.1
+        },
+        // 预设配置
+        presets: {
+            // 高性能模式
+            high: {
+                particleCount: 100,
+                connectDistance: 150,
+                interactiveDistance: 300,
+                interactiveForce: 100,
+                baseSpeed: 0.3,
+                particleMinRadius: 1,
+                particleMaxRadius: 2.5,
+                lineWidth: 0.5,
+                baseBrightness: 0.4,
+                pulseSpeed: 0.002,
+                pulseIntensity: 0.1
+            },
+            // 平衡模式
+            balanced: {
+                particleCount: 80,
+                connectDistance: 135,
+                interactiveDistance: 275,
+                interactiveForce: 90,
+                baseSpeed: 0.3,
+                particleMinRadius: 1,
+                particleMaxRadius: 2.5,
+                lineWidth: 0.5,
+                baseBrightness: 0.4,
+                pulseSpeed: 0.002,
+                pulseIntensity: 0.1
+            },
+            // 低性能模式
+            low: {
+                particleCount: 60,
+                connectDistance: 120,
+                interactiveDistance: 250,
+                interactiveForce: 80,
+                baseSpeed: 0.3,
+                particleMinRadius: 1,
+                particleMaxRadius: 2.5,
+                lineWidth: 0.5,
+                baseBrightness: 0.4,
+                pulseSpeed: 0.002,
+                pulseIntensity: 0.1
+            }
+        }
     }
 };
