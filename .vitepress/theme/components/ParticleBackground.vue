@@ -369,6 +369,9 @@ onUnmounted(() => {
   if (animationFrameId.value) {
     cancelAnimationFrame(animationFrameId.value)
   }
+  if (resizeTimeout) {
+    clearTimeout(resizeTimeout)
+  }
 })
 </script>
 
