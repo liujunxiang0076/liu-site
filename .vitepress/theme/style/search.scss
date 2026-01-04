@@ -1,0 +1,396 @@
+/* VitePress 本地搜索样式 */
+.VPLocalSearchBox {
+  // VitePress 默认主题变量
+  --vp-c-text-1: var(--main-font-color);
+  --vp-c-text-2: var(--main-font-second-color);
+  --vp-c-text-3: var(--main-font-second-color);
+  --vp-c-brand-1: var(--main-color);
+  --vp-c-brand-2: var(--main-color);
+  --vp-c-bg: var(--main-card-background);
+  --vp-c-bg-soft: var(--main-card-second-background);
+  --vp-c-bg-alt: var(--main-card-second-background);
+  --vp-c-divider: var(--main-card-border);
+  --vp-c-border: var(--main-card-border);
+  --vp-local-search-bg: var(--main-card-background);
+  --vp-local-search-result-bg: var(--main-card-background);
+  --vp-local-search-result-border: var(--main-card-border);
+  --vp-local-search-result-selected-bg: var(--main-color);
+  --vp-local-search-result-selected-border: var(--main-color);
+  --vp-local-search-highlight-bg: var(--main-color-bg);
+  --vp-local-search-highlight-text: var(--main-color);
+  
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9999 !important;
+  
+  // 遮罩背景
+  > .backdrop {
+    position: fixed !important;
+    inset: 0 !important;
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+  }
+  
+  // 主容器
+  > .shell {
+    position: fixed !important;
+    top: 10vh !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 94% !important;
+    max-width: 560px !important;
+    max-height: 65vh !important;
+    background-color: var(--main-card-background) !important;
+    border: 1px solid var(--main-card-border) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.25) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    animation: searchBoxIn 0.2s ease-out !important;
+  }
+  
+  @keyframes searchBoxIn {
+    from {
+      opacity: 0;
+      transform: translateX(-50%) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+  }
+  
+  // 隐藏所有 SVG 图标
+  svg {
+    display: none !important;
+  }
+  
+  // 搜索栏
+  .search-bar {
+    display: flex !important;
+    align-items: center !important;
+    padding: 14px 20px !important;
+    boottom: 2px solid var(--main-color) !important;
+    background-color: var(--main-card-background) !important;
+    gap: 0 !important;
+    position: relative !important;
+    z-index: 10 !important;
+    flex-shrink: 0 !important;
+    margin-bottom: 0 !important;
+    
+    // 搜索图标 - 用 emoji
+    .search-icon {
+      flex-shrink: 0 !important;
+      width: 20px !important;
+      height: 20px !important;
+      margin-right: 12px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 18px !important;
+      
+      &::before {
+        content: '🔍' !important;
+      }
+    }
+    
+    // 搜索表单
+    form {
+      flex: 1 !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+    
+    // 输入框容器
+    label {
+      flex: 1 !important;
+    }
+    
+    // 输入框
+    input {
+      width: 100% !important;
+      height: 28px !important;
+      border: none !important;
+      outline: none !important;
+      background: transparent !important;
+      font-size: 15px !important;
+      color: var(--main-font-color) !important;
+      font-family: var(--main-font-family) !important;
+      
+      &::placeholder {
+        color: var(--main-font-second-color) !important;
+      }
+    }
+    
+    // 右侧按钮组
+    .search-actions {
+      display: none !important;
+    }
+  }
+  
+  // 搜索结果
+  .results {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    padding: 8px 20px !important;
+    min-height: 100px !important;
+    margin-top: 0 !important;
+    position: relative !important;
+    
+    // 隐藏摘要的渐变遮罩
+    .excerpt-gradient-bottom,
+    .excerpt-gradient-top {
+      display: none !important;
+    }
+    
+    > ul {
+      list-style: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    
+    .result {
+      margin: 4px 0 !important;
+      list-style: none !important;
+      
+      // 移除列表项的所有边框和轮廓
+      &:focus,
+      &:focus-visible,
+      &:focus-within {
+        outline: none !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+      
+      > a {
+        display: block !important;
+        padding: 12px 14px !important;
+        border-radius: 10px !important;
+        text-decoration: none !important;
+        border: none !important;
+        transition: all 0.15s !important;
+        outline: none !important;
+        box-shadow: none !important;
+        
+        // 移除链接的所有默认样式
+        &:focus,
+        &:focus-visible,
+        &:visited,
+        &:active,
+        &:link {
+          outline: none !important;
+          border: none !important;
+          box-shadow: none !important;
+          text-decoration: none !important;
+        }
+        
+        &:hover {
+          background-color: var(--main-card-second-background) !important;
+        }
+        
+        &[aria-selected="true"] {
+          background-color: var(--main-color) !important;
+          
+          .titles,
+          .titles span,
+          .excerpt {
+            color: #fff !important;
+          }
+          
+          .excerpt {
+            background-color: rgba(255, 255, 255, 0.15) !important;
+            
+            &::after {
+              background: linear-gradient(transparent, rgba(255, 255, 255, 0.15)) !important;
+            }
+            
+            mark {
+              background-color: rgba(255, 255, 255, 0.25) !important;
+              color: #fff !important;
+            }
+          }
+        }
+      }
+      
+      .titles {
+        display: flex !important;
+        align-items: flex-start !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: var(--main-font-color) !important;
+        margin-bottom: 0 !important;
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        text-decoration: none !important;
+        line-height: 1.5 !important;
+        
+        // 移除所有下划线和边框
+        &::after,
+        &::before {
+          display: none !important;
+          content: none !important;
+        }
+        
+        // 文档图标
+        .title-icon {
+          display: none !important;
+        }
+        
+        span {
+          color: var(--main-font-second-color) !important;
+          text-decoration: none !important;
+          border: none !important;
+          box-shadow: none !important;
+          
+          &:last-child {
+            color: var(--main-font-color) !important;
+          }
+        }
+      }
+      
+      .excerpt {
+        font-size: 13px !important;
+        color: var(--main-font-second-color) !important;
+        line-height: 1.6 !important;
+        margin-top: 8px !important;
+        padding: 10px 12px !important;
+        background-color: var(--main-card-second-background) !important;
+        border-radius: 8px !important;
+        max-height: 80px !important;
+        overflow: hidden !important;
+        word-break: break-word !important;
+        white-space: pre-wrap !important;
+        
+        // 隐藏超出部分
+        display: block !important;
+        position: relative !important;
+        
+        // 渐变遮罩效果
+        &::after {
+          content: '' !important;
+          display: block !important;
+          position: absolute !important;
+          bottom: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          height: 20px !important;
+          background: linear-gradient(transparent, var(--main-card-second-background)) !important;
+        }
+        
+        // 代码语言标签样式
+        .lang {
+          display: inline-block !important;
+          padding: 2px 8px !important;
+          background-color: var(--main-card-border) !important;
+          border-radius: 4px !important;
+          font-size: 11px !important;
+          color: var(--main-font-second-color) !important;
+          margin-right: 8px !important;
+          font-family: monospace !important;
+          border: none !important;
+          box-shadow: none !important;
+        }
+        
+        // 代码块样式
+        code {
+          font-family: 'Fira Code', monospace !important;
+          font-size: 12px !important;
+          background: transparent !important;
+          padding: 0 !important;
+        }
+        
+        mark {
+          background-color: var(--main-color-bg) !important;
+          color: var(--main-color) !important;
+          padding: 1px 4px !important;
+          border-radius: 3px !important;
+          font-weight: 500 !important;
+        }
+      }
+    }
+  }
+  
+  // 无结果
+  .no-results {
+    padding: 48px 24px !important;
+    text-align: center !important;
+    list-style: none !important;
+    
+    &::before,
+    &::marker {
+      display: none !important;
+      content: none !important;
+    }
+    
+    // 空状态图标 - 用图片
+    .no-results-icon {
+      margin: 0 auto 12px !important;
+      width: 48px !important;
+      height: 48px !important;
+      background-image: url('/images/icon/details.svg') !important;
+      background-size: contain !important;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      opacity: 0.3 !important;
+      
+      &::before {
+        content: none !important;
+      }
+    }
+    
+    p {
+      color: var(--main-font-second-color) !important;
+      font-size: 14px !important;
+    }
+  }
+  
+  // 底部快捷键 - 完全隐藏
+  footer,
+  footer.search-keyboard-shortcuts,
+  .search-keyboard-shortcuts {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+
+// 暗色模式
+html.dark .VPLocalSearchBox {
+  > .backdrop {
+    background-color: rgba(0, 0, 0, 0.75) !important;
+  }
+  
+  > .shell {
+    box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.5) !important;
+  }
+}
+
+// 全局隐藏搜索框底部快捷键 - 使用多种选择器确保生效
+.VPLocalSearchBox footer,
+.VPLocalSearchBox .search-keyboard-shortcuts,
+.VPLocalSearchBox footer.search-keyboard-shortcuts,
+.VPLocalSearchBox[data-v-15f4dd16] footer,
+.VPLocalSearchBox[data-v-15f4dd16] footer.search-keyboard-shortcuts,
+.VPLocalSearchBox[data-v-15f4dd16] .search-keyboard-shortcuts,
+footer[data-v-15f4dd16].search-keyboard-shortcuts {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
