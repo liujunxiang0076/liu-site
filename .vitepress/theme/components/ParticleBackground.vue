@@ -296,11 +296,55 @@ const animate = () => {
 };
 
 // 处理窗口大小变化
+let resizeTimeout: ReturnType<typeof setTimeout> | null = null
+let isResizing = false
+
 const handleResize = () => {
   if (!isClient || !particleCanvas.value) return
   
-  particleCanvas.value.width = window.innerWidth
-  particleCanvas.value.height = window.innerHeight
+  // 立即更新画布样式尺寸，保持视觉连续性
+  const newWidth = window.innerWidth
+  const newHeight = window.innerHeight
+  
+  particleCanvas.value.style.width = `${newWidth}px`
+  particleCanvas.value.style.height = `${newHeight}px`
+  
+  // 标记正在resize，暂停动画以提升性能
+  isResizing = true
+  
+  // 使用防抖来处理实际的画布重绘
+  if (resizeTimeout) {
+    clearTimeout(resizeTimeout)
+  }
+  
+  resizeTimeout = setTimeout(() => {
+    if (!particleCanvas.value || !ctx) return
+    
+    // 更新画布尺寸变量
+    canvasWidth = newWidth
+    canvasHeight = newHeight
+    
+    // 设置画布实际尺寸和DPR
+    const dpr = window.devicePixelRatio || 1
+    particleCanvas.value.width = canvasWidth * dpr
+    particleCanvas.value.height = canvasHeight * dpr
+    ctx.setTransform(1, 0, 0, 1, 0, 0) // 重置变换矩阵
+    ctx.scale(dpr, dpr)
+    
+    // 智能调整粒子位置 - 只调整超出边界的粒子
+    particles.value.forEach(particle => {
+      // 按比例调整位置而不是随机重新定位
+      if (particle.x > canvasWidth) {
+        particle.x = canvasWidth * 0.9 // 移到边界内90%的位置
+      }
+      if (particle.y > canvasHeight) {
+        particle.y = canvasHeight * 0.9
+      }
+    })
+    
+    // 恢复动画
+    isResizing = false
+  }, 150) // 稍微增加防抖时间，减少频繁重绘
 }
 
 // 生命周期钩子
