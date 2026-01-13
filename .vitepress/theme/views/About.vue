@@ -16,18 +16,18 @@
           这个站点是我的<strong>技术笔记本</strong>和<strong>知识分享平台</strong>。
         </p>
         <p class="text">
-          希望通过记录学习过程，帮助自己成长，也能为其他开发者提供一些参考。
+          希望通过记录学习过程。
         </p>
       </div>
     </div>
-    <div class="about-content" style="grid-template-columns: 2fr 3fr">
+    <div class="about-content" style="display: flex">
       <!-- 技能 -->
       <div class="about-item skills">
         <span class="tip">技能栈</span>
-        <span class="title2">持续学习中</span>
+        <span class="title2">样样学，样样废😎</span>
         <div class="skills-list">
           <a
-            v-for="(item, index) in skillsData.slice(0, 8)"
+            v-for="(item, index) in skillsData.slice(0, 100)"
             :key="index"
             :style="{ '--color': item.color }"
             :href="item.link"
@@ -42,7 +42,7 @@
         </div>
       </div>
       <!-- 联系方式 -->
-      <div class="about-item">
+      <div v-if="false" class="about-item">
         <span class="tip">联系方式</span>
         <span class="title2">欢迎交流</span>
         <div class="contact-list">
@@ -188,6 +188,7 @@ const { theme } = useData();
 
 // 技能数据
 const skillsData = [
+  // 前端开发
   {
     name: "JavaScript",
     color: "#f1e05abd",
@@ -213,11 +214,25 @@ const skillsData = [
     link: "https://cn.vuejs.org/",
   },
   {
-    name: "React",
-    color: "#149ECA",
-    icon: "react",
-    link: "https://zh-hans.reactjs.org/",
+    name: "TypeScript",
+    color: "#3178C6",
+    icon: "typescript",
+    link: "https://www.typescriptlang.org/",
   },
+  {
+    name: "Sass",
+    color: "#CC6699",
+    icon: "sass",
+    link: "https://sass-lang.com/",
+  },
+  {
+    name: "Vite",
+    color: "#646CFF",
+    icon: "vite",
+    link: "https://vitejs.dev/",
+  },
+
+  // 后端开发
   {
     name: "Node.js",
     color: "#026E00",
@@ -231,11 +246,39 @@ const skillsData = [
     link: "https://www.python.org/",
   },
   {
-    name: "Docker",
-    color: "#2496f2",
-    icon: "docker",
-    link: "https://www.docker.com/",
+    name: "MySQL",
+    color: "#4479A1",
+    icon: "mysql",
+    link: "https://www.mysql.com/",
   },
+  {
+    name: "Redis",
+    color: "#DC382D",
+    icon: "redis",
+    link: "https://redis.io/",
+  },
+
+  // AI工具
+  {
+    name: "ChatGPT",
+    color: "#4AA181",
+    icon: "chatgpt",
+    link: "https://chat.openai.com/",
+  },
+  {
+    name: "Claude",
+    color: "#FF6B6B",
+    icon: "claude",
+    link: "https://claude.ai/",
+  },
+  {
+    name: "GitHub Copilot",
+    color: "#1F6FEB",
+    icon: "github",
+    link: "https://github.com/features/copilot",
+  },
+  
+  // 开发工具
   {
     name: "Git",
     color: "#F05032",
@@ -243,16 +286,22 @@ const skillsData = [
     link: "https://git-scm.com/",
   },
   {
-    name: "Photoshop",
-    color: "#31A8FF",
-    icon: "photoshop",
-    link: "https://www.adobe.com/cn/lead/creativecloud/business.html",
+    name: "Linux",
+    color: "#FCC624",
+    icon: "linux",
+    link: "https://www.linux.org/",
   },
   {
-    name: "ChatGPT",
-    color: "#4AA181",
-    icon: "chatgpt",
-    link: "https://chat.openai.com/",
+    name: "VS Code",
+    color: "#007ACC",
+    icon: "vscode",
+    link: "https://code.visualstudio.com/",
+  },
+  {
+    name: "Nginx",
+    color: "#269539",
+    icon: "nginx",
+    link: "https://nginx.org/",
   },
 ];
 
