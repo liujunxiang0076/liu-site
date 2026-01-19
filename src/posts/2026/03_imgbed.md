@@ -14,6 +14,8 @@ https://github.com/MarSeventh/CloudFlare-ImgBed
 ![](https://imgbed.liujunxiang0076.site/file/1768788929380_image.png)
 
 
-背景：
+前提背景：
 由于当时我在折腾Telegram Bot，看到各个频道中bot每个功能都不一样，产生了兴趣，想着借用AI体验看看。
+
+
 
