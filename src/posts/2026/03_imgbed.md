@@ -7,15 +7,15 @@ description:
 cover: https://imgbed.liujunxiang0076.site/file/1768789171653_image.png
 ---
 
+
+因为想了解一下，各搜索资源群里的搜索引擎机器人的原理，然后去AI了一下
+
+
+
 - 图床项目
 https://github.com/MarSeventh/CloudFlare-ImgBed
 
 - 界面地址
 ![](https://imgbed.liujunxiang0076.site/file/1768788929380_image.png)
 
-
-前提背景：
-由于当时我在折腾Telegram Bot，看到各个频道中bot每个功能都不一样，产生了兴趣，想着借用AI体验看看。
-
-
-
+![](https://imgbed.liujunxiang0076.site/file/1768790223909_image.png)
