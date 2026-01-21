@@ -10,7 +10,9 @@ cover: https://imgbed.liujunxiang0076.site/file/1768789171653_image.png
 
 心血来潮突然想了解一下Telegram里面的bot，虽然当初通过大佬的图床项目对bot有了印象，但是建立的时候都是跟教程走，很多东西实际上还是不了解，正好最近手上项目都到了运维阶段，有很多时间去学习一下。
 
-![](https://imgbed.liujunxiang0076.site/file/1768791551011_image.png)
+
+<img src="https://imgbed.liujunxiang0076.site/file/1768791551011_image.png" style="zoom:33%;" />
+
 第一次了解还是24年11月份😂
 
 
@@ -24,6 +26,6 @@ cover: https://imgbed.liujunxiang0076.site/file/1768789171653_image.png
 https://github.com/MarSeventh/CloudFlare-ImgBed
 
 - 界面地址
-![](https://imgbed.liujunxiang0076.site/file/1768788929380_image.png)
+<img src="https://imgbed.liujunxiang0076.site/file/1768788929380_image.png" style="zoom: 33%;" />
 
-![](https://imgbed.liujunxiang0076.site/file/1768790223909_image.png)
+<img src="https://imgbed.liujunxiang0076.site/file/1768790223909_image.png" style="zoom: 33%;" />
