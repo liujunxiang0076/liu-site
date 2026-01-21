@@ -27,5 +27,5 @@ https://github.com/MarSeventh/CloudFlare-ImgBed
 
 - 界面地址
 <img src="https://imgbed.liujunxiang0076.site/file/1768788929380_image.png" style="zoom: 33%;" />
-
+- **BotFather**
 <img src="https://imgbed.liujunxiang0076.site/file/1768790223909_image.png" style="zoom: 33%;" />
