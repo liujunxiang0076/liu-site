@@ -13,7 +13,7 @@ cover: https://imgbed.liujunxiang0076.site/file/1768789171653_image.png
 
 <img src="https://imgbed.liujunxiang0076.site/file/1768791551011_image.png" style="zoom:33%;" />
 
-第一次了解还是24年11月份😂
+第一次了解还是24年11月份😂 
 
 
 通过询问Gemini，建立机器人需要通过Telegram里面**BotFather**，我的理解就是Telegram他爹，所有机器人建立都得通过这个进行注册，以下是Gemini给我的理解
