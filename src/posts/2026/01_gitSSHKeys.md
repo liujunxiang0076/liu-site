@@ -5,7 +5,7 @@ categories: [技术分享]
 date: 2026-01-06
 description: 详细介绍Git SSH私钥的生成、配置和使用方法，包括多账户管理、安全最佳实践等实用技巧，让你彻底掌握SSH密钥认证。
 articleGPT: SSH密钥认证是Git远程仓库访问的重要方式，相比HTTPS更加安全便捷。本文将全面介绍SSH私钥的生成、配置、使用和管理，帮助开发者建立安全高效的Git工作流程。
-cover: https://imgbed.liujunxiang0076.site/file/1743488364135_image.png
+cover: https://imgbed.liujunxiang0076.site/file/1770096448320_Git_SSH%E7%A7%81%E9%92%A5%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97%EF%BC%9A%E7%94%9F%E6%88%90%E3%80%81%E9%85%8D%E7%BD%AE%E4%B8%8E%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3.jpg
 ---
 
 # Git SSH私钥完全指南：生成、配置与使用详解
