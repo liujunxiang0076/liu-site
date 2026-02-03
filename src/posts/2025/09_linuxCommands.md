@@ -5,7 +5,7 @@ categories: [技术分享]
 date: 2025-12-31
 description: 本文全面梳理Linux系统中最常用的命令，从文件操作到系统管理，从基础命令到高级技巧，帮助开发者和运维人员掌握Linux命令行操作。
 articleGPT: Linux命令行是系统管理和开发工作的核心工具。本文系统性地整理了Linux中最常用的命令，包括文件操作、文本处理、系统监控、网络管理等各个方面，并提供大量实用示例，帮助读者快速掌握Linux命令行操作技能。
-cover: https://imgbed.liujunxiang0076.site/file/1767166067273_linux-commands.png
+cover: https://imgbed.liujunxiang0076.site/file/1770102200401_linux最常用命令速查.jpg
 ---
 
 # Linux常用命令完全指南：从基础到进阶的命令行操作
