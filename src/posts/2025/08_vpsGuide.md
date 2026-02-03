@@ -5,7 +5,7 @@ categories: [技术分享]
 date: 2025-12-31
 description: 本文全面介绍VPS虚拟专用服务器的核心概念、选购指南、配置优化和实战应用，帮助开发者和运维人员掌握VPS的使用技巧。
 articleGPT: VPS（Virtual Private Server）是现代互联网基础设施的重要组成部分。本文将深入浅出地讲解VPS的基本概念、选购要点、系统配置、安全加固、性能优化等关键知识，并提供大量实战案例，帮助读者全面掌握VPS的使用和管理。
-cover: https://imgbed.liujunxiang0076.site/file/1767164935264_vps-guide.png
+cover: https://imgbed.liujunxiang0076.site/file/1770102384314_vps漫游指南.jpg
 ---
 
 # VPS完全指南：从入门到精通的虚拟专用服务器知识
