@@ -5,7 +5,7 @@ categories: [技术分享]
 date: 2025-04-21
 description: 本文深入介绍Vue3生态中最受欢迎的拖拽库，包括VueDraggable、Vue Grid Layout等，通过实际案例展示如何实现列表拖拽、网格布局、拖拽排序等常见功能。
 articleGPT: 随着Web应用交互体验要求的不断提高，拖拽功能已成为现代化前端应用的标配。Vue3生态系统中涌现出众多优秀的拖拽库，本文将为你详细介绍这些库的特点、使用方法和最佳实践，助你快速实现流畅的拖拽交互效果。
-cover: https://imgbed.liujunxiang0076.site/file/1745216850116_image.png
+cover: https://imgbed.liujunxiang0076.site/file/1770102890573_Vue3拖拽生态全解析.jpg
 ---
 
 # Vue3拖拽生态全解析：10个顶级拖拽库助你打造流畅交互体验
