@@ -3,13 +3,33 @@
  * @param {string} [rule="updated"] - 文章的排序规则，可以是 "created" 或 "updated"
  */
 export const getHitokoto = async () => {
-  // 在开发环境使用代理,生产环境使用CORS代理
-  const apiUrl = import.meta.env.DEV 
-    ? "/api/hitokoto" 
-    : "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://v1.hitokoto.cn");
-  const result = await fetch(apiUrl);
-  const hitokoto = await result.json();
-  return hitokoto;
+  // 在开发环境使用代理
+  if (import.meta.env.DEV) {
+    const result = await fetch("/api/hitokoto");
+    return await result.json();
+  }
+
+  // 生产环境：使用 Promise.any 竞速，哪个接口快用哪个
+  const targets = [
+    "https://v1.hitokoto.cn",
+    "https://international.v1.hitokoto.cn/"
+  ];
+
+  try {
+    const result = await Promise.any(
+      targets.map(url => 
+        fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(url))
+          .then(res => res.json())
+      )
+    );
+    return result;
+  } catch (error) {
+    console.error("获取一言失败:", error);
+    return {
+      hitokoto: "即使是微不足道的光芒，也能照亮前行的路。",
+      from: "系统默认"
+    };
+  }
 };
 
 /* 
