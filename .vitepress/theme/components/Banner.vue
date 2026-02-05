@@ -147,12 +147,12 @@ watch(
 
 onMounted(() => {
   if (props.type === "text") {
-    // hitokotoTimeOut.value = setTimeout(() => {
-    //   getHitokotoData();
-    // }, 2000);
-    badsoupTimeOut.value = setTimeout(() => {
-      geBadsouptoData();
+    hitokotoTimeOut.value = setTimeout(() => {
+      getHitokotoData();
     }, 2000);
+    // badsoupTimeOut.value = setTimeout(() => {
+    //   geBadsouptoData();
+    // }, 2000);
   }
   // 更改 banner 类型
   bannerType.value = store.bannerType;
