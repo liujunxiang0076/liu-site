@@ -34,7 +34,7 @@
           :class="[
             'celestial-body', 
             { 'sun': isDayTime, 'moon': !isDayTime },
-            `weather-${currentWeather}`
+            currentWeather ? `weather-${currentWeather}` : ''
           ]">
           <!-- 太阳光芒（仅晴天） -->
           <div v-if="isDayTime && currentWeather === 'sunny'" class="sun-rays-ring"></div>
@@ -1032,6 +1032,72 @@ html.dark {
           animation: sun-rays-rotate 40s linear infinite reverse;
         }
       }
+
+      // 晴天时的暖色光晕层
+      .sun-halo {
+        position: absolute;
+        top: -50px;
+        left: -50px;
+        right: -50px;
+        bottom: -50px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 249, 196, 0.25) 0%,
+          rgba(255, 235, 59, 0.08) 30%,
+          transparent 65%
+        );
+        animation: sun-pulse 5s ease-in-out infinite;
+        pointer-events: none;
+        
+        .dawn & {
+          background: radial-gradient(
+            circle,
+            rgba(255, 224, 178, 0.3) 0%,
+            rgba(255, 183, 77, 0.06) 35%,
+            transparent 65%
+          );
+        }
+        
+        .dusk & {
+          background: radial-gradient(
+            circle,
+            rgba(255, 204, 188, 0.25) 0%,
+            rgba(255, 138, 101, 0.06) 35%,
+            transparent 65%
+          );
+        }
+      }
+    }
+
+    // 阴天/多云：太阳弱化，无光芒，置于云层后
+    &.weather-cloudy.sun {
+      z-index: 1;
+      width: 38px;
+      height: 38px;
+      left: 28px;
+      top: 28px;
+      opacity: 0.5;
+      filter: blur(0.5px);
+      box-shadow: 
+        0 0 15px rgba(255, 235, 59, 0.2),
+        0 0 30px rgba(255, 235, 59, 0.08);
+      
+      &::before {
+        opacity: 0.4;
+      }
+      
+      &::after {
+        display: none;
+      }
+    }
+
+    // 大风白天：太阳略弱于晴天，保留轻微光感
+    &.weather-windy.sun {
+      opacity: 0.88;
+      box-shadow: 
+        0 0 30px rgba(255, 235, 59, 0.5),
+        0 0 60px rgba(255, 235, 59, 0.2);
     }
     
     &.moon {
