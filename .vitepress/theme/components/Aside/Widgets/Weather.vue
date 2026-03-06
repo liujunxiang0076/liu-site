@@ -501,7 +501,7 @@ const formatForecastDate = (dateString) => {
 html.dark {
   .weather-card {
     background-color: #1e1e20 !important;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2) !important;
     
     .forecast-item {
       background-color: rgba(50, 50, 50, 0.8) !important;
@@ -537,132 +537,214 @@ html.dark {
     gap: 12px;
   }
 
+  // ==================== 主卡片 ====================
   .weather-main-card {
     position: relative;
-    height: 160px;
+    height: 180px;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 
-    // 晴天 - 白天
+    // ===== 晴天 =====
     &.sunny.day {
-      background: linear-gradient(160deg, #64B5F6, #42A5F5);
+      background: linear-gradient(160deg, #4FC3F7 0%, #29B6F6 40%, #039BE5 100%);
       .sky-background {
-        background: linear-gradient(160deg, #1E88E5, #64B5F6);
-        opacity: 0.8;
+        background: linear-gradient(180deg, #0288D1 0%, #4FC3F7 60%, #81D4FA 100%);
+        opacity: 0.75;
+      }
+      .atmosphere-glow {
+        background: radial-gradient(ellipse at 25% 20%, rgba(255, 249, 196, 0.35) 0%, transparent 55%),
+                    radial-gradient(ellipse at 80% 80%, rgba(129, 212, 250, 0.2) 0%, transparent 40%);
       }
     }
 
-    // 晴天 - 夜晚
     &.sunny.night {
-      background: linear-gradient(160deg, #1A237E, #283593);
+      background: linear-gradient(160deg, #0d1b2a 0%, #1b2838 40%, #1a237e 100%);
       .sky-background {
-        background: linear-gradient(160deg, #0D47A1, #1A237E);
+        background: linear-gradient(180deg, #070d1a 0%, #0d1b2a 50%, #1a237e 100%);
         opacity: 0.9;
+      }
+      .atmosphere-glow {
+        background: radial-gradient(ellipse at 25% 25%, rgba(100, 149, 237, 0.12) 0%, transparent 50%),
+                    radial-gradient(ellipse at 75% 60%, rgba(63, 81, 181, 0.08) 0%, transparent 40%);
       }
     }
 
-    // 晴天 - 黎明
     &.sunny.dawn {
-      background: linear-gradient(160deg, #FF9800, #FFA726);
+      background: linear-gradient(160deg, #FF8A65 0%, #FFAB91 30%, #FFE0B2 70%, #FFF9C4 100%);
       .sky-background {
-        background: linear-gradient(160deg, #FB8C00, #FF9800);
-        opacity: 0.85;
+        background: linear-gradient(180deg, #E65100 0%, #FF6D00 30%, #FFB74D 70%, #FFF176 100%);
+        opacity: 0.7;
+      }
+      .atmosphere-glow {
+        background: radial-gradient(ellipse at 50% 90%, rgba(255, 183, 77, 0.5) 0%, transparent 60%),
+                    radial-gradient(ellipse at 30% 60%, rgba(255, 138, 101, 0.3) 0%, transparent 50%);
       }
     }
 
-    // 晴天 - 黄昏
     &.sunny.dusk {
-      background: linear-gradient(160deg, #FF7043, #FF5722);
+      background: linear-gradient(160deg, #7B1FA2 0%, #E91E63 30%, #FF5722 60%, #FF9800 100%);
       .sky-background {
-        background: linear-gradient(160deg, #F4511E, #FF7043);
+        background: linear-gradient(180deg, #4A148C 0%, #C62828 40%, #E65100 80%, #FFB300 100%);
+        opacity: 0.7;
+      }
+      .atmosphere-glow {
+        background: radial-gradient(ellipse at 50% 85%, rgba(255, 152, 0, 0.4) 0%, transparent 50%),
+                    radial-gradient(ellipse at 70% 40%, rgba(233, 30, 99, 0.2) 0%, transparent 40%);
+      }
+    }
+
+    // ===== 多云 =====
+    &.cloudy.day {
+      background: linear-gradient(160deg, #78909C 0%, #90A4AE 40%, #B0BEC5 100%);
+      .sky-background {
+        background: linear-gradient(180deg, #607D8B 0%, #78909C 50%, #B0BEC5 100%);
         opacity: 0.85;
       }
-    }
-
-    // 多云 - 白天
-    &.cloudy.day {
-      background: linear-gradient(160deg, #90A4AE, #B0BEC5);
-      .sky-background {
-        background: linear-gradient(160deg, #78909C, #90A4AE);
-        opacity: 0.9;
+      .atmosphere-glow {
+        background: radial-gradient(ellipse at 50% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
       }
     }
 
-    // 多云 - 夜晚
     &.cloudy.night {
-      background: linear-gradient(160deg, #37474F, #455A64);
+      background: linear-gradient(160deg, #1a2332 0%, #263238 40%, #37474F 100%);
       .sky-background {
-        background: linear-gradient(160deg, #263238, #37474F);
-        opacity: 0.95;
+        background: linear-gradient(180deg, #0d1520 0%, #1a2332 50%, #37474F 100%);
+        opacity: 0.93;
+      }
+      .atmosphere-glow {
+        background: radial-gradient(ellipse at 50% 50%, rgba(96, 125, 139, 0.08) 0%, transparent 50%);
       }
     }
 
-    // 多云 - 黎明/黄昏
-    &.cloudy.dawn, &.cloudy.dusk {
-      background: linear-gradient(160deg, #795548, #8D6E63);
+    &.cloudy.dawn {
+      background: linear-gradient(160deg, #8D6E63 0%, #A1887F 40%, #BCAAA4 70%, #D7CCC8 100%);
       .sky-background {
-        background: linear-gradient(160deg, #6D4C41, #795548);
-        opacity: 0.9;
+        background: linear-gradient(180deg, #6D4C41 0%, #8D6E63 40%, #BCAAA4 100%);
+        opacity: 0.85;
+      }
+      .atmosphere-glow {
+        background: radial-gradient(ellipse at 50% 85%, rgba(255, 183, 77, 0.2) 0%, transparent 50%);
       }
     }
 
-    // 雨天 - 白天
+    &.cloudy.dusk {
+      background: linear-gradient(160deg, #5D4037 0%, #795548 30%, #A1887F 70%, #D7CCC8 100%);
+      .sky-background {
+        background: linear-gradient(180deg, #4E342E 0%, #6D4C41 40%, #A1887F 100%);
+        opacity: 0.85;
+      }
+      .atmosphere-glow {
+        background: radial-gradient(ellipse at 50% 80%, rgba(255, 138, 101, 0.2) 0%, transparent 50%);
+      }
+    }
+
+    // ===== 雨天 =====
     &.rainy.day {
-      background: linear-gradient(160deg, #546E7A, #78909C);
+      background: linear-gradient(160deg, #37474F 0%, #455A64 30%, #546E7A 60%, #607D8B 100%);
       .sky-background {
-        background: linear-gradient(160deg, #455A64, #546E7A);
+        background: linear-gradient(180deg, #263238 0%, #37474F 40%, #546E7A 100%);
+        opacity: 0.92;
+      }
+      .atmosphere-glow {
+        background: radial-gradient(ellipse at 50% 0%, rgba(0, 0, 0, 0.2) 0%, transparent 60%),
+                    radial-gradient(ellipse at 50% 100%, rgba(69, 90, 100, 0.3) 0%, transparent 40%);
+      }
+    }
+
+    &.rainy.night {
+      background: linear-gradient(160deg, #0d1520 0%, #1a2332 40%, #263238 100%);
+      .sky-background {
+        background: linear-gradient(180deg, #050a12 0%, #0d1520 50%, #1a2332 100%);
         opacity: 0.95;
       }
-    }
-
-    // 雨天 - 夜晚
-    &.rainy.night {
-      background: linear-gradient(160deg, #263238, #37474F);
-      .sky-background {
-        background: linear-gradient(160deg, #1A237E, #263238);
-        opacity: 0.97;
+      .atmosphere-glow {
+        background: radial-gradient(ellipse at 50% 0%, rgba(0, 0, 0, 0.3) 0%, transparent 60%);
       }
     }
 
-    // 雪天 - 白天
-    &.snowy.day {
-      background: linear-gradient(160deg, #90A4AE, #CFD8DC);
+    &.rainy.dawn, &.rainy.dusk {
+      background: linear-gradient(160deg, #4E342E 0%, #5D4037 30%, #6D4C41 60%, #795548 100%);
       .sky-background {
-        background: linear-gradient(160deg, #78909C, #B0BEC5);
+        background: linear-gradient(180deg, #3E2723 0%, #4E342E 50%, #6D4C41 100%);
         opacity: 0.9;
       }
     }
 
-    // 雪天 - 夜晚
-    &.snowy.night {
-      background: linear-gradient(160deg, #37474F, #455A64);
+    // ===== 雪天 =====
+    &.snowy.day {
+      background: linear-gradient(160deg, #B0BEC5 0%, #CFD8DC 40%, #ECEFF1 100%);
       .sky-background {
-        background: linear-gradient(160deg, #263238, #37474F);
-        opacity: 0.95;
+        background: linear-gradient(180deg, #90A4AE 0%, #B0BEC5 50%, #E0E0E0 100%);
+        opacity: 0.85;
+      }
+      .atmosphere-glow {
+        background: radial-gradient(ellipse at 50% 30%, rgba(255, 255, 255, 0.25) 0%, transparent 60%);
       }
     }
 
-    // 大风 - 白天
-    &.windy.day {
-      background: linear-gradient(160deg, #64B5F6, #90CAF9);
+    &.snowy.night {
+      background: linear-gradient(160deg, #1a2332 0%, #2C3E50 40%, #34495E 100%);
       .sky-background {
-        background: linear-gradient(160deg, #42A5F5, #64B5F6);
+        background: linear-gradient(180deg, #0d1520 0%, #1a2332 50%, #2C3E50 100%);
+        opacity: 0.92;
+      }
+      .atmosphere-glow {
+        background: radial-gradient(ellipse at 50% 50%, rgba(189, 195, 199, 0.08) 0%, transparent 50%);
+      }
+    }
+
+    &.snowy.dawn, &.snowy.dusk {
+      background: linear-gradient(160deg, #78909C 0%, #90A4AE 40%, #B0BEC5 70%, #CFD8DC 100%);
+      .sky-background {
+        background: linear-gradient(180deg, #607D8B 0%, #78909C 50%, #B0BEC5 100%);
+        opacity: 0.88;
+      }
+    }
+
+    // ===== 大风 =====
+    &.windy.day {
+      background: linear-gradient(160deg, #4FC3F7 0%, #81D4FA 40%, #B3E5FC 100%);
+      .sky-background {
+        background: linear-gradient(180deg, #29B6F6 0%, #4FC3F7 50%, #B3E5FC 100%);
         opacity: 0.8;
       }
+      .atmosphere-glow {
+        background: radial-gradient(ellipse at 80% 40%, rgba(179, 229, 252, 0.3) 0%, transparent 50%);
+      }
     }
 
-    // 大风 - 夜晚
     &.windy.night {
-      background: linear-gradient(160deg, #1A237E, #283593);
+      background: linear-gradient(160deg, #0d1b2a 0%, #1b2838 40%, #1a237e 100%);
       .sky-background {
-        background: linear-gradient(160deg, #0D47A1, #1A237E);
+        background: linear-gradient(180deg, #070d1a 0%, #0d1b2a 50%, #1a237e 100%);
         opacity: 0.9;
+      }
+    }
+
+    &.windy.dawn, &.windy.dusk {
+      background: linear-gradient(160deg, #FF8A65 0%, #FFAB91 50%, #FFCCBC 100%);
+      .sky-background {
+        background: linear-gradient(180deg, #E64A19 0%, #FF7043 50%, #FFAB91 100%);
+        opacity: 0.8;
       }
     }
   }
+
+  // ==================== 大气光效 ====================
+  .atmosphere-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+    transition: all 1s ease;
+  }
   
+  // ==================== 天气信息 ====================
   .weather-info-overlay {
     position: absolute;
     top: 0;
@@ -674,47 +756,54 @@ html.dark {
     justify-content: center;
     align-items: center;
     color: white;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     padding: 20px;
+    z-index: 10;
     
     .city-name {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 500;
       margin-bottom: 2px;
-      opacity: 0.95;
+      opacity: 0.92;
+      letter-spacing: 0.5px;
     }
     
     .current-temp {
-      font-size: 60px;
-      font-weight: 200; // 超细字重，苹果风格
+      font-size: 64px;
+      font-weight: 200;
       line-height: 1;
-      margin: 8px 0;
+      margin: 6px 0;
       
       .temp-unit {
-        font-size: 30px;
+        font-size: 28px;
         font-weight: 300;
+        vertical-align: top;
+        margin-left: -4px;
       }
     }
     
     .current-weather {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 400;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      letter-spacing: 0.3px;
     }
     
     .weather-details {
-      font-size: 13px;
-      opacity: 0.9;
+      font-size: 12px;
+      opacity: 0.85;
       display: flex;
       align-items: center;
+      letter-spacing: 0.2px;
       
       .divider {
         margin: 0 8px;
-        opacity: 0.7;
+        opacity: 0.6;
       }
     }
   }
 
+  // ==================== 预报 ====================
   .forecast-container {
     display: flex;
     justify-content: space-between;
@@ -724,17 +813,17 @@ html.dark {
     .forecast-item {
       flex: 1;
       background-color: var(--vp-c-bg-alt, rgba(255, 255, 255, 0.6));
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px);
       border-radius: 14px;
       padding: 12px;
       text-align: center;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       
       &:hover {
-        transform: translateY(-2px);
+        transform: translateY(-3px);
         background-color: var(--vp-c-bg-soft, rgba(255, 255, 255, 0.7));
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
       }
       
       .forecast-day {
@@ -758,14 +847,15 @@ html.dark {
         small {
           font-size: 14px;
           font-weight: normal;
-          opacity: 0.8;
+          opacity: 0.7;
         }
       }
     }
   }
   
+  // ==================== 加载/错误 ====================
   .loading-container {
-    height: 160px;
+    height: 180px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -784,7 +874,7 @@ html.dark {
   }
   
   .error-container {
-    height: 160px;
+    height: 180px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -808,12 +898,11 @@ html.dark {
     }
   }
   
-  // 隐藏控制按钮
   .control-bar {
     display: none;
   }
 
-  // 动画效果
+  // ==================== 天空背景 ====================
   .sky-background {
     position: absolute;
     top: 0;
@@ -822,76 +911,139 @@ html.dark {
     bottom: 0;
     transition: all 1s ease;
   }
-  
+
+  // ==================== 天体（太阳/月亮） ====================
   .celestial-body {
     position: absolute;
-    width: 60px;
-    height: 60px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
-    left: 20px;
-    top: 20px;
+    left: 22px;
+    top: 22px;
     transition: all 0.5s ease;
+    z-index: 2;
     
     &.sun {
       background: linear-gradient(145deg, #FDD835, #FFB300);
       box-shadow: 
-        0 0 60px rgba(255, 235, 59, 0.6),
-        0 0 120px rgba(255, 235, 59, 0.3);
+        0 0 40px rgba(255, 235, 59, 0.7),
+        0 0 80px rgba(255, 235, 59, 0.4),
+        0 0 140px rgba(255, 235, 59, 0.15);
       animation: float 6s ease-in-out infinite;
       
-      // 黎明时的太阳
       .dawn & {
-        background: linear-gradient(145deg, #FFB74D, #FFA726);
+        background: linear-gradient(145deg, #FFB74D, #FF9800);
         box-shadow: 
-          0 0 60px rgba(255, 167, 38, 0.4),
-          0 0 120px rgba(255, 167, 38, 0.2);
-        opacity: 0.9;
+          0 0 40px rgba(255, 152, 0, 0.5),
+          0 0 80px rgba(255, 152, 0, 0.25),
+          0 0 140px rgba(255, 152, 0, 0.1);
       }
       
-      // 黄昏时的太阳
       .dusk & {
-        background: linear-gradient(145deg, #FF7043, #FF5722);
+        background: linear-gradient(145deg, #FF7043, #E64A19);
         box-shadow: 
-          0 0 60px rgba(255, 87, 34, 0.4),
-          0 0 120px rgba(255, 87, 34, 0.2);
-        opacity: 0.85;
+          0 0 40px rgba(255, 87, 34, 0.5),
+          0 0 80px rgba(255, 87, 34, 0.25),
+          0 0 140px rgba(255, 87, 34, 0.1);
       }
       
       &::before {
         content: '';
         position: absolute;
-        top: -20px;
-        left: -20px;
-        right: -20px;
-        bottom: -20px;
-        background: radial-gradient(circle, rgba(255, 235, 59, 0.3) 0%, transparent 70%);
+        top: -25px;
+        left: -25px;
+        right: -25px;
+        bottom: -25px;
+        background: radial-gradient(circle, rgba(255, 235, 59, 0.35) 0%, rgba(255, 235, 59, 0.1) 40%, transparent 70%);
         animation: sun-pulse 4s ease-in-out infinite;
         
         .dawn & {
-          background: radial-gradient(circle, rgba(255, 167, 38, 0.3) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(255, 152, 0, 0.35) 0%, transparent 70%);
         }
         
         .dusk & {
-          background: radial-gradient(circle, rgba(255, 87, 34, 0.3) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(255, 87, 34, 0.35) 0%, transparent 70%);
+        }
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 200%;
+        height: 200%;
+        transform: translate(-50%, -50%);
+        background: 
+          conic-gradient(
+            from 0deg,
+            transparent 0deg, rgba(255, 235, 59, 0.08) 10deg, transparent 20deg,
+            transparent 30deg, rgba(255, 235, 59, 0.06) 40deg, transparent 50deg,
+            transparent 60deg, rgba(255, 235, 59, 0.08) 70deg, transparent 80deg,
+            transparent 90deg, rgba(255, 235, 59, 0.06) 100deg, transparent 110deg,
+            transparent 120deg, rgba(255, 235, 59, 0.08) 130deg, transparent 140deg,
+            transparent 150deg, rgba(255, 235, 59, 0.06) 160deg, transparent 170deg,
+            transparent 180deg, rgba(255, 235, 59, 0.08) 190deg, transparent 200deg,
+            transparent 210deg, rgba(255, 235, 59, 0.06) 220deg, transparent 230deg,
+            transparent 240deg, rgba(255, 235, 59, 0.08) 250deg, transparent 260deg,
+            transparent 270deg, rgba(255, 235, 59, 0.06) 280deg, transparent 290deg,
+            transparent 300deg, rgba(255, 235, 59, 0.08) 310deg, transparent 320deg,
+            transparent 330deg, rgba(255, 235, 59, 0.06) 340deg, transparent 350deg
+          );
+        animation: sun-rays-rotate 30s linear infinite;
+        border-radius: 50%;
+      }
+
+      .sun-rays-ring {
+        position: absolute;
+        top: -35px;
+        left: -35px;
+        right: -35px;
+        bottom: -35px;
+        border-radius: 50%;
+        animation: sun-rays-rotate 25s linear infinite;
+        
+        &::before, &::after {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; right: 0; bottom: 0;
+        }
+        
+        &::before {
+          background: 
+            linear-gradient(0deg, transparent 42%, rgba(255, 235, 59, 0.15) 48%, rgba(255, 235, 59, 0.15) 52%, transparent 58%),
+            linear-gradient(45deg, transparent 42%, rgba(255, 235, 59, 0.1) 48%, rgba(255, 235, 59, 0.1) 52%, transparent 58%),
+            linear-gradient(90deg, transparent 42%, rgba(255, 235, 59, 0.15) 48%, rgba(255, 235, 59, 0.15) 52%, transparent 58%),
+            linear-gradient(135deg, transparent 42%, rgba(255, 235, 59, 0.1) 48%, rgba(255, 235, 59, 0.1) 52%, transparent 58%);
+        }
+        
+        &::after {
+          background: 
+            linear-gradient(22.5deg, transparent 44%, rgba(255, 235, 59, 0.07) 48%, rgba(255, 235, 59, 0.07) 52%, transparent 56%),
+            linear-gradient(67.5deg, transparent 44%, rgba(255, 235, 59, 0.07) 48%, rgba(255, 235, 59, 0.07) 52%, transparent 56%),
+            linear-gradient(112.5deg, transparent 44%, rgba(255, 235, 59, 0.07) 48%, rgba(255, 235, 59, 0.07) 52%, transparent 56%),
+            linear-gradient(157.5deg, transparent 44%, rgba(255, 235, 59, 0.07) 48%, rgba(255, 235, 59, 0.07) 52%, transparent 56%);
+          animation: sun-rays-rotate 40s linear infinite reverse;
         }
       }
     }
     
     &.moon {
-      background: linear-gradient(145deg, #FFFFFF 5%, #F4F4F4 50%, #E8E8E8 100%);
+      background: linear-gradient(145deg, #FFFFFF 5%, #F5F5F5 30%, #E8E8E8 60%, #D5D5D5 100%);
       box-shadow: 
-        0 0 30px rgba(255, 255, 255, 0.3),
-        0 0 60px rgba(255, 255, 255, 0.1),
-        inset -8px -8px 15px rgba(0, 0, 0, 0.1);
+        0 0 25px rgba(255, 255, 255, 0.35),
+        0 0 50px rgba(200, 210, 230, 0.15),
+        0 0 100px rgba(180, 200, 230, 0.08),
+        inset -8px -6px 12px rgba(0, 0, 0, 0.12);
       animation: float 8s ease-in-out infinite;
       overflow: hidden;
       
-      // 深夜的月亮
       .night & {
         box-shadow: 
-          0 0 40px rgba(255, 255, 255, 0.4),
-          0 0 80px rgba(255, 255, 255, 0.2),
-          inset -8px -8px 15px rgba(0, 0, 0, 0.15);
+          0 0 30px rgba(255, 255, 255, 0.45),
+          0 0 60px rgba(200, 210, 230, 0.2),
+          0 0 120px rgba(180, 200, 230, 0.1),
+          inset -8px -6px 12px rgba(0, 0, 0, 0.15);
       }
       
       &::before {
@@ -900,24 +1052,32 @@ html.dark {
         width: 100%;
         height: 100%;
         background: 
-          radial-gradient(circle at 25% 25%, rgba(244, 244, 244, 0.8) 5%, transparent 15%),
-          radial-gradient(circle at 75% 30%, rgba(244, 244, 244, 0.8) 4%, transparent 12%),
-          radial-gradient(circle at 35% 65%, rgba(244, 244, 244, 0.8) 6%, transparent 18%),
-          radial-gradient(circle at 65% 70%, rgba(244, 244, 244, 0.8) 5%, transparent 15%);
-        opacity: 0.8;
-        transition: opacity 0.3s ease;
-        
-        .night & {
-          opacity: 1;
-        }
+          radial-gradient(circle at 30% 20%, rgba(200, 200, 200, 0.5) 4%, transparent 12%),
+          radial-gradient(circle at 70% 35%, rgba(200, 200, 200, 0.4) 3%, transparent 10%),
+          radial-gradient(circle at 25% 60%, rgba(200, 200, 200, 0.3) 5%, transparent 14%),
+          radial-gradient(circle at 60% 70%, rgba(200, 200, 200, 0.5) 4%, transparent 12%),
+          radial-gradient(circle at 45% 40%, rgba(200, 200, 200, 0.2) 6%, transparent 16%);
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: -40px;
+        left: -40px;
+        right: -40px;
+        bottom: -40px;
+        background: radial-gradient(circle, rgba(200, 210, 230, 0.12) 0%, transparent 60%);
+        animation: moon-glow 5s ease-in-out infinite;
       }
     }
   }
-  
+
+  // ==================== 星空 ====================
   .stars {
     position: absolute;
     width: 100%;
     height: 100%;
+    z-index: 2;
     
     .star {
       position: absolute;
@@ -930,39 +1090,79 @@ html.dark {
       &::before {
         content: '';
         position: absolute;
-        width: 100%;
-        height: 100%;
+        top: -1px;
+        left: -1px;
+        width: calc(100% + 2px);
+        height: calc(100% + 2px);
         background: white;
         border-radius: 50%;
-        filter: blur(1px);
-        opacity: 0.5;
+        filter: blur(1.5px);
+        opacity: 0.4;
       }
       
-      // 使用固定序列替代随机值
-      @for $i from 1 through 20 {
+      @for $i from 1 through 25 {
         &:nth-child(#{$i}) {
-          $size: if($i % 2 == 0, 2, 1);
-          $duration: 1.5s + ($i % 10) * 0.1s;
+          $size: if($i % 3 == 0, 3, if($i % 2 == 0, 2, 1));
+          $duration: 1.5s + ($i % 12) * 0.15s;
           width: #{$size}px;
           height: #{$size}px;
           animation-duration: $duration;
+          
+          @if $size == 3 {
+            box-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+          }
         }
+      }
+    }
+    
+    .shooting-star {
+      position: absolute;
+      width: 80px;
+      height: 1px;
+      top: 18%;
+      right: -80px;
+      background: linear-gradient(to left, transparent, rgba(255, 255, 255, 0.8));
+      transform: rotate(-35deg);
+      animation: shooting 7s ease-in infinite;
+      animation-delay: 3s;
+      z-index: 3;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: -1px;
+        width: 5px;
+        height: 3px;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.6);
+      }
+      
+      &.shooting-star-2 {
+        top: 40%;
+        right: -60px;
+        width: 60px;
+        animation-delay: 9s;
+        animation-duration: 6s;
+        transform: rotate(-40deg);
       }
     }
   }
   
+  // ==================== 云层 ====================
   .clouds {
     position: absolute;
     width: 100%;
     height: 100%;
     pointer-events: none;
+    z-index: 3;
     
     .cloud {
       position: absolute;
       background: rgba(255, 255, 255, 0.9);
       border-radius: 20px;
       animation: cloud-move 20s linear infinite;
-      filter: blur(1px);
       
       &::before,
       &::after {
@@ -973,36 +1173,87 @@ html.dark {
       }
       
       &:nth-child(1) {
-        width: 60px;
-        height: 20px;
-        top: 30px;
-        left: -60px;
-        opacity: 0.9;
-        animation-duration: 25s;
+        width: 65px;
+        height: 22px;
+        top: 25px;
+        left: -65px;
+        animation-duration: 28s;
+        filter: blur(0.5px);
         
         &::before {
-          width: 25px;
-          height: 25px;
-          top: -10px;
+          width: 28px;
+          height: 28px;
+          top: -12px;
           left: 12px;
         }
         
         &::after {
-          width: 30px;
-          height: 30px;
-          top: -15px;
+          width: 34px;
+          height: 34px;
+          top: -18px;
           right: 10px;
         }
       }
       
       &:nth-child(2) {
-        width: 50px;
+        width: 55px;
         height: 18px;
-        top: 60px;
-        left: -50px;
+        top: 55px;
+        left: -55px;
         opacity: 0.7;
-        animation-duration: 30s;
-        animation-delay: -15s;
+        animation-duration: 35s;
+        animation-delay: -18s;
+        filter: blur(0.8px);
+        
+        &::before {
+          width: 24px;
+          height: 24px;
+          top: -10px;
+          left: 10px;
+        }
+        
+        &::after {
+          width: 28px;
+          height: 28px;
+          top: -14px;
+          right: 8px;
+        }
+      }
+      
+      &:nth-child(3) {
+        width: 45px;
+        height: 16px;
+        top: 85px;
+        left: -45px;
+        opacity: 0.55;
+        animation-duration: 40s;
+        animation-delay: -8s;
+        filter: blur(1px);
+        
+        &::before {
+          width: 20px;
+          height: 20px;
+          top: -9px;
+          left: 8px;
+        }
+        
+        &::after {
+          width: 22px;
+          height: 22px;
+          top: -10px;
+          right: 7px;
+        }
+      }
+
+      &:nth-child(4) {
+        width: 50px;
+        height: 17px;
+        top: 115px;
+        left: -50px;
+        opacity: 0.4;
+        animation-duration: 45s;
+        animation-delay: -22s;
+        filter: blur(1.2px);
         
         &::before {
           width: 22px;
@@ -1012,243 +1263,488 @@ html.dark {
         }
         
         &::after {
-          width: 26px;
-          height: 26px;
+          width: 25px;
+          height: 25px;
           top: -12px;
           right: 8px;
         }
       }
       
-      &:nth-child(3) {
-        width: 40px;
-        height: 15px;
-        top: 90px;
-        left: -40px;
-        opacity: 0.6;
-        animation-duration: 35s;
-        animation-delay: -7s;
-        
-        &::before {
-          width: 18px;
-          height: 18px;
-          top: -8px;
-          left: 7px;
-        }
-        
-        &::after {
-          width: 20px;
-          height: 20px;
-          top: -10px;
-          right: 7px;
-        }
-      }
-      
-      // 夜间云层效果
       .night & {
-        background: rgba(255, 255, 255, 0.7);
+        background: rgba(180, 200, 220, 0.35);
         filter: blur(2px);
       }
       
-      // 黎明/黄昏云层效果
-      .dawn &, .dusk & {
-        background: rgba(255, 255, 255, 0.8);
-        filter: blur(1.5px);
+      .dawn & {
+        background: rgba(255, 230, 200, 0.7);
+        filter: blur(1px);
+      }
+      
+      .dusk & {
+        background: rgba(255, 200, 180, 0.6);
+        filter: blur(1px);
       }
     }
   }
 
+  // ==================== 雾气 ====================
+  .mist {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 4;
+    
+    .mist-layer {
+      position: absolute;
+      width: 250%;
+      height: 45%;
+      filter: blur(12px);
+      
+      &.mist-1 {
+        bottom: 15%;
+        left: -50%;
+        background: linear-gradient(to right, 
+          transparent 0%, 
+          rgba(255, 255, 255, 0.06) 15%, 
+          rgba(255, 255, 255, 0.1) 40%, 
+          rgba(255, 255, 255, 0.06) 65%, 
+          transparent 100%
+        );
+        animation: mist-drift 14s ease-in-out infinite;
+      }
+      
+      &.mist-2 {
+        bottom: -5%;
+        left: -60%;
+        background: linear-gradient(to right, 
+          transparent 0%, 
+          rgba(255, 255, 255, 0.08) 20%, 
+          rgba(255, 255, 255, 0.12) 50%, 
+          rgba(255, 255, 255, 0.08) 80%, 
+          transparent 100%
+        );
+        animation: mist-drift 18s ease-in-out infinite reverse;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  // ==================== 雨 ====================
   .rain {
     position: absolute;
     width: 100%;
     height: 100%;
+    z-index: 5;
     
     .drop {
       position: absolute;
-      width: 2px;
-      height: 20px;
-      background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.5));
-      border-radius: 1px;
-      animation: rain-drop 1s linear infinite;
-      filter: blur(0.5px);
+      width: 1.5px;
+      height: 18px;
+      background: linear-gradient(to bottom, transparent, rgba(174, 194, 224, 0.6));
+      border-radius: 0 0 2px 2px;
+      animation: rain-drop 0.9s linear infinite;
       
-      @for $i from 1 through 20 {
+      @for $i from 1 through 30 {
         &:nth-child(#{$i}) {
-          left: ($i * 5) * 1%;
-          animation-delay: ($i * 0.1) * 1s;
-          animation-duration: (0.8 + $i * 0.1) * 1s;
-          opacity: 0.4 + ($i * 0.02);
+          $h: 14 + ($i % 5) * 3;
+          height: #{$h}px;
+          left: (($i * 3.3) % 100) * 1%;
+          animation-delay: (($i * 0.07) % 2) * 1s;
+          animation-duration: (0.6 + ($i % 8) * 0.08) * 1s;
+          opacity: 0.3 + (($i % 10) * 0.04);
+        }
+      }
+    }
+    
+    .rain-splash {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 20px;
+      
+      .splash {
+        position: absolute;
+        bottom: 2px;
+        width: 6px;
+        height: 2px;
+        border-radius: 50%;
+        background: rgba(174, 194, 224, 0.3);
+        animation: splash-pop 1.8s ease-out infinite;
+        
+        &::before, &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          width: 2px;
+          height: 5px;
+          background: rgba(174, 194, 224, 0.2);
+          border-radius: 50% 50% 0 0;
+          animation: splash-drop 1.8s ease-out infinite;
+        }
+        
+        &::before {
+          left: -3px;
+          transform: rotate(-25deg);
+          animation-delay: inherit;
+        }
+        
+        &::after {
+          right: -3px;
+          transform: rotate(25deg);
+          animation-delay: inherit;
         }
       }
     }
   }
 
-  .snow {
+  // ==================== 闪电 ====================
+  .lightning-container {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 6;
     
-    .snowflake {
+    .lightning {
       position: absolute;
-      width: 6px;
-      height: 6px;
-      background: white;
-      border-radius: 50%;
-      animation: snow-drop 3s linear infinite;
-      filter: blur(0.5px);
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0;
+      animation: lightning-flash 10s ease-in-out infinite;
       
       &::before {
         content: '';
         position: absolute;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.8);
-        border-radius: 50%;
-        transform: scale(0.8);
-      }
-      
-      @for $i from 1 through 20 {
-        &:nth-child(#{$i}) {
-          left: ($i * 5) * 1%;
-          animation-delay: ($i * 0.15) * 1s;
-          animation-duration: (2.5 + $i * 0.1) * 1s;
-          opacity: 0.6 + ($i * 0.02);
-        }
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.6) 0%, rgba(200, 220, 255, 0.3) 30%, transparent 70%);
       }
     }
   }
 
+  // ==================== 雪 ====================
+  .snow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    
+    .snowflake {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: snow-drop 3s linear infinite;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        width: calc(100% + 2px);
+        height: calc(100% + 2px);
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 50%;
+        filter: blur(1px);
+      }
+      
+      @for $i from 1 through 25 {
+        &:nth-child(#{$i}) {
+          $size: 3 + ($i % 4) * 1.5;
+          width: #{$size}px;
+          height: #{$size}px;
+          left: (($i * 4) % 100) * 1%;
+          animation-delay: (($i * 0.2) % 3) * 1s;
+          animation-duration: (2 + ($i % 6) * 0.3) * 1s;
+          opacity: 0.5 + (($i % 8) * 0.06);
+          
+          @if $size > 5 {
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+          }
+        }
+      }
+    }
+    
+    .snow-ground {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 18px;
+      z-index: 6;
+      background: linear-gradient(to top, 
+        rgba(255, 255, 255, 0.55) 0%, 
+        rgba(255, 255, 255, 0.3) 40%, 
+        rgba(255, 255, 255, 0.1) 70%,
+        transparent 100%
+      );
+      border-radius: 0 0 16px 16px;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 5%;
+        width: 30%;
+        height: 10px;
+        background: rgba(255, 255, 255, 0.35);
+        border-radius: 50% 50% 0 0;
+        filter: blur(3px);
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 10%;
+        width: 25%;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50% 50% 0 0;
+        filter: blur(3px);
+      }
+    }
+  }
+
+  // ==================== 风 ====================
   .wind {
     position: absolute;
     width: 100%;
     height: 100%;
+    z-index: 5;
     
     .wind-line {
       position: absolute;
-      height: 2px;
-      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.7), transparent);
+      height: 1.5px;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.3), transparent);
       animation: wind-blow 3s linear infinite;
-      filter: blur(0.5px);
+      border-radius: 1px;
       
-      @for $i from 1 through 5 {
+      @for $i from 1 through 6 {
         &:nth-child(#{$i}) {
-          top: (20 + $i * 15) * 1%;
-          width: (30 + $i * 10) * 1px;
-          animation-delay: ($i * 0.2) * 1s;
-          opacity: 0.4 + ($i * 0.1);
+          top: (15 + $i * 13) * 1%;
+          width: (25 + $i * 8) * 1px;
+          animation-delay: ($i * 0.3) * 1s;
+          opacity: 0.3 + ($i * 0.1);
+          animation-duration: (2.5 + ($i % 3) * 0.5) * 1s;
+        }
+      }
+    }
+    
+    .wind-particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      left: -10px;
+      animation: particle-drift 3s ease-in-out infinite;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        width: 16px;
+        height: 1px;
+        background: linear-gradient(to left, rgba(255, 255, 255, 0.35), transparent);
+        top: 50%;
+        right: 100%;
+        transform: translateY(-50%);
+      }
+      
+      @for $i from 1 through 10 {
+        &:nth-child(n+7):nth-child(#{$i + 6}) {
+          $size: 2 + ($i % 3);
+          width: #{$size}px;
+          height: #{$size}px;
+          opacity: 0.3 + ($i % 5) * 0.1;
         }
       }
     }
   }
 }
 
-// 动画定义
+// ==================== 关键帧动画 ====================
+
 @keyframes cloud-move {
   0% {
-    transform: translateX(-120%) translateY(0);
+    transform: translateX(-130%) translateY(0);
+  }
+  25% {
+    transform: translateX(-65%) translateY(-3px);
   }
   50% {
-    transform: translateX(-60%) translateY(-5px);
+    transform: translateX(0%) translateY(-6px);
+  }
+  75% {
+    transform: translateX(65%) translateY(-3px);
   }
   100% {
-    transform: translateX(120%) translateY(0);
+    transform: translateX(130%) translateY(0);
   }
 }
 
 @keyframes rain-drop {
   0% {
-    transform: translateY(-10px) translateX(0) scaleY(1);
+    transform: translateY(-15px) translateX(0) scaleY(0.8);
     opacity: 0;
   }
-  50% {
-    opacity: 1;
+  10% {
+    opacity: 0.6;
+  }
+  85% {
+    opacity: 0.5;
   }
   100% {
-    transform: translateY(170px) translateX(-20px) scaleY(2);
+    transform: translateY(190px) translateX(-15px) scaleY(1.3);
     opacity: 0;
   }
+}
+
+@keyframes splash-pop {
+  0%, 60% { transform: scale(0); opacity: 0; }
+  70% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+@keyframes splash-drop {
+  0%, 60% { height: 0; opacity: 0; }
+  70% { height: 5px; opacity: 0.4; }
+  100% { height: 8px; opacity: 0; transform: translateY(-4px); }
 }
 
 @keyframes snow-drop {
   0% {
-    transform: translateY(-10px) rotate(0deg) scale(1);
+    transform: translateY(-15px) translateX(0) rotate(0deg) scale(0.8);
     opacity: 0;
   }
-  25% {
-    transform: translateY(40px) rotate(90deg) scale(1.2);
+  15% {
     opacity: 1;
   }
-  75% {
-    transform: translateY(120px) rotate(270deg) scale(0.8);
-    opacity: 1;
+  30% {
+    transform: translateY(40px) translateX(8px) rotate(90deg) scale(1.1);
+  }
+  60% {
+    transform: translateY(100px) translateX(-5px) rotate(200deg) scale(0.9);
+    opacity: 0.9;
   }
   100% {
-    transform: translateY(170px) rotate(360deg) scale(0.5);
+    transform: translateY(190px) translateX(10px) rotate(360deg) scale(0.5);
     opacity: 0;
   }
 }
 
-@keyframes sun-rays {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+@keyframes sun-rays-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes sun-pulse {
   0%, 100% {
     transform: scale(1);
-    opacity: 0.3;
+    opacity: 0.35;
   }
   50% {
-    transform: scale(1.2);
-    opacity: 0.5;
+    transform: scale(1.25);
+    opacity: 0.55;
+  }
+}
+
+@keyframes moon-glow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.12;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.2;
   }
 }
 
 @keyframes wind-blow {
   0% {
-    transform: translateX(-30px) scaleX(0.5);
+    transform: translateX(-30px) scaleX(0.3);
     opacity: 0;
   }
-  25% {
-    transform: translateX(0) scaleX(1);
-    opacity: 1;
+  20% {
+    transform: translateX(10px) scaleX(1);
+    opacity: 0.8;
   }
-  75% {
-    transform: translateX(90px) scaleX(1.2);
-    opacity: 0.7;
+  70% {
+    transform: translateX(100px) scaleX(1.3);
+    opacity: 0.5;
   }
   100% {
-    transform: translateX(120px) scaleX(0.5);
+    transform: translateX(150px) scaleX(0.4);
     opacity: 0;
   }
+}
+
+@keyframes particle-drift {
+  0% {
+    transform: translateX(0) translateY(0) scale(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.7;
+    transform: translateX(30px) translateY(-3px) scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateX(120px) translateY(5px) scale(0.8);
+  }
+  100% {
+    transform: translateX(280px) translateY(-2px) scale(0.2);
+    opacity: 0;
+  }
+}
+
+@keyframes lightning-flash {
+  0%, 100% { opacity: 0; }
+  42% { opacity: 0; }
+  43% { opacity: 0.25; }
+  44% { opacity: 0; }
+  45.5% { opacity: 0.4; }
+  46% { opacity: 0.1; }
+  46.5% { opacity: 0.35; }
+  47% { opacity: 0; }
+}
+
+@keyframes shooting {
+  0% { transform: translateX(0) translateY(0) rotate(-35deg); opacity: 0; }
+  3% { opacity: 1; }
+  12% { transform: translateX(-220px) translateY(100px) rotate(-35deg); opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes mist-drift {
+  0%, 100% { transform: translateX(-20%); }
+  50% { transform: translateX(5%); }
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
 @keyframes twinkle {
   0%, 100% {
-    opacity: 0.2;
-    transform: scale(0.8);
+    opacity: 0.15;
+    transform: scale(0.7);
   }
   50% {
     opacity: 1;
-    transform: scale(1.2);
+    transform: scale(1.3);
   }
 }
 </style>
