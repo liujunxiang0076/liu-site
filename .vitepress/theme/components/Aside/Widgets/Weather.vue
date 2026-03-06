@@ -30,10 +30,16 @@
         </div>
         
         <!-- 太阳/月亮 -->
-        <div v-if="currentWeather === 'sunny' || currentWeather === 'cloudy'" 
-          :class="['celestial-body', { 'sun': isDayTime, 'moon': !isDayTime }]">
-          <!-- 太阳光芒 -->
-          <div v-if="isDayTime" class="sun-rays-ring"></div>
+        <div v-if="currentWeather === 'sunny' || currentWeather === 'cloudy' || currentWeather === 'windy'" 
+          :class="[
+            'celestial-body', 
+            { 'sun': isDayTime, 'moon': !isDayTime },
+            `weather-${currentWeather}`
+          ]">
+          <!-- 太阳光芒（仅晴天） -->
+          <div v-if="isDayTime && currentWeather === 'sunny'" class="sun-rays-ring"></div>
+          <!-- 太阳光晕（仅晴天） -->
+          <div v-if="isDayTime && currentWeather === 'sunny'" class="sun-halo"></div>
         </div>
         
         <!-- 云层 -->
