@@ -12,66 +12,104 @@
         <!-- 天空背景层 -->
         <div class="sky-background"></div>
         
+        <!-- 大气光效层 -->
+        <div class="atmosphere-glow"></div>
+        
         <!-- 星星（夜间） -->
         <div v-if="timeOfDay === 'night'" class="stars">
-          <div v-for="i in 20" :key="`star-${i}`" class="star"
+          <div v-for="i in 25" :key="`star-${i}`" class="star"
             :style="{ 
-              left: `${Math.random() * 100}%`, 
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`
+              left: `${(i * 17 + 13) % 100}%`, 
+              top: `${(i * 23 + 7) % 80}%`,
+              animationDelay: `${(i * 0.37) % 3}s`
             }">
           </div>
+          <!-- 流星 -->
+          <div class="shooting-star"></div>
+          <div class="shooting-star shooting-star-2"></div>
         </div>
         
         <!-- 太阳/月亮 -->
         <div v-if="currentWeather === 'sunny' || currentWeather === 'cloudy'" 
           :class="['celestial-body', { 'sun': isDayTime, 'moon': !isDayTime }]">
+          <!-- 太阳光芒 -->
+          <div v-if="isDayTime" class="sun-rays-ring"></div>
         </div>
         
         <!-- 云层 -->
         <div v-if="['cloudy', 'rainy', 'snowy'].includes(currentWeather)" class="clouds">
-          <div v-for="i in 3" :key="`cloud-${i}`" 
+          <div v-for="i in 4" :key="`cloud-${i}`" 
             class="cloud"
             :style="{ 
-              animationDuration: `${20 + i * 5}s`,
-              animationDelay: `${i * 2}s`,
-              opacity: timeOfDay === 'night' ? 0.6 : 0.8
+              animationDuration: `${18 + i * 6}s`,
+              animationDelay: `${i * 3}s`,
+              opacity: timeOfDay === 'night' ? 0.5 : 0.85
             }">
           </div>
+        </div>
+        
+        <!-- 雾气层（雨天） -->
+        <div v-if="currentWeather === 'rainy'" class="mist">
+          <div class="mist-layer mist-1"></div>
+          <div class="mist-layer mist-2"></div>
         </div>
         
         <!-- 雨滴 -->
         <div v-if="currentWeather === 'rainy'" class="rain">
-          <div v-for="i in 20" :key="`rain-${i}`" class="drop"
+          <div v-for="i in 30" :key="`rain-${i}`" class="drop"
             :style="{ 
-              left: `${i * 5}%`,
-              animationDuration: `${0.8 + (i * 0.1)}s`,
-              animationDelay: `${i * 0.1}s`,
-              opacity: 0.4 + (i * 0.02)
+              left: `${(i * 3.3) % 100}%`,
+              animationDuration: `${0.6 + (i % 8) * 0.08}s`,
+              animationDelay: `${(i * 0.07) % 2}s`,
+              opacity: 0.3 + (i % 10) * 0.04
             }">
           </div>
+          <!-- 水花溅射 -->
+          <div class="rain-splash">
+            <div v-for="i in 8" :key="`splash-${i}`" class="splash"
+              :style="{
+                left: `${(i * 12.5) % 100}%`,
+                animationDelay: `${(i * 0.25) % 2}s`
+              }">
+            </div>
+          </div>
+        </div>
+        
+        <!-- 闪电（雨天） -->
+        <div v-if="currentWeather === 'rainy'" class="lightning-container">
+          <div class="lightning"></div>
         </div>
         
         <!-- 雪花 -->
         <div v-if="currentWeather === 'snowy'" class="snow">
-          <div v-for="i in 20" :key="`snow-${i}`" class="snowflake"
+          <div v-for="i in 25" :key="`snow-${i}`" class="snowflake"
             :style="{ 
-              left: `${i * 5}%`,
-              animationDuration: `${2.5 + (i * 0.1)}s`,
-              animationDelay: `${i * 0.15}s`,
-              opacity: 0.6 + (i * 0.02)
+              left: `${(i * 4) % 100}%`,
+              animationDuration: `${2 + (i % 6) * 0.3}s`,
+              animationDelay: `${(i * 0.2) % 3}s`,
+              opacity: 0.5 + (i % 8) * 0.06
             }">
           </div>
+          <!-- 地面积雪 -->
+          <div class="snow-ground"></div>
         </div>
         
         <!-- 风效果 -->
         <div v-if="currentWeather === 'windy'" class="wind">
-          <div v-for="i in 5" :key="`wind-${i}`" class="wind-line"
+          <div v-for="i in 6" :key="`wind-${i}`" class="wind-line"
             :style="{ 
-              top: `${20 + (i * 15)}%`,
-              width: `${30 + (i * 10)}px`,
-              animationDelay: `${i * 0.2}s`,
-              opacity: 0.4 + (i * 0.1)
+              top: `${15 + (i * 13)}%`,
+              width: `${25 + (i * 8)}px`,
+              animationDelay: `${i * 0.3}s`,
+              opacity: 0.3 + (i * 0.1)
+            }">
+          </div>
+          <!-- 飘散粒子 -->
+          <div v-for="i in 10" :key="`particle-${i}`" class="wind-particle"
+            :style="{
+              top: `${(i * 9 + 5) % 90}%`,
+              animationDelay: `${(i * 0.4) % 3}s`,
+              animationDuration: `${2 + (i % 4) * 0.5}s`
             }">
           </div>
         </div>
