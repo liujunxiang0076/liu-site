@@ -158,24 +158,109 @@ export const getStatistics = async (key) => {
 };
 
 /**
+ * 获取最近的中国节假日（使用 timor.tech API）
+ * @returns {Promise<Object>} 最近的中国节假日信息
+ */
+const getRecentHolidayFromTimor = async () => {
+  const currentYear = new Date().getFullYear();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  // 获取当前年份和下一年的节假日数据
+  const fetchYearHolidays = async (year) => {
+    const url = `https://timor.tech/api/holiday/year/${year}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    if (data.code !== 0 || !data.holiday) {
+      return [];
+    }
+    return Object.values(data.holiday);
+  };
+
+  try {
+    // 获取当年数据
+    let holidays = await fetchYearHolidays(currentYear);
+    
+    // 筛选出未来的真正节假日（holiday: true，排除补班日）
+    let futureHolidays = holidays.filter(h => {
+      if (!h.holiday) return false;
+      const holidayDate = new Date(h.date);
+      holidayDate.setHours(0, 0, 0, 0);
+      return holidayDate >= today;
+    });
+
+    // 如果当年没有找到未来的节假日，尝试获取下一年的数据
+    if (futureHolidays.length === 0) {
+      holidays = await fetchYearHolidays(currentYear + 1);
+      futureHolidays = holidays.filter(h => {
+        if (!h.holiday) return false;
+        const holidayDate = new Date(h.date);
+        holidayDate.setHours(0, 0, 0, 0);
+        return holidayDate >= today;
+      });
+    }
+
+    if (futureHolidays.length === 0) {
+      return null;
+    }
+
+    // 按日期排序，找出最近的节假日
+    futureHolidays.sort((a, b) => new Date(a.date) - new Date(b.date));
+    const nextHoliday = futureHolidays[0];
+
+    // 转换为统一的返回格式
+    return {
+      date: nextHoliday.date,
+      name: nextHoliday.name,
+      localName: nextHoliday.name,
+      wage: nextHoliday.wage
+    };
+  } catch (error) {
+    console.error("timor.tech API 获取节假日数据失败：", error);
+    throw error;
+  }
+};
+
+/**
+ * 获取最近的中国节假日（备用方案：使用 nager.at API）
+ * @returns {Promise<Object>} 最近的中国节假日信息
+ */
+const getRecentHolidayFromNager = async () => {
+  const url = "https://date.nager.at/api/v3/NextPublicHolidays/CN";
+  const response = await fetch(url);
+  const holidays = await response.json();
+  if (holidays.length > 0) {
+    const nextHoliday = holidays[0];
+    return {
+      date: nextHoliday.date,
+      name: nextHoliday.localName || nextHoliday.name,
+      localName: nextHoliday.localName,
+    };
+  }
+  return null;
+};
+
+/**
  * 获取最近的中国节假日
+ * 优先使用 timor.tech API，失败时回退到 nager.at API
  * @returns {Promise<Object>} 最近的中国节假日信息
  */
 export const getRecentHoliday = async () => {
-  const url = "https://date.nager.at/api/v3/NextPublicHolidays/CN"; // 中国节假日
   try {
-    const response = await fetch(url);
-    const holidays = await response.json();
-    if (holidays.length > 0) {
-      const nextHoliday = holidays[0];
-      // console.log("最近节假日：", nextHoliday.name, nextHoliday.date);
-      return nextHoliday;
-    } else {
-      // console.log("未找到节假日数据");
-      return null;
+    // 优先使用 timor.tech API
+    const holiday = await getRecentHolidayFromTimor();
+    if (holiday) {
+      return holiday;
     }
   } catch (error) {
-    // console.error("获取节假日数据失败：", error);
+    console.warn("timor.tech API 失败，尝试备用 API");
+  }
+
+  // 备用方案：使用 nager.at API
+  try {
+    return await getRecentHolidayFromNager();
+  } catch (error) {
+    console.error("所有节假日 API 均失败：", error);
     return null;
   }
 }
