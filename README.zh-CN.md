@@ -1,7 +1,5 @@
 # Liu Theme - VitePress 博客主题
 
-[中文版](README.zh-CN.md) | [English](README.md)
-
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/liujunxiang0076/liu-theme/ci.yml?logo=github)](https://github.com/liujunxiang0076/liu-theme/actions)
 [![npm downloads](https://img.shields.io/npm/dm/vitepress?logo=npm)](https://www.npmjs.com/package/vitepress)
 
