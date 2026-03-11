@@ -4,7 +4,7 @@ tags: [开发]
 categories: [技术分享]
 date: 2026-01-16
 description: 
-cover: https://imgbed.liujunxiang0076.site/file/1768550273617_image.png
+cover: https://imgbed.liujunxiang0076.site/file/1773190484473_image.png
 ---
 
 ## 先上截图
@@ -40,6 +40,14 @@ cover: https://imgbed.liujunxiang0076.site/file/1768550273617_image.png
 2.  **内容管理**：初步实现了文章列表展示、分类筛选以及基础的 CRUD 操作。
 3.  **图床集成**：配合自建图床，实现了流畅的图片上传与引用流程。
 
+
+---
+
+**2026-03-11 更新**
+
+![](https://imgbed.liujunxiang0076.site/file/1773190484473_image.png)
+
+![](https://imgbed.liujunxiang0076.site/file/1773190494731_image.png)
 
 
 
