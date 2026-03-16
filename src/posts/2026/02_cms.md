@@ -1,5 +1,5 @@
 ---
-title: CMS终于小有所成！
+title: 独立的CMS管理系统
 tags: [开发]
 categories: [技术分享]
 date: 2026-01-16
@@ -7,7 +7,7 @@ description:
 cover: https://imgbed.liujunxiang0076.site/file/1773190484473_image.png
 ---
 
-## 先上截图
+## 截图
 
 - 登录
 ![](https://imgbed.liujunxiang0076.site/file/1768550273617_image.png)
