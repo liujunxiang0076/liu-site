@@ -1,7 +1,7 @@
 ---
 title: 03_story
-tags: []
-categories: []
+tags: [故事]
+categories: [杂谈]
 date: 2026-03-16
 description: 
 cover: 
