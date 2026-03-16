@@ -1,5 +1,5 @@
 ---
-title: 03_story
+title: 新一年开工后，一个特别的故事
 tags: [故事]
 categories: [杂谈]
 date: 2026-03-16
