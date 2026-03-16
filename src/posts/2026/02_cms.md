@@ -58,8 +58,44 @@ ui界面调整美化
 git clone https://github.com/liujunxiang0076/liu-site-CMS.git
 ```
 
-1. 准备后端 Docker 镜像
-既然你已经在服务器上有了代码，我们可以手动构建一个专属于后端的镜像，这样 1Panel 就会把它当成一个“本地镜像”来管理。
+复制 `.env.example` 文件进行并修改
+```text
+GITHUB_TOKEN=your_token_here
+REPO_NAME=your_github_id/liu-site
+TG_IMG_API=your_tg_img_api_endpoint
+SECRET_KEY=your_secure_random_string
+
+# Optional: GitHub Configuration
+# GITHUB_BRANCH=main
+
+# Optional: Auth Configuration
+# ADMIN_PASSWORD=your_initial_admin_password
+# FORCE_RESET_PASSWORD=false
+
+# Optional: Redis Configuration
+# REDIS_HOST=localhost
+# REDIS_PORT=6379
+
+# Optional: CORS Configuration (comma-separated origins)
+# ALLOWED_ORIGINS=http://localhost:5173,https://your-domain.com
+
+# Optional: Network Configuration
+# HTTPS_PROXY=http://127.0.0.1:7890
+# GITHUB_VERIFY_SSL=true
+
+```
+
+
+| Name | Remark |
+| - | - |
+| GITHUB_TOKEN | Personal access tokens (classic) |
+| REPO_NAME | 仓库地址 |
+| TG_IMG_API | 图床地址 |
+| SECRET_KEY | 认证密钥 |
+
+
+1.准备后端 Docker 镜像
+既然在服务器上有了代码，我们可以手动构建一个专属于后端的镜像，这样 1Panel 就会把它当成一个“本地镜像”来管理。
 
 在终端进入 backend 目录，执行以下命令构建镜像：
 
@@ -69,7 +105,7 @@ cd /opt/1panel/docker/compose/liu-site-CMS/backend
 docker build -t liu-backend-custom .
 构建成功后，在 1Panel 的“镜像”页面就能看到 liu-backend-custom 了。
 ```
-2. 在 1Panel 中创建单独的“编排”
+2.在 1Panel 中创建单独的“编排”
 现在我们要为后端创建一个干净的 docker-compose.yml，只包含后端服务及其依赖（如 Redis）：
 
 在 /opt/1panel/docker/compose/ 下新建一个文件夹 my-backend。
@@ -106,13 +142,16 @@ networks:
   cms-net:
     driver: bridge
 ```
-3. 部署
-回到 1Panel “容器” -> “编排”。
 
-点击 “创建编排”。
+3.部署
+回到 1Panel **“容器”** -> **“编排”**。
 
-来源选择 “路径选择”，选中刚才创建的 /opt/1panel/docker/compose/my-backend。
+点击 **“创建编排”**。
+
+来源选择 **“路径选择”**，选中刚才创建的 `/opt/1panel/docker/compose/my-backend`。
 
 保存即可。
+
+
 
 ---
