@@ -119,6 +119,7 @@ onUnmounted(() => {
   overflow: hidden;
   background-color: var(--main-card-second-background);
   border-radius: 12px;
+  line-height: 0;
   
   &.loaded {
     background-color: transparent;
@@ -168,6 +169,7 @@ onUnmounted(() => {
   }
   
   img {
+    display: block;
     width: 100%;
     height: auto;
     object-fit: cover;
