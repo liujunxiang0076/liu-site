@@ -152,6 +152,55 @@ networks:
 
 保存即可。
 
+![](https://imgbed.liujunxiang0076.site/file/1773638937037_image.png)
+
+4.创建反代理
+
+使用域名指向地址，配置完反向代理，对代理配置文件进行修改，是这个单独域名的配置，不是总配置
+
+
+```text
+location / {
+    # 临时改为允许所有来源，排查是否是域名匹配问题
+    add_header 'Access-Control-Allow-Origin' '*' always;
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE' always;
+    add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
+    
+    # 注意：如果开启了 Allow-Credentials 'true'，Origin 不能设置为 '*'，必须设置为具体域名
+    # 如果后端不需要 Cookie/Session 认证，建议删掉下面这行
+    # add_header 'Access-Control-Allow-Credentials' 'true' always;
+
+    if ($request_method = 'OPTIONS') {
+        add_header 'Access-Control-Allow-Origin' '*' always;
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE' always;
+        add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
+        add_header 'Access-Control-Max-Age' 1728000;
+        add_header 'Content-Type' 'text/plain; charset=utf-8';
+        add_header 'Content-Length' 0;
+        return 204;
+    }
+
+    # 代理转发
+    proxy_pass ####;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header REMOTE-HOST $remote_addr;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $http_connection;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-Port $server_port;
+    proxy_http_version 1.1;
+    
+    add_header X-Cache $upstream_cache_status;
+    proxy_ssl_server_name off;
+    proxy_ssl_name $proxy_host;
+    add_header Strict-Transport-Security "max-age=31536000";
+}
+
+```
+以上配置因为浏览器的安全性，强制禁止 HTTPS 网页发起 HTTP 请求，会直接将其拦截
+所以采用后端也使用 HTTPS
 
 
 ---
