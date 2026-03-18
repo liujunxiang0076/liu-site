@@ -5,7 +5,7 @@ tags: [故事]
 categories: [杂谈]
 date: 2026-03-16
 description:
-cover:
+cover: https://imgbed.liujunxiang0076.site/file/1773823571908_ChatGPT_Image_2026年3月18日_16_45_57.png
 password: 123456
 passwordHint: 密码是6位数字
 ---------------------
