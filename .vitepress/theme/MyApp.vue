@@ -59,6 +59,7 @@ import { storeToRefs } from 'pinia';
 import { mainStore } from './store/index';
 import { calculateScroll, specialDayGray } from './utils/helper';
 import { defineAsyncComponent } from 'vue';
+import { inject, pageview } from '@vercel/analytics';
 
 // 异步加载 VitePress 本地搜索组件
 const VPLocalSearchBox = defineAsyncComponent(() =>
@@ -70,6 +71,7 @@ const store = mainStore();
 const { frontmatter, page, theme } = useData();
 const { loadingStatus, footerIsShow, themeValue, themeType, backgroundType, fontFamily, fontSize } = storeToRefs(store);
 const minimalMode = computed(() => theme.value?.minimal?.enable ?? false);
+const analyticsReady = ref(false);
 
 // 搜索框显示状态
 const showSearch = ref(false);
@@ -90,6 +92,11 @@ const isPostPage = computed(() => {
     const routePath = decodeURIComponent(route.path);
     return routePath.includes('/posts/');
 });
+
+const sendAnalyticsPageview = (path) => {
+    if (!analyticsReady.value || typeof window === 'undefined') return;
+    pageview({ path });
+};
 
 // 开启右键菜单
 const openRightMenu = (e) => {
@@ -171,6 +178,12 @@ watch(
     () => fontFamily.value,
     () => changeSiteFont()
 );
+watch(
+    () => route.path,
+    (path) => {
+        sendAnalyticsPageview(decodeURIComponent(path));
+    }
+);
 
 onMounted(() => {
     // console.log(frontmatter.value, page.value, theme.value);
@@ -190,6 +203,10 @@ onMounted(() => {
     window.addEventListener('copy', copyTip);
     // 监听系统颜色
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', changeSiteThemeType);
+    // Vercel Analytics 适配 VitePress：手动注入并上报路由切换
+    inject({ disableAutoTrack: true });
+    analyticsReady.value = true;
+    sendAnalyticsPageview(decodeURIComponent(route.path));
 });
 
 onBeforeUnmount(() => {
