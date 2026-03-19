@@ -1,10 +1,10 @@
 <!-- 文章页面组件 -->
 <template>
-  <div v-if="postMetaData" class="post">
+  <div v-if="postMetaData" :class="['post', { minimal: minimalMode }]">
     <!-- 文章元信息区域 -->
     <div class="post-meta">
       <!-- 分类和标签 -->
-      <div class="meta">
+      <div v-if="!minimalMode" class="meta">
         <!-- 文章分类 -->
         <div class="categories">
           <a
@@ -52,7 +52,7 @@
           :show-details="theme?.readingTime?.showDetails"
         />
         <!-- 文章热度 -->
-        <span class="hot meta">
+        <span v-if="!minimalMode" class="hot meta">
           <i class="iconfont icon-fire" />
           <span id="twikoo_visitors" class="artalk-pv-count">0</span>
         </span>
@@ -73,7 +73,7 @@
             本文发表于 <strong>{{ postMetaData?.expired }}</strong> 天前，其中的信息可能已经事过境迁
           </div>
           <!-- AI 文章摘要 -->
-          <ArticleGPT />
+          <ArticleGPT v-if="!minimalMode" />
           <!-- 文章正文内容 -->
           <Content id="page-content" class="markdown-main-style" />
           <!-- 参考资料 -->
@@ -81,7 +81,7 @@
           <!-- 版权信息 -->
           <Copyright v-if="frontmatter.copyright !== false" :postData="postMetaData" />
           <!-- 文章底部信息 -->
-          <div class="other-meta">
+          <div v-if="!minimalMode" class="other-meta">
             <!-- 文章标签列表 -->
             <div class="all-tags">
               <a
@@ -105,11 +105,11 @@
             </a>
           </div>
           <!-- 打赏按钮 -->
-          <RewardBtn />
+          <RewardBtn v-if="!minimalMode" />
           <!-- 下一篇 -->
           <NextPost />
           <!-- 相关文章 -->
-          <RelatedPost />
+          <RelatedPost v-if="!minimalMode" />
           <!-- 评论区 -->
           <Comments ref="commentRef" />
         </ProtectedContent>
@@ -128,6 +128,7 @@ import ProtectedContent from "@/components/ProtectedContent.vue";
 
 // 获取页面数据
 const { page, theme, frontmatter } = useData();
+const minimalMode = computed(() => theme.value?.minimal?.enable ?? false);
 
 // 评论组件引用
 const commentRef = ref(null);
@@ -267,6 +268,71 @@ onMounted(() => {
             .iconfont {
               color: var(--main-color);
             }
+          }
+        }
+      }
+    }
+  }
+
+  &.minimal {
+    .post-meta {
+      padding: 1rem 0 1.5rem 0;
+      .title {
+        font-size: 1.9rem;
+        margin: 0.8rem 0;
+      }
+      .other-meta {
+        .meta {
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-size: 13px;
+        }
+      }
+    }
+
+    .post-content {
+      .post-article {
+        padding: 0.8rem 1.5rem 1.6rem 1.5rem;
+
+        :deep(.markdown-main-style) {
+          div > {
+            h1 {
+              text-align: left;
+              font-size: 1.9rem;
+              border-bottom: 1px solid var(--main-card-border);
+              padding-bottom: 0.6rem;
+            }
+            h2 {
+              font-size: 1.45rem;
+              border-bottom: 1px solid var(--main-card-border);
+            }
+            h3 {
+              font-size: 1.15rem;
+              &::after {
+                display: none;
+              }
+            }
+          }
+
+          p,
+          ul,
+          li,
+          td {
+            letter-spacing: 0.2px;
+            line-height: 1.8;
+          }
+
+          p a {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            &::before {
+              display: none;
+            }
+          }
+
+          blockquote {
+            border-left-width: 4px;
+            border-radius: 4px;
           }
         }
       }

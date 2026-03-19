@@ -1,18 +1,18 @@
 <!-- 文章列表 -->
 <template>
-  <div class="post-lists" :class="{'layout-grid': layoutType === 'twoColumns'}" :style="gridStyle">
+  <div class="post-lists" :class="{ 'layout-grid': layoutType === 'twoColumns' }" :style="gridStyle">
     <div
       v-for="(item, index) in listData"
       :key="index"
-      :class="['post-item', 's-card', 'hover',{ simple, cover: showCover(item),[`cover-${layoutType}`]: showCover(item) }]"
-      :style="{ animationDelay: `${0.4 + index / 10}s`, height: 'auto !important', minHeight: 'auto !important', maxHeight: 'none !important' }"
+      :class="['post-item', 's-card', 'hover', { simple, cover: showCover(item), [`cover-${layoutType}`]: showCover(item) }]"
+      :style="{ animationDelay: `${0.2 + index / 20}s` }"
       @click="toPost(item.regularPath)"
     >
       <div v-if="!simple && showCover(item)" class="post-cover">
-        <img :src="getCover(item)" :alt="item.title">
+        <img :src="getCover(item)" :alt="item.title" />
       </div>
-      
-      <div class="post-content" style="height: auto; overflow: visible;">
+
+      <div class="post-content">
         <div v-if="!simple && item?.categories" class="post-category">
           <span v-for="cat in item?.categories" :key="cat" class="cat-name">
             <i class="iconfont icon-folder" />
@@ -24,8 +24,8 @@
             置顶
           </span>
         </div>
-        <div class="post-title-wrapper" style="width: 100%">
-          <h3 class="post-title" style="margin: 0.6rem 0; font-size: 20px; font-weight: bold; white-space: normal; overflow: visible;">
+        <div class="post-title-wrapper">
+          <h3 class="post-title">
             {{ item.title }}
             <!-- 密码保护图标 -->
             <i v-if="item?.password" class="iconfont icon-lock password-icon" title="此文章需要密码访问"></i>
@@ -33,7 +33,7 @@
         </div>
 
         <!-- 密码保护文章显示特殊提示 -->
-        <div v-if="item?.password" class="post-desc-wrapper password-protected" style="width: 100%">
+        <div v-if="item?.password" class="post-desc-wrapper password-protected">
           <div class="password-notice">
             <i class="iconfont icon-lock"></i>
             <span class="notice-text">此文章已加密，需要密码才能访问</span>
@@ -42,8 +42,8 @@
         </div>
 
         <!-- 普通文章显示描述 -->
-        <div v-else-if="item?.description" class="post-desc-wrapper" style="width: 100%">
-          <p class="post-desc" style="margin-top: 0.5rem; margin-bottom: 1.2rem; opacity: 0.8; white-space: normal; overflow: visible;">{{ item.description }}</p>
+        <div v-else-if="item?.description" class="post-desc-wrapper">
+          <p class="post-desc">{{ item.description }}</p>
         </div>
         <div v-if="!simple" class="post-meta">
           <div v-if="item?.tags" class="post-tags">
@@ -68,7 +68,6 @@
 <script setup>
 import { mainStore } from "@/store";
 import { formatTimestamp } from "@/utils/helper";
-import { onMounted, onUpdated, nextTick } from 'vue';
 import { useRouter } from 'vitepress';
 
 const store = mainStore();
@@ -126,167 +125,91 @@ const toPost = (path) => {
   // 跳转文章
   router.go(path);
 };
-
-// 检查每个描述文本是否需要显示渐变效果
-const checkDescriptionOverflow = () => {
-  if (typeof window === 'undefined') return;
-  
-  nextTick(() => {
-    // 获取所有描述元素
-    const descriptions = document.querySelectorAll('.post-desc');
-    
-    descriptions.forEach(desc => {
-      // 如果内容高度大于容器高度，则显示渐变效果
-      const isOverflowing = desc.scrollHeight > desc.clientHeight;
-      
-      // 获取渐变元素 (::after 伪元素无法直接操作，使用自定义属性)
-      desc.style.setProperty('--fade-display', isOverflowing ? 'block' : 'none');
-    });
-  });
-};
-
-// 在内容挂载和更新后检查溢出
-onMounted(checkDescriptionOverflow);
-onUpdated(checkDescriptionOverflow);
 </script>
 
 <style lang="scss" scoped>
-/* Force full text display with no truncation */
-.post-title-wrapper, .post-desc-wrapper {
-  width: 100% !important;
-  max-width: 100% !important;
-  overflow: visible !important;
-}
-
-.post-title, .post-desc {
-  text-overflow: initial !important;
-  white-space: normal !important;
-  overflow: visible !important;
-  display: block !important;
-  height: auto !important;
-  max-height: none !important;
-  max-width: 100% !important;
-  word-break: break-word !important;
-}
-
 .post-lists {
   .post-item {
-    padding: 0!important;
+    padding: 0;
     display: flex;
-    margin-bottom: 1.5rem;
-    animation: fade-up 0.6s 0.4s backwards;
+    margin-bottom: 1rem;
+    animation: fade-up 0.45s backwards;
     cursor: pointer;
-    border-radius: var(--card-radius);
-    box-shadow: var(--card-shadow);
-    transition: box-shadow 0.3s, transform 0.3s;
-    height: 250px !important; /* Fixed height for consistent appearance */
+    transition: border-color 0.2s, transform 0.2s;
+    min-height: 0;
     overflow: hidden;
-    
+
     .post-cover {
       flex: 0 0 35%;
-      height: 250px !important;
-      
+      min-height: 180px;
+
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transform-origin: center center;
-        will-change: transform;
-        transition: transform 0.5s ease-out;
-        backface-visibility: hidden;
+        transition: transform 0.25s ease-out;
       }
     }
 
     .post-content {
       flex: 1;
-      padding: 1rem 2rem;
+      padding: 1rem 1.25rem;
       display: flex;
       flex-direction: column;
-      justify-content: space-between; /* Changed to space-between to push meta to bottom */
-      // height: 250px !important;
-      overflow: hidden; /* No scrolling, use fade effect instead */
-      
+      justify-content: flex-start;
+      overflow: visible;
+
       .post-category {
         display: flex;
         flex-wrap: wrap;
-        width: 100%;
         color: var(--main-font-second-color);
-        font-size: 14px;
+        font-size: 0.82rem;
+        gap: 0.5rem;
         .cat-name {
           display: flex;
-          flex-direction: row;
           align-items: center;
           .iconfont {
-            opacity: 0.8;
-            margin-right: 6px;
+            opacity: 0.7;
+            margin-right: 4px;
             color: var(--main-font-second-color);
           }
         }
         .top {
-          margin-left: 12px;
+          margin-left: auto;
           color: var(--main-color);
           .iconfont {
-            opacity: 0.8;
+            opacity: 0.7;
             color: var(--main-color);
           }
         }
       }
-      .post-title-wrapper {
-        width: 100%;
-        overflow: visible;
-      }
-      
+
       .post-title {
-        font-size: 20px;
-        line-height: 1.5;
-        font-weight: bold;
-        margin: 0.6rem 0;
-        transition: color 0.3s;
-        overflow: visible;
+        font-size: 1.15rem;
+        line-height: 1.45;
+        font-weight: 600;
+        margin: 0.6rem 0 0.5rem;
+        transition: color 0.2s;
         white-space: normal;
-        word-wrap: break-word;
+        word-break: break-word;
         display: flex;
         align-items: center;
-        width: 100%;
 
         .password-icon {
-          margin-left: 8px;
+          margin-left: 6px;
           color: #f59e0b;
-          font-size: 16px;
+          font-size: 0.9rem;
           opacity: 0.8;
         }
       }
-      .post-desc-wrapper {
-        width: 100%;
-        overflow: visible;
-      }
-      
+
       .post-desc {
-        margin-top: 0.5rem;
-        margin-bottom: 1.2rem;
-        opacity: 0.8;
-        line-height: 1.5;
-        overflow: hidden;
+        margin: 0.2rem 0 0.85rem;
+        opacity: 0.86;
+        line-height: 1.65;
         white-space: normal;
-        word-wrap: break-word;
+        word-break: break-word;
         display: block;
-        width: 100%;
-        max-height: 120px; /* Height limit for description */
-        position: relative;
-        
-        /* Only show the fade effect when the content overflows */
-        &::after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          height: 50px; /* Gradient height */
-          background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, var(--card-bg-color, #fff) 100%);
-          pointer-events: none;
-          /* Will be controlled by JavaScript using CSS variable */
-          display: var(--fade-display, none);
-        }
       }
 
       // 密码保护提示样式
@@ -295,21 +218,20 @@ onUpdated(checkDescriptionOverflow);
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 1.5rem 1rem;
+          padding: 0.85rem 0.75rem;
           background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
           border: 1px solid #f59e0b;
-          border-radius: 12px;
-          margin-top: 0.5rem;
-          margin-bottom: 1.2rem;
+          border-radius: 8px;
+          margin: 0.25rem 0 0.85rem;
 
           .iconfont {
-            font-size: 24px;
+            font-size: 1rem;
             color: #d97706;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
           }
 
           .notice-text {
-            font-size: 14px;
+            font-size: 0.82rem;
             color: #92400e;
             font-weight: 500;
             text-align: center;
@@ -317,7 +239,7 @@ onUpdated(checkDescriptionOverflow);
           }
 
           .password-hint {
-            font-size: 12px;
+            font-size: 0.76rem;
             color: #a16207;
             opacity: 0.8;
             text-align: center;
@@ -327,36 +249,32 @@ onUpdated(checkDescriptionOverflow);
       }
       .post-meta {
         display: flex;
-        flex-direction: row;
         align-items: center;
         justify-content: space-between;
         color: var(--main-font-second-color);
-        margin-top: auto; /* Push to bottom of flex container */
+        margin-top: auto;
+        padding-top: 0.25rem;
+        border-top: 1px solid var(--main-card-border);
+
         .post-tags {
           display: flex;
           flex-wrap: wrap;
-          opacity: 0.8;
-          margin-right: 20px;
+          opacity: 0.75;
+          margin-right: 0.8rem;
           overflow: hidden;
-          mask: linear-gradient(
-            90deg,
-            #fff 0,
-            #fff 90%,
-            hsla(0, 0%, 100%, 0.6) 95%,
-            hsla(0, 0%, 100%, 0) 100%
-          );
+
           .tags-name {
             display: flex;
-            flex-direction: row;
             align-items: center;
-            margin-right: 12px;
+            margin-right: 8px;
             white-space: nowrap;
-            transition: color 0.3s;
+            font-size: 0.8rem;
+            transition: color 0.2s;
             .iconfont {
               font-weight: normal;
               opacity: 0.6;
-              margin-right: 4px;
-              transition: color 0.3s;
+              margin-right: 2px;
+              transition: color 0.2s;
             }
             &:hover {
               color: var(--main-color);
@@ -366,19 +284,20 @@ onUpdated(checkDescriptionOverflow);
             }
           }
           @media (max-width: 768px) {
-            flex-wrap: nowrap;
+            display: none;
           }
         }
         .post-time {
-          opacity: 0.6;
-          font-size: 13px;
+          opacity: 0.72;
+          font-size: 0.78rem;
           white-space: nowrap;
         }
       }
     }
+
     &.simple {
       animation: none;
-      padding: 0.5rem 1.4rem;
+      padding: 0.5rem 1rem;
       background-color: var(--main-card-second-background);
       height: auto;
     }
@@ -387,8 +306,7 @@ onUpdated(checkDescriptionOverflow);
     }
     &:hover {
       .post-cover img {
-        transform: scale(1.05);
-        /* Removed brightness filter that was causing white images to turn gray */
+        transform: scale(1.03);
       }
       .post-content {
         .post-title {
@@ -397,16 +315,19 @@ onUpdated(checkDescriptionOverflow);
       }
     }
     &:active {
-      transform: scale(0.98);
+      transform: scale(0.995);
     }
     @media (max-width: 768px) {
       flex-direction: column;
       height: auto;
-      
+
       .post-cover {
         flex: none;
         width: 100%;
-        height: 200px;
+        min-height: 160px;
+      }
+      .post-content {
+        padding: 0.9rem 1rem;
       }
     }
 
@@ -435,7 +356,7 @@ onUpdated(checkDescriptionOverflow);
       &.cover-left,
       &.cover-right,
       &.cover-both {
-        flex-direction: column !important;
+        flex-direction: column;
       }
     }
   }
@@ -449,12 +370,12 @@ onUpdated(checkDescriptionOverflow);
     .post-item {
       margin: 0;
       flex-direction: column;
-      height: 350px !important; /* Fixed height for grid layout */
+      min-height: 280px;
 
       .post-cover {
         flex: none;
         width: 100%;
-        height: 225px;
+        min-height: 150px;
       }
 
       .post-content {
