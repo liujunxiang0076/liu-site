@@ -1,18 +1,18 @@
 <template>
   <aside class="main-aside">
     <!-- 欢迎 -->
-    <Hello v-if="theme.aside.hello.enable && !isPostPage" class="weidgets" />
+    <Hello v-if="!minimalMode && theme.aside.hello.enable && !isPostPage" class="weidgets" />
     <div class="sticky">
       <!-- 目录 -->
       <Toc v-if="theme.aside.toc.enable && showToc" class="weidgets" />
       <!-- 倒计时 -->
-      <Countdown class="weidgets" />
+      <Countdown v-if="!minimalMode && theme.aside.countDown?.enable" class="weidgets" />
       <!-- 天气 -->
-      <Weather v-if="theme.aside.weather && theme.aside.weather.enable" class="weidgets" />
+      <Weather v-if="!minimalMode && theme.aside.weather && theme.aside.weather.enable" class="weidgets" />
       <!-- 标签 -->
-      <Tags v-if="theme.aside.tags.enable" class="weidgets" />
+      <Tags v-if="!minimalMode && theme.aside.tags.enable" class="weidgets" />
       <!-- 站点数据 -->
-      <SiteData v-if="theme.aside.siteData.enable" class="weidgets" />
+      <SiteData v-if="!minimalMode && theme.aside.siteData.enable" class="weidgets" />
     </div>
   </aside>
 </template>
@@ -21,6 +21,7 @@
 
 // 主题
 const { theme } = useData();
+const minimalMode = computed(() => theme.value?.minimal?.enable ?? false);
 // 路由
 const route = useRoute();
 // 是否为文章页

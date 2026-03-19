@@ -72,6 +72,33 @@ html.dark {
   --main-accent-tertiary: #fbbf24; /* 第三强调色 - 暗色 */
 }
 
+/* 极简模式变量 */
+html.minimal {
+  --main-color: #2563eb;
+  --main-color-rgb: 37, 99, 235;
+  --main-color-bg: #2563eb12;
+  --main-site-background: #ffffff;
+  --main-card-background: #ffffff;
+  --main-card-second-background: #ffffff;
+  --main-font-color: #111827;
+  --main-font-second-color: #4b5563;
+  --main-card-border: #e5e7eb;
+  --main-border-shadow: transparent;
+}
+
+html.dark.minimal {
+  --main-color: #60a5fa;
+  --main-color-rgb: 96, 165, 250;
+  --main-color-bg: #60a5fa1f;
+  --main-site-background: #111827;
+  --main-card-background: #111827;
+  --main-card-second-background: #111827;
+  --main-font-color: #e5e7eb;
+  --main-font-second-color: #9ca3af;
+  --main-card-border: #374151;
+  --main-border-shadow: transparent;
+}
+
 // 字体
 html {
   &.hmos {
@@ -228,6 +255,13 @@ a {
       border-color: var(--main-color);
       box-shadow: 0 8px 16px -4px var(--main-color-bg);
     }
+  }
+}
+
+html.minimal {
+  .s-card {
+    border-radius: 8px;
+    box-shadow: none;
   }
 }
 

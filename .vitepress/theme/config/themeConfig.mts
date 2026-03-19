@@ -5,6 +5,15 @@
 
 export const themeConfig = {
     /**
+     * 极简模式配置
+     * 通过统一开关控制高干扰视觉与交互
+     */
+    minimal: {
+        // 是否启用极简模式
+        enable: true
+    },
+
+    /**
      * 站点基本信息配置
      */
     siteMeta: {
@@ -215,7 +224,7 @@ export const themeConfig = {
         // 封面显示配置
         showCover: {
             // 是否启用封面显示
-            enable: true,
+            enable: false,
             // 封面布局方式: left | right | both
             coverLayout: 'both',
             // 默认封面图片（随机展示）
@@ -325,7 +334,7 @@ export const themeConfig = {
     aside: {
         // 站点简介
         hello: {
-            enable: true,
+            enable: false,
             text: '这里有关于<strong>开发</strong>相关的问题和看法，也会有一些<strong>奇技淫巧</strong>的分享，其中大部分内容会侧重于<strong>前端开发</strong>。希望你可以在这里找到对你有用的知识和教程。'
         },
         // 文章目录
@@ -334,7 +343,7 @@ export const themeConfig = {
         },
         // 天气组件
         weather: {
-            enable: true,
+            enable: false,
             // 天气 API 类型
             type: 'qweather',
             // API 参数
@@ -353,11 +362,11 @@ export const themeConfig = {
         },
         // 标签云
         tags: {
-            enable: true
+            enable: false
         },
         // 倒计时
         countDown: {
-            enable: true,
+            enable: false,
             // 倒计时数据
             data: {
                 name: '春节',
@@ -366,7 +375,7 @@ export const themeConfig = {
         },
         // 站点数据
         siteData: {
-            enable: true
+            enable: false
         }
     },
 
@@ -388,7 +397,7 @@ export const themeConfig = {
      * 音乐播放器配置
      */
     music: {
-        enable: true,
+        enable: false,
         // API 地址
         url: 'https://api.injahow.cn/meting/',
         // 播放列表 ID
@@ -413,7 +422,7 @@ export const themeConfig = {
      * 打赏配置
      */
     rewardData: {
-        enable: true,
+        enable: false,
         // 微信收款码
         wechat: 'https://imgbed.liujunxiang0076.site/file/1733733748214_wx_reward_qrcode.jpg',
         // 支付宝收款码
@@ -493,7 +502,7 @@ export const themeConfig = {
      */
     particleBackground: {
         // 是否启用粒子背景
-        enable: true,
+        enable: false,
         // 性能模式：high(高性能) / balanced(平衡) / low(低性能)
         performance: 'high',
         // 自定义配置（当performance为custom时使用）

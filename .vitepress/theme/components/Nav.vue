@@ -4,7 +4,7 @@
       <div class="nav-all">
         <!-- 导航栏左侧 -->
         <div class="left-nav">
-          <div class="more-menu nav-btn" title="更多内容">
+          <div v-if="!minimalMode" class="more-menu nav-btn" title="更多内容">
             <i class="iconfont icon-menu" />
             <div class="more-card s-card">
               <div v-for="(item, index) in theme.navMore" :key="index" class="more-item">
@@ -53,6 +53,7 @@
         <div class="right-nav">
           <!-- 开往 -->
           <a
+            v-if="!minimalMode"
             class="menu-btn nav-btn travellings"
             title="开往-友链接力"
             href="https://www.travellings.cn/go.html"
@@ -62,6 +63,7 @@
           </a>
           <!-- 随机文章 -->
           <div
+            v-if="!minimalMode"
             class="menu-btn nav-btn"
             title="随机前往一篇文章"
             @click="router.go(shufflePost(theme.postData))"
@@ -78,6 +80,7 @@
           </div>
           <!-- 中控台 -->
           <div
+            v-if="!minimalMode"
             id="open-control"
             class="menu-btn nav-btn pc"
             title="打开中控台"
@@ -129,6 +132,7 @@ const router = useRouter();
 const store = mainStore();
 const { scrollData } = storeToRefs(store);
 const { site, theme, frontmatter, page } = useData();
+const minimalMode = computed(() => theme.value?.minimal?.enable ?? false);
 
 // 获取打开搜索的方法
 const openSearch = inject('openSearch', () => {});

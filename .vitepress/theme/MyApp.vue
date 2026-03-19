@@ -1,16 +1,16 @@
 <template>
     <!-- 背景图片 -->
-    <Background />
+    <Background v-if="!minimalMode" />
     <!-- 粒子效果背景 -->
-    <ParticleBackground />
+    <ParticleBackground v-if="!minimalMode" />
     <!-- 加载提示 -->
     <Loading />
     <!-- 中控台 -->
-    <Control />
+    <Control v-if="!minimalMode" />
     <!-- 导航栏 -->
     <Nav />
     <!-- 滚动进度条 -->
-    <ScrollProgress />
+    <ScrollProgress v-if="!minimalMode" />
     <!-- VitePress 内置搜索 -->
     <Teleport to="body">
         <ClientOnly>
@@ -35,7 +35,7 @@
     <FooterLink v-show="!loadingStatus" :showBar="isPostPage && !page.isNotFound" />
     <Footer v-show="!loadingStatus" />
     <!-- 悬浮菜单 -->
-    <Teleport to="body">
+    <Teleport v-if="!minimalMode" to="body">
         <!-- 左侧菜单 -->
         <div :class="['left-menu', { hidden: footerIsShow }]">
             <!-- 全局设置 -->
@@ -45,7 +45,7 @@
         </div>
     </Teleport>
     <!-- 右键菜单 -->
-    <RightMenu ref="rightMenuRef" />
+    <RightMenu v-if="!minimalMode" ref="rightMenuRef" />
     <!-- 全局消息 -->
     <Message />
 </template>
@@ -65,6 +65,7 @@ const route = useRoute();
 const store = mainStore();
 const { frontmatter, page, theme } = useData();
 const { loadingStatus, footerIsShow, themeValue, themeType, backgroundType, fontFamily, fontSize } = storeToRefs(store);
+const minimalMode = computed(() => theme.value?.minimal?.enable ?? false);
 
 // 搜索框显示状态
 const showSearch = ref(false);
@@ -88,6 +89,7 @@ const isPostPage = computed(() => {
 
 // 开启右键菜单
 const openRightMenu = (e) => {
+    if (minimalMode.value) return;
     // 判断是否为右键
     if (e.button === 2) {
         // console.log('右键');
@@ -131,9 +133,16 @@ const changeSiteThemeType = () => {
         themeValue.value = themeClasses[themeType.value];
     }
     if (backgroundType.value === 'image') {
-        htmlElement.classList.add('image');
+        if (!minimalMode.value) {
+            htmlElement.classList.add('image');
+        }
     } else {
         htmlElement.classList.remove('image');
+    }
+    if (minimalMode.value) {
+        htmlElement.classList.add('minimal');
+    } else {
+        htmlElement.classList.remove('minimal');
     }
 };
 
@@ -151,7 +160,7 @@ const changeSiteFont = () => {
 
 // 监听设置变化
 watch(
-    () => [themeType.value, backgroundType.value],
+    () => [themeType.value, backgroundType.value, minimalMode.value],
     () => changeSiteThemeType()
 );
 watch(
@@ -170,7 +179,9 @@ onMounted(() => {
     // 滚动监听
     window.addEventListener('scroll', calculateScroll);
     // 右键监听
-    window.addEventListener('contextmenu', openRightMenu);
+    if (!minimalMode.value) {
+        window.addEventListener('contextmenu', openRightMenu);
+    }
     // 复制监听
     window.addEventListener('copy', copyTip);
     // 监听系统颜色
@@ -179,7 +190,9 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
     window.removeEventListener('scroll', calculateScroll);
-    window.removeEventListener('contextmenu', openRightMenu);
+    if (!minimalMode.value) {
+        window.removeEventListener('contextmenu', openRightMenu);
+    }
 });
 </script>
 

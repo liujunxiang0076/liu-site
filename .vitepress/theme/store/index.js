@@ -30,7 +30,7 @@ export const mainStore = defineStore("main", {
       showSeetings: false,
       // 播放器数据
       playState: true,
-      playerShow: true,
+      playerShow: false,
       playerCollapsed: true, // 播放器收起状态
       playerVolume: 0.7,
       playerData: {
@@ -52,7 +52,7 @@ export const mainStore = defineStore("main", {
       // 上次滚动位置
       lastScrollY: 0,
       // 站点背景
-      backgroundType: "dynamic",
+      backgroundType: "close",
       backgroundUrl: "https://picsum.photos/1920/1080?random=1",
       // 文章密码验证状态
       articlePasswords: {}, // 存储已验证的文章密码 { articleId: { password: 'xxx', expireTime: timestamp } }

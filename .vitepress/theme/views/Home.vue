@@ -1,7 +1,7 @@
 <!-- 首页 -->
 <template>
   <div class="home">
-    <Banner v-if="showHeader" :height="store.bannerType" />
+    <Banner v-if="showHeader && !minimalMode" :height="store.bannerType" />
     <div class="home-content">
       <div class="posts-content">
         <!-- 分类总览 -->
@@ -24,7 +24,7 @@
         />
       </div>
       <!-- 侧边栏 -->
-      <Aside />
+      <Aside v-if="!minimalMode" />
     </div>
   </div>
 </template>
@@ -34,6 +34,7 @@ import { mainStore } from "@/store";
 
 const { theme } = useData();
 const store = mainStore();
+const minimalMode = computed(() => theme.value?.minimal?.enable ?? false);
 const props = defineProps({
   // 显示首页头部
   showHeader: {
