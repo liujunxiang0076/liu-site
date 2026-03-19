@@ -2,7 +2,7 @@
 <template>
   <div class="home">
     <Banner v-if="showHeader && !minimalMode" :height="store.bannerType" />
-    <div class="home-content">
+    <div :class="['home-content', { minimal: minimalMode }]">
       <div class="posts-content">
         <!-- 分类总览 -->
         <TypeBar :type="showTags ? 'tags' : 'categories'" />
@@ -143,6 +143,18 @@ watch(
       width: 300px;
       padding-left: 1rem;
     }
+
+    &.minimal {
+      justify-content: center;
+      .posts-content {
+        width: min(100%, 860px);
+        margin: 0 auto;
+      }
+      .main-aside {
+        display: none;
+      }
+    }
+
     @media (max-width: 1200px) {
       .posts-content {
         width: 100%;
