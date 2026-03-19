@@ -174,14 +174,16 @@ const formatListDate = (timestamp) => {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
+      gap: var(--space-3);
       overflow: visible;
 
       .post-category {
         display: flex;
         flex-wrap: wrap;
         color: var(--main-font-second-color);
-        font-size: 0.82rem;
-        gap: 0.5rem;
+        font-size: 0.78rem;
+        font-weight: 500;
+        gap: 0.4rem;
         .cat-name {
           display: flex;
           align-items: center;
@@ -202,10 +204,10 @@ const formatListDate = (timestamp) => {
       }
 
       .post-title {
-        font-size: 1.18rem;
-        line-height: 1.4;
-        font-weight: 700;
-        margin: var(--space-2) 0 var(--space-2);
+        font-size: 1.24rem;
+        line-height: 1.34;
+        font-weight: 760;
+        margin: 0;
         transition: color 0.2s;
         white-space: normal;
         word-break: break-word;
@@ -230,13 +232,16 @@ const formatListDate = (timestamp) => {
       }
 
       .post-desc {
-        margin: 0 0 var(--space-3);
-        opacity: 0.72;
-        line-height: 1.7;
-        font-size: 0.98rem;
+        margin: 0;
+        opacity: 0.62;
+        line-height: 1.72;
+        font-size: 0.93rem;
         white-space: normal;
         word-break: break-word;
-        display: block;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
       }
 
       // 密码保护提示样式
@@ -250,7 +255,7 @@ const formatListDate = (timestamp) => {
           background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
           border: 1px solid #f59e0b;
           border-radius: 999px;
-          margin: 0 0 var(--space-3);
+          margin: 0;
           width: fit-content;
 
           .iconfont {
@@ -271,13 +276,19 @@ const formatListDate = (timestamp) => {
           }
         }
       }
+
+      .post-title-wrapper,
+      .post-desc-wrapper {
+        margin: 0;
+      }
+
       .post-meta {
         display: flex;
         align-items: center;
         justify-content: space-between;
         color: var(--main-font-second-color);
         margin-top: auto;
-        padding-top: var(--space-2);
+        padding-top: var(--space-3);
         border-top: 1px solid var(--main-card-border);
 
         .post-tags {
@@ -312,8 +323,8 @@ const formatListDate = (timestamp) => {
           }
         }
         .post-time {
-          opacity: 0.58;
-          font-size: 0.75rem;
+          opacity: 0.5;
+          font-size: 0.72rem;
           white-space: nowrap;
           letter-spacing: 0.2px;
         }
@@ -383,9 +394,9 @@ const formatListDate = (timestamp) => {
 
   &.minimal {
     .post-item {
-      margin-bottom: var(--space-3);
+      margin-bottom: var(--space-4);
       .post-content {
-        padding: var(--space-3);
+        padding: var(--space-4);
       }
       .post-meta {
         border-top: none;

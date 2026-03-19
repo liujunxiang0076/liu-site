@@ -139,18 +139,18 @@ const currentTypeName = computed(() => {
     margin-left: auto;
     margin-right: auto;
     width: min(100%, 860px);
-    padding: 0.4rem 0.5rem;
+    padding: 0.34rem 0.44rem;
     border-radius: 10px;
 
     .all-type {
       margin-right: 8px;
       mask: none;
       .type-item {
-        height: 26px;
-        padding: 0.1rem 0.4rem;
+        height: 24px;
+        padding: 0 0.38rem;
         margin-right: 4px;
-        font-size: 0.86rem;
-        font-weight: 500;
+        font-size: 0.82rem;
+        font-weight: 460;
 
         &.choose {
           color: var(--main-color);
@@ -165,10 +165,10 @@ const currentTypeName = computed(() => {
 
     .more-type {
       margin-right: 0;
-      margin-left: 2px;
+      margin-left: 0;
       .iconfont {
         margin-right: 0;
-        font-size: 0.78rem;
+        font-size: 0.72rem;
       }
     }
   }
