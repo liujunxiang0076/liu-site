@@ -83,6 +83,14 @@
           >
             <i class="iconfont icon-search"></i>
           </div>
+          <!-- 主题切换 -->
+          <div
+            class="menu-btn nav-btn theme-toggle"
+            :title="themeToggleTitle"
+            @click="store.changeThemeType"
+          >
+            <i :class="`iconfont icon-${themeToggleIcon}`"></i>
+          </div>
           <!-- 中控台 -->
           <div
             v-if="!minimalMode"
@@ -136,13 +144,19 @@ import { smoothScrolling, shufflePost } from "../utils/helper";
 const router = useRouter();
 const route = useRoute();
 const store = mainStore();
-const { scrollData } = storeToRefs(store);
+const { scrollData, themeType } = storeToRefs(store);
 const { site, theme, frontmatter, page } = useData();
 const minimalMode = computed(() => theme.value?.minimal?.enable ?? false);
 const navTitle = computed(() => {
   if (minimalMode.value) return site.value.description;
   return (frontmatter.value.home ? site.value.description : page.value.title) || site.value.description;
 });
+const themeToggleIcon = computed(() =>
+  themeType.value === "auto" ? "dark" : themeType.value === "dark" ? "light" : "auto",
+);
+const themeToggleTitle = computed(() =>
+  themeType.value === "auto" ? "切换到深色模式" : themeType.value === "dark" ? "切换到浅色模式" : "切换为跟随系统",
+);
 const currentPath = computed(() => decodeURIComponent(route.path || "").replace(/\/$/, ""));
 
 const normalizeLink = (link = "") => {
