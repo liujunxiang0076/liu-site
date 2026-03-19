@@ -115,7 +115,7 @@
         </ProtectedContent>
       </article>
       <!-- 侧边栏 -->
-      <Aside showToc />
+      <Aside v-if="!minimalMode" showToc />
     </div>
   </div>
 </template>
@@ -276,7 +276,9 @@ onMounted(() => {
 
   &.minimal {
     .post-meta {
-      padding: 1rem 0 1.5rem 0;
+      width: min(100%, 860px);
+      margin: 0 auto;
+      padding: 0.8rem 0 1.3rem 0;
       .title {
         font-size: 1.9rem;
         margin: 0.8rem 0;
@@ -291,8 +293,12 @@ onMounted(() => {
     }
 
     .post-content {
+      justify-content: center;
+
       .post-article {
-        padding: 0.8rem 1.5rem 1.6rem 1.5rem;
+        width: min(100%, 860px);
+        margin: 0 auto;
+        padding: 0.9rem 1.5rem 1.7rem 1.5rem;
 
         :deep(.markdown-main-style) {
           div > {
