@@ -50,7 +50,7 @@
             {{ (frontmatter.home ? site.description : page.title) || site.description }}
           </span>
         </div>
-        <div class="right-nav">
+        <div :class="['right-nav', { minimal: minimalMode }]">
           <!-- 开往 -->
           <a
             v-if="!minimalMode"
@@ -621,6 +621,46 @@ const openSearch = inject('openSearch', () => {});
         }
         &:active {
           transform: scale(0.9);
+        }
+      }
+
+      &.minimal {
+        min-width: auto;
+        gap: 8px;
+
+        .menu-btn {
+          margin-left: 0;
+          width: 32px;
+          height: 32px;
+        }
+
+        .nav-btn .iconfont {
+          font-size: 18px;
+        }
+
+        .to-top {
+          width: 32px;
+          height: 32px;
+          .to-top-btn {
+            width: 24px;
+            height: 24px;
+            .icon-up {
+              font-size: 16px;
+            }
+          }
+          &.minimal {
+            width: 32px;
+            .to-top-btn {
+              width: 24px;
+              height: 24px;
+            }
+          }
+          &:hover {
+            .to-top-btn {
+              width: 32px;
+              height: 32px;
+            }
+          }
         }
       }
     }

@@ -64,9 +64,9 @@ const currentTypeName = computed(() => {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
-  padding: 0.6rem;
-  font-weight: bold;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0.55rem;
+  font-weight: 600;
   animation: fade-up 0.6s 0.3s backwards;
   .all-type {
     width: 100%;
@@ -85,12 +85,12 @@ const currentTypeName = computed(() => {
     .type-item {
       display: flex;
       align-items: center;
-      padding: 0.1rem 0.5rem;
-      margin-right: 6px;
-      font-weight: bold;
+      padding: 0.1rem 0.45rem;
+      margin-right: 4px;
+      font-weight: 600;
       border-radius: 8px;
       white-space: nowrap;
-      height: 30px;
+      height: 28px;
       cursor: pointer;
       .num {
         margin-left: 4px;
@@ -122,11 +122,11 @@ const currentTypeName = computed(() => {
     flex-direction: row;
     align-items: center;
     white-space: nowrap;
-    margin-right: 4px;
-    margin-left: 8px;
+    margin-right: 0;
+    margin-left: 4px;
     .iconfont {
-      font-size: 0.9375rem;
-      margin-right: 8px;
+      font-size: 0.82rem;
+      margin-right: 6px;
     }
     &:hover {
       .iconfont {
@@ -139,26 +139,36 @@ const currentTypeName = computed(() => {
     margin-left: auto;
     margin-right: auto;
     width: min(100%, 860px);
-    padding: 0.5rem 0.6rem;
+    padding: 0.4rem 0.5rem;
     border-radius: 10px;
 
     .all-type {
       margin-right: 8px;
       mask: none;
       .type-item {
-        height: 28px;
-        padding: 0.1rem 0.45rem;
+        height: 26px;
+        padding: 0.1rem 0.4rem;
         margin-right: 4px;
-        font-size: 0.9rem;
-        font-weight: 600;
+        font-size: 0.86rem;
+        font-weight: 500;
+
+        &.choose {
+          color: var(--main-color);
+          background-color: var(--main-color-bg);
+        }
+        &:hover {
+          color: var(--main-color);
+          background-color: var(--main-color-bg);
+        }
       }
     }
 
     .more-type {
       margin-right: 0;
-      margin-left: 4px;
+      margin-left: 2px;
       .iconfont {
         margin-right: 0;
+        font-size: 0.78rem;
       }
     }
   }
