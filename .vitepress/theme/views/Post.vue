@@ -496,9 +496,11 @@ onMounted(() => {
   /* 移动端适配 */
   @media (max-width: 768px) {
     .post-meta {
-      padding: 4rem 1.5rem;
+      padding: 1.2rem 0 1rem;
       .meta {
-        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: flex-start;
         .categories {
           margin-right: 0;
         }
@@ -507,18 +509,20 @@ onMounted(() => {
         }
       }
       .title {
-        font-size: 1.6rem;
-        text-align: center;
-        line-height: 40px;
+        font-size: 1.72rem;
+        text-align: left;
+        line-height: 1.42;
       }
       .other-meta {
-        justify-content: center;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 8px;
       }
     }
     .post-content {
       .post-article {
         border: none;
-        padding: 20px 30px;
+        padding: 1rem 1rem 1.5rem;
         .other-meta {
           margin: 1rem 0 2rem 0;
           flex-direction: column;
@@ -530,6 +534,76 @@ onMounted(() => {
           }
           .report {
             margin-top: 20px;
+          }
+        }
+        .expired {
+          margin: 1rem 0 1.25rem 0;
+          padding: 0.72rem 0.9rem;
+        }
+      }
+    }
+
+    &.minimal {
+      .post-meta {
+        width: 100%;
+        padding: 0.5rem 0 1rem;
+
+        .title {
+          font-size: 1.62rem;
+          margin: 0.35rem 0 0.65rem;
+        }
+
+        .other-meta {
+          gap: 8px;
+
+          .meta {
+            font-size: 11px;
+
+            .iconfont {
+              font-size: 13px;
+            }
+          }
+        }
+      }
+
+      .post-content {
+        .post-article {
+          width: 100%;
+          padding: 0.95rem 1rem 1.5rem;
+
+          :deep(.markdown-main-style) {
+            div > {
+              h1 {
+                font-size: 1.52rem;
+                margin: 1rem 0 0.75rem;
+              }
+
+              h2 {
+                font-size: 1.28rem;
+                margin: 1.25rem 0 0.7rem;
+              }
+
+              h3 {
+                font-size: 1.06rem;
+                margin: 0.95rem 0 0.55rem;
+              }
+            }
+
+            p {
+              font-size: 0.97rem;
+              line-height: 1.82;
+              margin: 0 0 14px;
+            }
+
+            ul,
+            ol,
+            blockquote,
+            div[class*="language-"],
+            .table-container,
+            .custom-block,
+            hr {
+              margin: 0 0 14px;
+            }
           }
         }
       }

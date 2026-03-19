@@ -69,5 +69,14 @@ const minimalMode = computed(() => theme.value?.minimal?.enable ?? false);
       display: none;
     }
   }
+
+  @media (max-width: 768px) {
+    .page-content {
+      .s-card {
+        padding: 0.95rem 1rem;
+        border-radius: 10px;
+      }
+    }
+  }
 }
 </style>
