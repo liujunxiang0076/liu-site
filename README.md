@@ -2,7 +2,7 @@
 
 [中文说明](./README.zh-CN.md) | [English](./README.md)
 
-A VitePress-based personal blog focused on technical writing, minimalist reading experience, and practical built-in blog features. The project includes a custom theme, article system, comments, RSS, PWA support, password-protected posts, Vercel Analytics integration, and a configurable minimal mode.
+A VitePress-based personal blog focused on technical writing, minimalist reading experience, and practical built-in blog features. The project includes a custom theme, article system, comments, RSS, PWA support, password-protected posts, and a configurable minimal mode.
 
 ## Overview
 
@@ -23,7 +23,6 @@ This repository is not just content for a blog. It is a complete VitePress site 
 - Fancybox image preview
 - RSS generation during build
 - PWA support through `@vite-pwa/vitepress`
-- Vercel Analytics integration for page view tracking
 - Theme switching and persisted user settings via Pinia
 - Desktop and mobile layouts with custom navigation and mobile drawer
 
@@ -34,7 +33,6 @@ This repository is not just content for a blog. It is a complete VitePress site 
 - [Pinia](https://pinia.vuejs.org/)
 - [Sass](https://sass-lang.com/)
 - [Waline](https://waline.js.org/)
-- [Vercel Analytics](https://vercel.com/docs/analytics)
 
 ## Project Structure
 
@@ -103,7 +101,7 @@ Typical customization points include:
 
 - site metadata, navigation, and injected head tags
 - minimal mode toggle
-- comments and analytics
+- comments and third-party integrations
 - article password behavior
 - player, fancybox, RSS, and sidebar widgets
 - light/dark theme variables and layout styles
@@ -135,7 +133,6 @@ The project is suitable for Vercel deployment and already includes:
 
 - RSS generation during build
 - PWA configuration
-- Vercel Analytics injection
 
 Typical workflow:
 
@@ -143,8 +140,6 @@ Typical workflow:
 npm run docs:build
 vercel deploy
 ```
-
-After deployment, page views can be tracked from the Vercel Analytics dashboard.
 
 ## Scripts
 
@@ -158,7 +153,7 @@ Defined in `package.json`:
 
 - The current project is configured with `minimal.enable: true` by default.
 - Some third-party services are optional and require your own credentials.
-- If you change analytics, comments, or external APIs, review the related config before deployment.
+- If you change comments or external APIs, review the related config before deployment.
 
 ## License
 
