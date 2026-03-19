@@ -42,7 +42,6 @@ import { storeToRefs } from "pinia";
 import { mainStore } from "@/store";
 
 const store = mainStore();
-const { theme } = useData();
 const { loadingStatus } = storeToRefs(store);
 
 // 显示提示
@@ -80,7 +79,7 @@ onBeforeUnmount(() => {
   justify-content: center;
   width: 100vw;
   height: 100vh;
-  background-color: var(--main-card-background);
+  background: linear-gradient(165deg, var(--loading-bg-start), var(--loading-bg-end));
   z-index: 9999;
   .logo {
     width: 100px;
@@ -91,6 +90,7 @@ onBeforeUnmount(() => {
     position: absolute;
     bottom: 2rem;
     font-size: 14px;
+    color: var(--loading-tip-color);
     opacity: 0;
     transition: opacity 0.3s;
     &.show {
@@ -146,7 +146,7 @@ onBeforeUnmount(() => {
 }
 
 .boxes .box > div {
-  --background: #5c8df6;
+  --background: var(--loading-cube-top);
   --top: auto;
   --right: auto;
   --bottom: auto;
@@ -171,18 +171,18 @@ onBeforeUnmount(() => {
 }
 
 .boxes .box > div:nth-child(2) {
-  --background: #145af2;
+  --background: var(--loading-cube-side);
   --right: 0;
   --rotateY: 90deg;
 }
 
 .boxes .box > div:nth-child(3) {
-  --background: #447cf5;
+  --background: var(--loading-cube-front);
   --rotateX: -90deg;
 }
 
 .boxes .box > div:nth-child(4) {
-  --background: #dbe3f4;
+  --background: var(--loading-cube-shadow);
   --top: 0;
   --left: 0;
   --translateZ: calc(var(--size) * 3 * -1);
