@@ -37,7 +37,7 @@
               class="menu-item"
               @click="handleTopNav(item)"
             >
-              <span :class="['link-btn', { active: minimalMode && isNavActive(item) }]"> {{ item.text }}</span>
+              <span :class="['link-btn', { active: minimalMode && index === activeNavIndex }]"> {{ item.text }}</span>
               <div v-if="item.items && !minimalMode" class="link-child">
                 <span
                   v-for="(child, childIndex) in item.items"
@@ -152,7 +152,7 @@ const normalizeLink = (link = "") => {
   return withLeadingSlash.replace(/\/$/, "");
 };
 
-const isNavActive = (item) => {
+const getItemTargets = (item) => {
   const targets = [];
   if (item?.link) targets.push(normalizeLink(item.link));
   if (Array.isArray(item?.items)) {
@@ -160,7 +160,7 @@ const isNavActive = (item) => {
       if (child?.link) targets.push(normalizeLink(child.link));
     });
   }
-  return targets.some((target) => currentPath.value === target || currentPath.value.startsWith(`${target}/`));
+  return targets.filter(Boolean);
 };
 
 const handleTopNav = (item) => {
@@ -168,6 +168,35 @@ const handleTopNav = (item) => {
   const firstLink = item?.link || item?.items?.[0]?.link;
   if (firstLink) router.go(firstLink);
 };
+
+// 极简模式下导航仅允许一个激活项，避免“前缀+精确”双命中
+const activeNavIndex = computed(() => {
+  const navItems = theme.value?.nav || [];
+  let bestIndex = -1;
+  let bestScore = -1;
+
+  navItems.forEach((item, index) => {
+    const targets = getItemTargets(item);
+    let itemScore = -1;
+
+    targets.forEach((target) => {
+      if (currentPath.value === target) {
+        // 精确匹配优先级最高
+        itemScore = Math.max(itemScore, 10000 + target.length);
+      } else if (currentPath.value.startsWith(`${target}/`)) {
+        // 前缀匹配作为兜底，且按路径长度提升优先级
+        itemScore = Math.max(itemScore, target.length);
+      }
+    });
+
+    if (itemScore > bestScore) {
+      bestScore = itemScore;
+      bestIndex = index;
+    }
+  });
+
+  return bestIndex;
+});
 
 // 获取打开搜索的方法
 const openSearch = inject('openSearch', () => {});
