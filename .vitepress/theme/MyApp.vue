@@ -32,8 +32,12 @@
         </template>
     </main>
     <!-- 页脚 -->
-    <FooterLink v-show="!loadingStatus" :showBar="isPostPage && !page.isNotFound" />
-    <Footer v-show="!loadingStatus" />
+    <FooterLink
+        v-if="!minimalMode"
+        v-show="!loadingStatus"
+        :showBar="isPostPage && !page.isNotFound"
+    />
+    <Footer v-if="!minimalMode" v-show="!loadingStatus" />
     <!-- 悬浮菜单 -->
     <Teleport v-if="!minimalMode" to="body">
         <!-- 左侧菜单 -->
