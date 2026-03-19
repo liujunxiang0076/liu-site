@@ -1,10 +1,10 @@
 <!-- 文章列表 -->
 <template>
-  <div class="post-lists" :class="{ 'layout-grid': layoutType === 'twoColumns' }" :style="gridStyle">
+  <div class="post-lists" :class="{ 'layout-grid': layoutType === 'twoColumns', minimal: minimalMode }" :style="gridStyle">
     <div
       v-for="(item, index) in listData"
       :key="index"
-      :class="['post-item', 's-card', 'hover', { simple, cover: showCover(item), [`cover-${layoutType}`]: showCover(item) }]"
+      :class="['post-item', 's-card', 'hover', { simple, cover: showCover(item), [`cover-${layoutType}`]: showCover(item), minimal: minimalMode }]"
       :style="{ animationDelay: `${0.2 + index / 20}s` }"
       @click="toPost(item.regularPath)"
     >
@@ -13,7 +13,7 @@
       </div>
 
       <div class="post-content">
-        <div v-if="!simple && item?.categories" class="post-category">
+        <div v-if="!simple && !minimalMode && item?.categories" class="post-category">
           <span v-for="cat in item?.categories" :key="cat" class="cat-name">
             <i class="iconfont icon-folder" />
             {{ cat }}
@@ -27,6 +27,7 @@
         <div class="post-title-wrapper">
           <h3 class="post-title">
             {{ item.title }}
+            <span v-if="minimalMode && item?.top" class="mini-top">置顶</span>
             <!-- 密码保护图标 -->
             <i v-if="item?.password" class="iconfont icon-lock password-icon" title="此文章需要密码访问"></i>
           </h3>
@@ -46,7 +47,7 @@
           <p class="post-desc">{{ item.description }}</p>
         </div>
         <div v-if="!simple" class="post-meta">
-          <div v-if="item?.tags" class="post-tags">
+          <div v-if="!minimalMode && item?.tags" class="post-tags">
             <span
               v-for="tags in item?.tags"
               :key="tags"
@@ -87,6 +88,7 @@ const props = defineProps({
 });
 
 const { theme: themeConfig } = useData()
+const minimalMode = computed(() => themeConfig.value?.minimal?.enable ?? false)
 
 // 计算布局类型
 const layoutType = computed(() => 
@@ -200,6 +202,15 @@ const toPost = (path) => {
           color: #f59e0b;
           font-size: 0.9rem;
           opacity: 0.8;
+        }
+        .mini-top {
+          margin-left: 8px;
+          padding: 1px 6px;
+          font-size: 0.72rem;
+          border: 1px solid var(--main-card-border);
+          border-radius: 999px;
+          color: var(--main-font-second-color);
+          font-weight: 500;
         }
       }
 
@@ -357,6 +368,19 @@ const toPost = (path) => {
       &.cover-right,
       &.cover-both {
         flex-direction: column;
+      }
+    }
+  }
+
+  &.minimal {
+    .post-item {
+      margin-bottom: 0.75rem;
+      .post-content {
+        padding: 0.9rem 1rem;
+      }
+      .post-meta {
+        border-top: none;
+        padding-top: 0;
       }
     }
   }

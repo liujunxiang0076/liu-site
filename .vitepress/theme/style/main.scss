@@ -263,6 +263,24 @@ html.minimal {
     border-radius: 8px;
     box-shadow: none;
   }
+
+  // 收敛全局动效，避免视觉干扰
+  .mian-layout,
+  .post,
+  .post-content,
+  .post-lists .post-item,
+  .main-aside,
+  .banner {
+    animation: none !important;
+  }
+
+  .s-card,
+  a,
+  button,
+  .nav-btn,
+  .menu-btn {
+    transition-duration: 0.15s !important;
+  }
 }
 
 /* 滚动条样式 */

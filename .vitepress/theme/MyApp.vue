@@ -18,7 +18,7 @@
         </ClientOnly>
     </Teleport>
     <!-- 主内容 -->
-    <main :class="['mian-layout', { loading: loadingStatus, 'is-post': isPostPage }]">
+    <main :class="['mian-layout', { loading: loadingStatus, 'is-post': isPostPage, minimal: minimalMode }]">
         <!-- 404 -->
         <NotFound v-if="page.isNotFound" />
         <!-- 首页 -->
@@ -209,6 +209,11 @@ onBeforeUnmount(() => {
 
     &.loading {
         display: none;
+    }
+
+    &.minimal {
+        max-width: 1120px;
+        padding: 1rem 1.5rem;
     }
 
     @media (max-width: 768px) {
