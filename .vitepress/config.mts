@@ -103,7 +103,7 @@ export default withPwa(
     },
     
     // 构建排除的文件
-    srcExclude: ["**/README.md", "**/TODO.md"],
+    srcExclude: ["**/README.md", "**/README.zh-CN.md", "**/TODO.md"],
     
     // 页面数据转换：添加规范链接
     transformPageData: async (pageData) => {
