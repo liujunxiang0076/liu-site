@@ -37,8 +37,8 @@
         <div v-if="item?.password" class="post-desc-wrapper password-protected">
           <div class="password-notice">
             <i class="iconfont icon-lock"></i>
-            <span class="notice-text">文章已加密，需密码访问</span>
-            <span v-if="item?.passwordHint" class="password-hint">· {{ item.passwordHint }}</span>
+            <span class="notice-text">受保护内容</span>
+            <span v-if="item?.passwordHint" class="password-hint">· 含访问提示</span>
           </div>
         </div>
 
@@ -250,29 +250,30 @@ const formatListDate = (timestamp) => {
           display: inline-flex;
           flex-direction: row;
           align-items: center;
-          gap: var(--space-1);
+          gap: 6px;
           padding: 6px 10px;
-          background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-          border: 1px solid #f59e0b;
+          background: var(--main-card-second-background);
+          border: 1px solid var(--main-card-border);
           border-radius: 999px;
           margin: 0;
           width: fit-content;
 
           .iconfont {
             font-size: 0.8rem;
-            color: #d97706;
+            color: var(--main-font-second-color);
+            opacity: 0.72;
           }
 
           .notice-text {
             font-size: 0.78rem;
-            color: #92400e;
-            font-weight: 600;
+            color: var(--main-font-color);
+            font-weight: 520;
           }
 
           .password-hint {
             font-size: 0.76rem;
-            color: #a16207;
-            opacity: 0.9;
+            color: var(--main-font-second-color);
+            opacity: 0.82;
           }
         }
       }
@@ -476,20 +477,7 @@ const formatListDate = (timestamp) => {
       .post-content {
         .post-desc-wrapper.password-protected {
           .password-notice {
-            background: linear-gradient(135deg, #451a03 0%, #78350f 100%);
-            border-color: #d97706;
-
-            .iconfont {
-              color: #f59e0b;
-            }
-
-            .notice-text {
-              color: #fbbf24;
-            }
-
-            .password-hint {
-              color: #fcd34d;
-            }
+            background: rgba(255, 255, 255, 0.04);
           }
         }
       }

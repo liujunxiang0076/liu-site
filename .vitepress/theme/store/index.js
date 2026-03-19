@@ -128,12 +128,9 @@ export const mainStore = defineStore("main", {
       const inputPasswordStr = String(password).trim()
       const correctPasswordStr = String(correctPassword).trim()
 
-      console.log('Store验证:', inputPasswordStr, '===', correctPasswordStr, '结果:', inputPasswordStr === correctPasswordStr)
-
       if (inputPasswordStr === correctPasswordStr) {
         const expireTime = Date.now() + expireHours * 60 * 60 * 1000;
         this.articlePasswords[articleId] = {
-          password: inputPasswordStr,
           expireTime
         };
         return true;

@@ -6,7 +6,7 @@
         <div class="modal-header">
           <h3 class="modal-title">
             <i class="iconfont icon-lock"></i>
-            文章已加密
+            受保护内容
           </h3>
           <button class="close-btn" @click="handleCancel">
             <i class="iconfont icon-close"></i>
@@ -15,7 +15,7 @@
         
         <div class="modal-body">
           <p class="modal-description">
-            此文章需要密码才能访问，请输入正确的密码
+            输入访问密码后即可查看全文内容。
           </p>
           
           <div class="password-input-group">
@@ -35,11 +35,10 @@
             <button
               class="show-password-btn"
               @click="togglePasswordVisibility"
-              title=""
-              data-tooltip=""
-              aria-label=""
+              :aria-label="showPassword ? '隐藏密码' : '显示密码'"
+              type="button"
             >
-              <span>{{ showPassword ? '👁️' : '🙈' }}</span>
+              <span>{{ showPassword ? '隐藏' : '显示' }}</span>
             </button>
           </div>
           
@@ -164,9 +163,9 @@ defineExpose({
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(18, 23, 38, 0.36);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -176,15 +175,15 @@ defineExpose({
 
 .password-modal {
   background: var(--main-card-background, #ffffff);
-  border-radius: 16px;
+  border-radius: 14px;
   box-shadow:
-    0 24px 48px rgba(0, 0, 0, 0.12),
-    0 8px 16px rgba(0, 0, 0, 0.08);
+    0 22px 50px rgba(15, 23, 42, 0.12),
+    0 8px 18px rgba(15, 23, 42, 0.06);
   width: 90%;
-  max-width: 440px;
+  max-width: 408px;
   max-height: 90vh;
   overflow: hidden;
-  animation: slide-up 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: slide-up 0.3s ease-out;
   border: 1px solid var(--main-card-border, #e3e8f7);
   position: relative;
 }
@@ -193,32 +192,29 @@ defineExpose({
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px 28px 20px;
+  padding: 22px 24px 18px;
   border-bottom: 1px solid var(--main-card-border, #e3e8f7);
-  background: linear-gradient(135deg, var(--main-card-background, #ffffff) 0%, var(--main-card-second-background, #f7f7f9) 100%);
+  background: var(--main-card-background, #ffffff);
 
   .modal-title {
     margin: 0;
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 18px;
+    font-weight: 680;
     color: var(--main-font-color, #363636);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 
     .iconfont {
       color: var(--main-color, #425aef);
-      font-size: 22px;
-      background: var(--main-color-bg, #4259ef0d);
-      padding: 8px;
-      border-radius: 8px;
+      font-size: 16px;
     }
   }
 
   .close-btn {
     background: none;
     border: none;
-    padding: 8px;
+    padding: 7px;
     cursor: pointer;
     color: var(--main-font-second-color, #3c3c43cc);
     border-radius: 8px;
@@ -228,36 +224,36 @@ defineExpose({
     &:hover {
       background: var(--main-card-second-background, #f7f7f9);
       color: var(--main-font-color, #363636);
-      transform: scale(1.1);
+      transform: scale(1.04);
     }
   }
 }
 
 .modal-body {
-  padding: 28px;
+  padding: 24px;
   background: var(--main-card-background, #ffffff);
 
   .modal-description {
-    margin: 0 0 24px 0;
+    margin: 0 0 16px 0;
     color: var(--main-font-second-color, #3c3c43cc);
-    line-height: 1.6;
-    font-size: 15px;
-    text-align: center;
+    line-height: 1.65;
+    font-size: 14px;
+    text-align: left;
   }
 
   .password-input-group {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
 
     .password-input {
       width: 100%;
-      padding: 16px 52px 16px 20px;
-      border: 2px solid var(--main-card-border, #e3e8f7);
-      border-radius: 12px;
-      font-size: 16px;
+      padding: 13px 64px 13px 14px;
+      border: 1px solid var(--main-card-border, #e3e8f7);
+      border-radius: 10px;
+      font-size: 14px;
       background: var(--main-card-second-background, #f7f7f9);
       color: var(--main-font-color, #363636);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
       font-family: var(--main-font-family);
 
       /* 禁用拼写检查和自动完成 */
@@ -285,10 +281,7 @@ defineExpose({
         outline: none;
         border-color: var(--main-color, #425aef);
         background: var(--main-card-background, #ffffff);
-        box-shadow:
-          0 0 0 4px var(--main-color-bg, #4259ef0d),
-          0 4px 12px rgba(66, 90, 239, 0.15);
-        transform: translateY(-1px);
+        box-shadow: 0 0 0 3px var(--main-color-bg, #4259ef0d);
       }
 
       &::placeholder {
@@ -302,68 +295,38 @@ defineExpose({
       right: 8px;
       top: 50%;
       transform: translateY(-50%);
-      background: transparent;
-      border: none;
-      padding: 8px;
+      background: var(--main-card-background, #ffffff);
+      border: 1px solid var(--main-card-border, #e3e8f7);
+      padding: 0 10px;
       cursor: pointer;
       color: var(--main-font-second-color, #3c3c43cc);
-      border-radius: 8px;
-      transition: all 0.3s ease;
-      font-size: 16px;
-      width: 36px;
-      height: 36px;
-      display: flex !important;
+      border-radius: 7px;
+      transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+      font-size: 13px;
+      min-width: 46px;
+      height: 28px;
+      display: inline-flex !important;
       align-items: center;
       justify-content: center;
       outline: none;
       z-index: 100;
-
-      /* 确保按钮可见 */
-      visibility: visible !important;
-      opacity: 1 !important;
-      pointer-events: auto !important;
-
-      /* 重置所有可能的样式冲突 */
-      box-shadow: none;
-      text-decoration: none;
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-
-      /* 强制禁用所有可能的 tooltip */
-      &::before,
-      &::after {
-        display: none !important;
-        content: none !important;
-      }
+      font-family: var(--main-font-family);
 
       span {
-        font-size: 18px;
+        font-size: 11px;
         line-height: 1;
-        display: block;
-        opacity: 0.7;
-        transition: all 0.3s ease;
+        display: inline-block;
+        opacity: 0.78;
+        font-weight: 600;
       }
 
       &:hover {
         background: var(--main-card-second-background, #f7f7f9);
-        transform: translateY(-50%) scale(1.1);
-
-        span {
-          opacity: 1;
-          transform: scale(1.1);
-        }
-
-        /* 禁用 hover 状态下的 tooltip */
-        &::before,
-        &::after {
-          display: none !important;
-          content: none !important;
-        }
+        border-color: var(--main-color, #425aef);
+        color: var(--main-color, #425aef);
       }
 
       &:active {
-        transform: translateY(-50%) scale(0.95);
         background: var(--main-card-border, #e3e8f7);
       }
 
@@ -380,92 +343,72 @@ defineExpose({
     align-items: center;
     gap: 8px;
     color: #ef4444;
-    font-size: 14px;
+    font-size: 12px;
     animation: shake 0.5s ease-in-out;
     background: #fef2f2;
-    padding: 12px 16px;
+    padding: 9px 11px;
     border-radius: 8px;
-    border-left: 4px solid #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.18);
 
     .iconfont {
-      font-size: 16px;
+      font-size: 14px;
     }
   }
 }
 
 .modal-footer {
   display: flex;
-  gap: 16px;
-  padding: 24px 28px 28px;
+  gap: 12px;
+  padding: 0 24px 24px;
   border-top: 1px solid var(--main-card-border, #e3e8f7);
-  background: var(--main-card-second-background, #f7f7f9);
+  background: var(--main-card-background, #ffffff);
 
   .btn {
     flex: 1;
-    padding: 14px 24px;
-    border: none;
+    padding: 12px 18px;
+    border: 1px solid transparent;
     border-radius: 10px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     font-family: var(--main-font-family);
-    position: relative;
-    overflow: hidden;
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.5s;
-    }
-
-    &:hover::before {
-      left: 100%;
-    }
-
-    &.btn-cancel {
-      background: var(--main-card-background, #ffffff);
-      color: var(--main-font-second-color, #3c3c43cc);
-      border: 2px solid var(--main-card-border, #e3e8f7);
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
 
       &:hover {
-        background: var(--main-card-second-background, #f7f7f9);
-        color: var(--main-font-color, #363636);
-        border-color: var(--main-color, #425aef);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      }
-    }
-
-    &.btn-confirm {
-      background: linear-gradient(135deg, var(--main-color, #425aef) 0%, #5b6ef5 100%);
-      color: white;
-      border: 2px solid transparent;
-
-      &:hover:not(:disabled) {
-        background: linear-gradient(135deg, #3651e6 0%, #4f62f2 100%);
-        transform: translateY(-2px);
-        box-shadow:
-          0 8px 25px rgba(66, 90, 239, 0.3),
-          0 4px 12px rgba(66, 90, 239, 0.2);
-      }
-
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
         transform: none;
         box-shadow: none;
-
-        &:hover {
-          transform: none;
-          box-shadow: none;
-        }
       }
+    }
+  }
+
+  .btn-cancel {
+    background: var(--main-card-background, #ffffff);
+    color: var(--main-font-second-color, #3c3c43cc);
+    border-color: var(--main-card-border, #e3e8f7);
+
+    &:hover {
+      background: var(--main-card-second-background, #f7f7f9);
+      color: var(--main-font-color, #363636);
+      border-color: var(--main-color, #425aef);
+      transform: translateY(-1px);
+    }
+  }
+
+  .btn-confirm {
+    background: var(--main-color, #425aef);
+    color: white;
+    border-color: transparent;
+
+    &:hover:not(:disabled) {
+      background: #3651e6;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(66, 90, 239, 0.22);
     }
   }
 }
@@ -497,70 +440,56 @@ defineExpose({
   20%, 40%, 60%, 80% { transform: translateX(4px); }
 }
 
-// 添加一个脉冲动画用于按钮
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(66, 90, 239, 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(66, 90, 239, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(66, 90, 239, 0);
-  }
-}
-
 // 移动端适配
 @media (max-width: 768px) {
   .password-modal {
     width: 95%;
     margin: 16px;
-    border-radius: 20px;
+    border-radius: 16px;
   }
 
   .modal-header {
-    padding: 20px 24px 16px;
+    padding: 18px 20px 14px;
 
     .modal-title {
-      font-size: 18px;
+      font-size: 17px;
 
       .iconfont {
-        font-size: 20px;
-        padding: 6px;
+        font-size: 16px;
       }
     }
   }
 
   .modal-body {
-    padding: 24px;
+    padding: 20px;
 
     .password-input-group {
       .password-input {
-        padding: 14px 40px 14px 18px;
+        padding: 13px 56px 13px 14px;
         font-size: 16px;
       }
 
       .show-password-btn {
         right: 4px;
-        width: 28px;
+        min-width: 40px;
         height: 28px;
-        padding: 4px;
+        padding: 0 8px;
 
-        .iconfont {
-          font-size: 14px;
+        span {
+          font-size: 11px;
         }
       }
     }
   }
 
   .modal-footer {
-    padding: 20px 24px 24px;
+    padding: 0 20px 20px;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 
     .btn {
-      padding: 14px 20px;
-      font-size: 16px;
+      padding: 13px 18px;
+      font-size: 15px;
     }
   }
 }
@@ -579,28 +508,4 @@ defineExpose({
   }
 }
 
-/* 全局禁用密码模态框中的所有 tooltip */
-.password-modal-overlay {
-  /* 禁用所有可能的 tooltip 组件 */
-  .tooltip,
-  .el-tooltip,
-  .ant-tooltip,
-  .v-tooltip,
-  [data-tooltip],
-  [title]:not([title=""]) {
-    pointer-events: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    display: none !important;
-  }
-
-  /* 禁用浏览器原生 tooltip */
-  * {
-    &::before,
-    &::after {
-      content: none !important;
-      display: none !important;
-    }
-  }
-}
 </style>
