@@ -48,6 +48,8 @@
     <RightMenu ref="rightMenuRef" />
     <!-- 全局消息 -->
     <Message />
+    <!-- Vercel Analytics -->
+    <Analytics />
 </template>
 
 <script setup>
@@ -55,6 +57,7 @@ import { storeToRefs } from 'pinia';
 import { mainStore } from './store/index';
 import { calculateScroll, specialDayGray } from './utils/helper';
 import { defineAsyncComponent } from 'vue';
+import { Analytics } from '@vercel/analytics/vue';
 
 // 异步加载 VitePress 本地搜索组件
 const VPLocalSearchBox = defineAsyncComponent(() =>

@@ -48,6 +48,7 @@
   },
   "dependencies": {
     "@types/node": "^22.15.18",
+    "@vercel/analytics": "^2.0.1",
     "@vite-pwa/vitepress": "^0.5.4",
     "@vueuse/core": "^13.2.0",
     "@waline/client": "^3.8.0",
