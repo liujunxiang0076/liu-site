@@ -4,7 +4,7 @@
     <div
       v-for="(item, index) in listData"
       :key="index"
-      :class="['post-item', 's-card', 'hover', { simple, cover: showCover(item), [`cover-${layoutType}`]: showCover(item), minimal: minimalMode }]"
+      :class="['post-item', 's-card', { hover: !minimalMode, simple, cover: showCover(item), [`cover-${layoutType}`]: showCover(item), minimal: minimalMode }]"
       :style="{ animationDelay: `${0.2 + index / 20}s` }"
       @click="toPost(item.regularPath)"
     >
@@ -37,8 +37,8 @@
         <div v-if="item?.password" class="post-desc-wrapper password-protected">
           <div class="password-notice">
             <i class="iconfont icon-lock"></i>
-            <span class="notice-text">此文章已加密，需要密码才能访问</span>
-            <span v-if="item?.passwordHint" class="password-hint">提示：{{ item.passwordHint }}</span>
+            <span class="notice-text">文章已加密，需密码访问</span>
+            <span v-if="item?.passwordHint" class="password-hint">· {{ item.passwordHint }}</span>
           </div>
         </div>
 
@@ -59,7 +59,7 @@
             </span>
           </div>
           <!-- 时间 -->
-          <span class="post-time">{{ formatTimestamp(item?.date) }}</span>
+          <span class="post-time">{{ formatListDate(item?.date) }}</span>
         </div>
       </div>
     </div>
@@ -68,7 +68,6 @@
 
 <script setup>
 import { mainStore } from "@/store";
-import { formatTimestamp } from "@/utils/helper";
 import { useRouter } from 'vitepress';
 
 const store = mainStore();
@@ -127,17 +126,33 @@ const toPost = (path) => {
   // 跳转文章
   router.go(path);
 };
+
+// 列表时间统一为绝对日期，避免混用“相对/绝对”格式
+const formatListDate = (timestamp) => {
+  const date = new Date(timestamp);
+  if (Number.isNaN(date.getTime())) return "";
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}/${month}/${day}`;
+};
 </script>
 
 <style lang="scss" scoped>
 .post-lists {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+
   .post-item {
     padding: 0;
     display: flex;
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-4);
     animation: fade-up 0.45s backwards;
     cursor: pointer;
-    transition: border-color 0.2s, transform 0.2s;
+    transition: border-color 0.2s, transform 0.2s, background-color 0.2s;
     min-height: 0;
     overflow: hidden;
 
@@ -155,7 +170,7 @@ const toPost = (path) => {
 
     .post-content {
       flex: 1;
-      padding: 1rem 1.25rem;
+      padding: var(--space-4);
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -187,10 +202,10 @@ const toPost = (path) => {
       }
 
       .post-title {
-        font-size: 1.15rem;
-        line-height: 1.45;
-        font-weight: 600;
-        margin: 0.6rem 0 0.5rem;
+        font-size: 1.18rem;
+        line-height: 1.4;
+        font-weight: 700;
+        margin: var(--space-2) 0 var(--space-2);
         transition: color 0.2s;
         white-space: normal;
         word-break: break-word;
@@ -215,9 +230,10 @@ const toPost = (path) => {
       }
 
       .post-desc {
-        margin: 0.2rem 0 0.85rem;
-        opacity: 0.86;
-        line-height: 1.65;
+        margin: 0 0 var(--space-3);
+        opacity: 0.72;
+        line-height: 1.7;
+        font-size: 0.98rem;
         white-space: normal;
         word-break: break-word;
         display: block;
@@ -226,35 +242,32 @@ const toPost = (path) => {
       // 密码保护提示样式
       .post-desc-wrapper.password-protected {
         .password-notice {
-          display: flex;
-          flex-direction: column;
+          display: inline-flex;
+          flex-direction: row;
           align-items: center;
-          padding: 0.85rem 0.75rem;
+          gap: var(--space-1);
+          padding: 6px 10px;
           background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
           border: 1px solid #f59e0b;
-          border-radius: 8px;
-          margin: 0.25rem 0 0.85rem;
+          border-radius: 999px;
+          margin: 0 0 var(--space-3);
+          width: fit-content;
 
           .iconfont {
-            font-size: 1rem;
+            font-size: 0.8rem;
             color: #d97706;
-            margin-bottom: 6px;
           }
 
           .notice-text {
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             color: #92400e;
-            font-weight: 500;
-            text-align: center;
-            margin-bottom: 4px;
+            font-weight: 600;
           }
 
           .password-hint {
             font-size: 0.76rem;
             color: #a16207;
-            opacity: 0.8;
-            text-align: center;
-            font-style: italic;
+            opacity: 0.9;
           }
         }
       }
@@ -264,7 +277,7 @@ const toPost = (path) => {
         justify-content: space-between;
         color: var(--main-font-second-color);
         margin-top: auto;
-        padding-top: 0.25rem;
+        padding-top: var(--space-2);
         border-top: 1px solid var(--main-card-border);
 
         .post-tags {
@@ -299,9 +312,10 @@ const toPost = (path) => {
           }
         }
         .post-time {
-          opacity: 0.72;
-          font-size: 0.78rem;
+          opacity: 0.58;
+          font-size: 0.75rem;
           white-space: nowrap;
+          letter-spacing: 0.2px;
         }
       }
     }
@@ -317,12 +331,7 @@ const toPost = (path) => {
     }
     &:hover {
       .post-cover img {
-        transform: scale(1.03);
-      }
-      .post-content {
-        .post-title {
-          color: var(--main-color);
-        }
+        transform: scale(1.02);
       }
     }
     &:active {
@@ -374,9 +383,9 @@ const toPost = (path) => {
 
   &.minimal {
     .post-item {
-      margin-bottom: 0.75rem;
+      margin-bottom: var(--space-3);
       .post-content {
-        padding: 0.9rem 1rem;
+        padding: var(--space-3);
       }
       .post-meta {
         border-top: none;
