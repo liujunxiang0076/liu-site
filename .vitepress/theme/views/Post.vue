@@ -276,18 +276,31 @@ onMounted(() => {
 
   &.minimal {
     .post-meta {
-      width: min(100%, 860px);
+      width: min(100%, 800px);
       margin: 0 auto;
-      padding: 0.8rem 0 1.3rem 0;
+      padding: 1rem 0 1.5rem 0;
       .title {
-        font-size: 1.9rem;
-        margin: 0.8rem 0;
+        font-size: 2rem;
+        line-height: 1.32;
+        margin: 0.5rem 0 0.75rem;
       }
       .other-meta {
+        gap: 12px;
+        flex-wrap: wrap;
         .meta {
-          padding: 4px 8px;
-          border-radius: 4px;
-          font-size: 13px;
+          padding: 0;
+          border-radius: 0;
+          font-size: 12px;
+          opacity: 0.66;
+          .iconfont {
+            margin-right: 4px;
+            font-size: 14px;
+            opacity: 0.7;
+          }
+          &.hover {
+            padding: 3px 6px;
+            border-radius: 6px;
+          }
         }
       }
     }
@@ -296,36 +309,61 @@ onMounted(() => {
       justify-content: center;
 
       .post-article {
-        width: min(100%, 860px);
+        width: min(100%, 800px);
         margin: 0 auto;
-        padding: 0.9rem 1.5rem 1.7rem 1.5rem;
+        padding: 1.2rem 1.8rem 2rem 1.8rem;
 
         :deep(.markdown-main-style) {
           div > {
             h1 {
               text-align: left;
-              font-size: 1.9rem;
+              font-size: 1.8rem;
               border-bottom: 1px solid var(--main-card-border);
-              padding-bottom: 0.6rem;
+              padding-bottom: 0.7rem;
+              margin: 1.25rem 0 1rem;
             }
             h2 {
-              font-size: 1.45rem;
+              font-size: 1.42rem;
               border-bottom: 1px solid var(--main-card-border);
+              margin: 1.5rem 0 0.85rem;
+              padding-bottom: 0.45rem;
             }
             h3 {
-              font-size: 1.15rem;
+              font-size: 1.14rem;
+              margin: 1.1rem 0 0.6rem;
               &::after {
                 display: none;
               }
             }
           }
 
-          p,
+          p {
+            font-size: 1.03rem;
+            letter-spacing: 0.18px;
+            line-height: 1.9;
+            margin: 0 0 16px;
+          }
+
           ul,
+          ol {
+            margin: 0 0 16px;
+          }
+
           li,
           td {
-            letter-spacing: 0.2px;
-            line-height: 1.8;
+            line-height: 1.85;
+          }
+
+          li {
+            margin: 8px 0;
+          }
+
+          blockquote,
+          div[class*="language-"],
+          .table-container,
+          .custom-block,
+          hr {
+            margin: 0 0 16px;
           }
 
           p a {
@@ -337,6 +375,7 @@ onMounted(() => {
           }
 
           blockquote {
+            padding: 6px 14px;
             border-left-width: 4px;
             border-radius: 4px;
           }
