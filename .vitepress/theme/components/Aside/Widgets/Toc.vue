@@ -158,36 +158,40 @@ onBeforeUnmount(() => {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 18px;
-    height: 58px;
+    padding: 14px 16px;
+    min-height: 50px;
     .iconfont {
-      margin-right: 8px;
+      margin-right: 6px;
       font-weight: bold;
       opacity: 0.6;
     }
     .name {
-      font-weight: bold;
+      font-weight: 700;
     }
   }
   .toc-list {
     position: relative;
-    padding: 20px;
-    padding-top: 0;
-    padding-left: 24px;
+    padding: 6px 14px 14px 18px;
     display: flex;
     flex-direction: column;
-    max-height: calc(70vh - 58px);
+    max-height: calc(72vh - 50px);
     overflow: auto;
     scroll-behavior: smooth;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
     .toc-item {
-      margin: 4px 0;
-      padding: 6px 12px;
+      margin: 2px 0;
+      padding: 7px 10px;
       border-radius: 8px;
-      opacity: 0.6;
+      opacity: 0.72;
+      line-height: 1.45;
+      word-break: break-word;
       transition:
         color 0.3s ease,
         opacity 0.3s ease,
-        font-size 0.3s ease,
         background-color 0.3s ease,
         transform 0.3s ease;
       cursor: pointer;
@@ -198,38 +202,34 @@ onBeforeUnmount(() => {
         margin-bottom: 0;
       }
       &.H2 {
-        font-weight: bold;
+        font-size: 15px;
+        font-weight: 650;
       }
       &.H3 {
         font-size: 14px;
-        margin-left: 20px;
+        margin-left: 10px;
+        opacity: 0.66;
       }
       &.active {
         opacity: 1;
         color: var(--main-color);
         background-color: var(--main-color-bg);
-        transform: translateX(5px);
-        &.H2 {
-          font-size: 18px;
-        }
-        &.H3 {
-          font-size: 16px;
-        }
+        transform: translateX(2px);
       }
       &:hover {
         opacity: 1;
         color: var(--main-color);
         background-color: var(--main-color-bg);
-        transform: translateX(5px);
+        transform: translateX(2px);
       }
     }
     &::after {
       content: "";
       position: absolute;
-      left: 12px;
+      left: 6px;
       top: var(--height);
-      width: 4px;
-      height: 20px;
+      width: 3px;
+      height: 18px;
       margin: 8px 0;
       background-color: var(--main-color);
       border-radius: 8px;
@@ -239,10 +239,10 @@ onBeforeUnmount(() => {
   &::before {
     content: "";
     position: absolute;
-    left: 12px;
-    bottom: 20px;
-    width: 4px;
-    height: calc(100% - 78px);
+    left: 6px;
+    bottom: 14px;
+    width: 3px;
+    height: calc(100% - 64px);
     background-color: var(--main-card-border);
     border-radius: 8px;
   }

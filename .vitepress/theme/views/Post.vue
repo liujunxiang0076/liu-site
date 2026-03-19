@@ -354,7 +354,7 @@ onMounted(() => {
 
     /* 文章主体样式 */
     .post-article {
-      width: calc(100% - 300px);
+      width: calc(100% - 320px);
       padding: 1rem 2.2rem 2.2rem 2.2rem;
       user-select: text;
       cursor: auto;
@@ -439,8 +439,8 @@ onMounted(() => {
 
     /* 侧边栏样式 */
     .main-aside {
-      width: 300px;
-      padding-left: 1rem;
+      width: 320px;
+      padding-left: 0.75rem;
     }
 
     /* 响应式布局 */
