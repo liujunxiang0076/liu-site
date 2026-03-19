@@ -47,7 +47,7 @@
             </div>
           </div>
           <span class="site-title" @click="smoothScrolling">
-            {{ (frontmatter.home ? site.description : page.title) || site.description }}
+            {{ navTitle }}
           </span>
         </div>
         <div :class="['right-nav', { minimal: minimalMode }]">
@@ -133,6 +133,10 @@ const store = mainStore();
 const { scrollData } = storeToRefs(store);
 const { site, theme, frontmatter, page } = useData();
 const minimalMode = computed(() => theme.value?.minimal?.enable ?? false);
+const navTitle = computed(() => {
+  if (minimalMode.value) return site.value.description;
+  return (frontmatter.value.home ? site.value.description : page.value.title) || site.value.description;
+});
 
 // 获取打开搜索的方法
 const openSearch = inject('openSearch', () => {});
