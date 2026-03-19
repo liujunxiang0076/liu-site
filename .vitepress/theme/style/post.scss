@@ -688,3 +688,175 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  :deep(.markdown-main-style) {
+    div > {
+      h1 {
+        text-align: left;
+        font-size: 1.5rem;
+        padding-bottom: 0.7rem;
+      }
+      h2 {
+        font-size: 1.22rem;
+        line-height: 1.45;
+      }
+      h3 {
+        font-size: 1.05rem;
+      }
+    }
+
+    p {
+      font-size: 0.98rem;
+    }
+
+    p,
+    ul,
+    li,
+    td {
+      letter-spacing: 0.24px;
+      line-height: 1.82;
+    }
+
+    p,
+    ul,
+    ol,
+    li,
+    td,
+    blockquote,
+    .table-container,
+    hr,
+    .custom-block,
+    .plugin-tabs {
+      margin-top: 0.85rem;
+      margin-bottom: 0.85rem;
+    }
+
+    p,
+    li,
+    td {
+      code {
+        max-width: 100%;
+        white-space: break-spaces;
+        overflow-wrap: anywhere;
+        transform: none;
+      }
+    }
+
+    div {
+      &[class*="language-"] {
+        margin: 0.9rem 0;
+        border-radius: 10px;
+        padding-top: 32px;
+
+        .lang {
+          height: 32px;
+          padding-left: 12px;
+          font-size: 14px;
+        }
+
+        .copy {
+          width: 32px;
+          height: 32px;
+          font-size: 16px;
+
+          &::before {
+            display: none;
+          }
+        }
+
+        .line-numbers-wrapper {
+          padding: 6px 8px;
+
+          .line-number {
+            font-size: 12px;
+          }
+        }
+
+        pre {
+          padding: 6px 8px;
+
+          code {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+
+    blockquote {
+      padding: 4px 12px;
+      border-left-width: 4px;
+      border-radius: 4px 8px 8px 4px;
+    }
+
+    ul {
+      padding-left: 0.85rem;
+
+      li {
+        padding-left: 1rem;
+
+        &::before {
+          width: 0.5rem;
+          height: 0.5rem;
+        }
+      }
+    }
+
+    ol {
+      padding-left: 1.4rem;
+    }
+
+    .table-container {
+      border-radius: 10px;
+
+      table {
+        min-width: 440px;
+
+        td,
+        th {
+          padding: 0.55rem 0.75rem;
+          font-size: 0.85rem;
+        }
+      }
+    }
+
+    .custom-block {
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .plugin-tabs {
+      border-radius: 10px;
+
+      .plugin-tabs--tab-list {
+        display: flex;
+        overflow-x: auto;
+        white-space: nowrap;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+
+        .plugin-tabs--tab {
+          padding: 10px 12px;
+          margin-right: 8px;
+          font-size: 14px;
+        }
+      }
+
+      .plugin-tabs--content {
+        padding: 0.9rem;
+      }
+    }
+
+    .timeline {
+      padding-left: 22px;
+
+      .timeline-content {
+        max-width: 100%;
+        padding: 0.85rem;
+      }
+    }
+  }
+}

@@ -151,7 +151,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 @use "../style/post.scss";
 
-.post {
+  .post {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -276,26 +276,27 @@ onMounted(() => {
 
   &.minimal {
     .post-meta {
-      width: min(100%, 800px);
+      width: min(100%, 760px);
       margin: 0 auto;
-      padding: 1rem 0 1.5rem 0;
+      padding: 0.8rem 0 1.35rem 0;
       .title {
-        font-size: 2rem;
-        line-height: 1.32;
-        margin: 0.5rem 0 0.75rem;
+        font-size: 1.9rem;
+        line-height: 1.28;
+        letter-spacing: -0.02em;
+        margin: 0.35rem 0 0.7rem;
       }
       .other-meta {
-        gap: 12px;
+        gap: 10px;
         flex-wrap: wrap;
         .meta {
           padding: 0;
           border-radius: 0;
           font-size: 12px;
-          opacity: 0.66;
+          opacity: 0.62;
           .iconfont {
             margin-right: 4px;
             font-size: 14px;
-            opacity: 0.7;
+            opacity: 0.64;
           }
           &.hover {
             padding: 3px 6px;
@@ -309,9 +310,9 @@ onMounted(() => {
       justify-content: center;
 
       .post-article {
-        width: min(100%, 800px);
+        width: min(100%, 760px);
         margin: 0 auto;
-        padding: 1.2rem 1.8rem 2rem 1.8rem;
+        padding: 1.15rem 1.65rem 2.1rem 1.65rem;
 
         :deep(.markdown-main-style) {
           div > {
@@ -496,7 +497,7 @@ onMounted(() => {
   /* 移动端适配 */
   @media (max-width: 768px) {
     .post-meta {
-      padding: 1.2rem 0 1rem;
+      padding: 1rem 0 0.85rem;
       .meta {
         flex-wrap: wrap;
         gap: 8px;
@@ -509,31 +510,48 @@ onMounted(() => {
         }
       }
       .title {
-        font-size: 1.72rem;
+        font-size: 1.56rem;
         text-align: left;
-        line-height: 1.42;
+        line-height: 1.34;
+        margin: 0.5rem 0 0.65rem;
+        letter-spacing: -0.015em;
       }
       .other-meta {
         justify-content: flex-start;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 6px 10px;
+        .meta {
+          font-size: 12px;
+          opacity: 0.62;
+          .iconfont {
+            margin-right: 4px;
+            font-size: 13px;
+          }
+        }
       }
     }
     .post-content {
       .post-article {
         border: none;
-        padding: 1rem 1rem 1.5rem;
+        padding: 0.85rem 0.95rem 1.4rem;
         .other-meta {
-          margin: 1rem 0 2rem 0;
+          margin: 1rem 0 1.75rem 0;
           flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
           .all-tags {
             flex-wrap: wrap;
+            gap: 8px;
             .tag-item {
-              margin-top: 12px;
+              margin-right: 0;
+              margin-top: 0;
+              padding: 6px 10px;
+              font-size: 12px;
             }
           }
           .report {
-            margin-top: 20px;
+            margin-top: 0;
+            font-size: 12px;
           }
         }
         .expired {
@@ -546,18 +564,20 @@ onMounted(() => {
     &.minimal {
       .post-meta {
         width: 100%;
-        padding: 0.5rem 0 1rem;
+        padding: 0.35rem 0 0.85rem;
 
         .title {
-          font-size: 1.62rem;
-          margin: 0.35rem 0 0.65rem;
+          font-size: 1.48rem;
+          line-height: 1.32;
+          margin: 0.28rem 0 0.58rem;
         }
 
         .other-meta {
-          gap: 8px;
+          gap: 6px 8px;
 
           .meta {
             font-size: 11px;
+            line-height: 1.35;
 
             .iconfont {
               font-size: 13px;
@@ -569,30 +589,30 @@ onMounted(() => {
       .post-content {
         .post-article {
           width: 100%;
-          padding: 0.95rem 1rem 1.5rem;
+          padding: 0.8rem 0.9rem 1.45rem;
 
           :deep(.markdown-main-style) {
             div > {
               h1 {
-                font-size: 1.52rem;
-                margin: 1rem 0 0.75rem;
+                font-size: 1.4rem;
+                margin: 0.9rem 0 0.72rem;
               }
 
               h2 {
-                font-size: 1.28rem;
-                margin: 1.25rem 0 0.7rem;
+                font-size: 1.22rem;
+                margin: 1.15rem 0 0.68rem;
               }
 
               h3 {
-                font-size: 1.06rem;
-                margin: 0.95rem 0 0.55rem;
+                font-size: 1.04rem;
+                margin: 0.9rem 0 0.52rem;
               }
             }
 
             p {
-              font-size: 0.97rem;
-              line-height: 1.82;
-              margin: 0 0 14px;
+              font-size: 0.96rem;
+              line-height: 1.86;
+              margin: 0 0 13px;
             }
 
             ul,
@@ -603,6 +623,11 @@ onMounted(() => {
             .custom-block,
             hr {
               margin: 0 0 14px;
+            }
+
+            li,
+            td {
+              line-height: 1.78;
             }
           }
         }

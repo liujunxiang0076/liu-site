@@ -1,6 +1,6 @@
 <!-- 普通页面 -->
 <template>
-  <div :class="[frontmatter.layout || 'page', { 'has-aside': frontmatter.aside && !minimalMode }]">
+  <div :class="[frontmatter.layout || 'page', { 'has-aside': frontmatter.aside && !minimalMode, minimal: minimalMode }]">
     <div class="page-content">
       <!-- 页面内容 -->
       <Content id="page-content" :class="['markdown-main-style', { 's-card': frontmatter.card }]" />
@@ -24,7 +24,8 @@ const minimalMode = computed(() => theme.value?.minimal?.enable ?? false);
   flex-direction: row;
   animation: fade-up 0.6s 0.1s backwards;
   .page-content {
-    width: 100%;
+    width: min(100%, 860px);
+    margin: 0 auto;
     transition: width 0.3s;
     :deep(#main-comment) {
       width: 100%;
@@ -51,10 +52,16 @@ const minimalMode = computed(() => theme.value?.minimal?.enable ?? false);
       padding: 1rem 2rem;
     }
   }
+  &.minimal {
+    .page-content {
+      width: min(100%, 860px);
+    }
+  }
   &.has-aside {
     animation: fade-up 0.6s 0.3s backwards;
     .page-content {
       width: calc(100% - 300px);
+      margin: 0;
     }
     .main-aside {
       width: 300px;
@@ -73,7 +80,7 @@ const minimalMode = computed(() => theme.value?.minimal?.enable ?? false);
   @media (max-width: 768px) {
     .page-content {
       .s-card {
-        padding: 0.95rem 1rem;
+        padding: 0.9rem 0.95rem;
         border-radius: 10px;
       }
     }
