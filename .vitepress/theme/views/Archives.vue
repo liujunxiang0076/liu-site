@@ -40,6 +40,8 @@ const router = useRouter();
 
 <style lang="scss" scoped>
 .archives {
+  width: min(100%, 860px);
+  margin: 0 auto;
   padding: 2rem;
   .title {
     display: flex;

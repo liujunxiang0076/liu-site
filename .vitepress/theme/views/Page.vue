@@ -1,18 +1,19 @@
 <!-- 普通页面 -->
 <template>
-  <div :class="[frontmatter.layout || 'page', { 'has-aside': frontmatter.aside }]">
+  <div :class="[frontmatter.layout || 'page', { 'has-aside': frontmatter.aside && !minimalMode }]">
     <div class="page-content">
       <!-- 页面内容 -->
       <Content id="page-content" :class="['markdown-main-style', { 's-card': frontmatter.card }]" />
       <!-- 评论 -->
       <Comments v-if="frontmatter.comment" />
     </div>
-    <Aside v-if="frontmatter.aside" />
+    <Aside v-if="frontmatter.aside && !minimalMode" />
   </div>
 </template>
 
 <script setup>
-const { frontmatter } = useData();
+const { frontmatter, theme } = useData();
+const minimalMode = computed(() => theme.value?.minimal?.enable ?? false);
 </script>
 
 <style lang="scss" scoped>
