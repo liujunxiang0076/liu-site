@@ -1,0 +1,58 @@
+name: Sync Content To Minimal Branch
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/posts/**"
+      - "src/pages/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-content-to-minimal
+  cancel-in-progress: true
+
+jobs:
+  sync-content:
+    runs-on: ubuntu-latest
+    env:
+      TARGET_BRANCH: codex/minimal-v1
+
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Configure Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Prepare target branch worktree
+        run: |
+          git fetch origin "${TARGET_BRANCH}"
+          git worktree add ../minimal-worktree "origin/${TARGET_BRANCH}"
+
+      - name: Sync content directories
+        run: |
+          rsync -a --delete src/posts/ ../minimal-worktree/src/posts/
+          rsync -a --delete src/pages/ ../minimal-worktree/src/pages/
+
+      - name: Commit and push synced content
+        run: |
+          cd ../minimal-worktree
+
+          if git diff --quiet -- src/posts src/pages; then
+            echo "No content changes to sync."
+            exit 0
+          fi
+
+          git add src/posts src/pages
+          git commit -m "chore(content): 同步 main 分支文章内容"
+          git push origin HEAD:${TARGET_BRANCH}
