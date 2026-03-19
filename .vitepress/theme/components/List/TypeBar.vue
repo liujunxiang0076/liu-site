@@ -1,6 +1,6 @@
 <!-- 分类导航条 -->
 <template>
-  <div v-if="type === 'categories'" class="type-bar s-card hover">
+  <div v-if="type === 'categories'" :class="['type-bar', 's-card', 'hover', { minimal: minimalMode }]">
     <div class="all-type">
       <a href="/" :class="['type-item', { choose: !currentTypeName }]">首页</a>
       <a
@@ -12,12 +12,12 @@
         {{ key }}
       </a>
     </div>
-    <a href="/src/pages/categories" class="more-type">
+    <a href="/src/pages/categories" class="more-type" title="查看全部分类">
       <i class="iconfont icon-arrow-right" />
-      更多
+      <span v-if="!minimalMode">更多</span>
     </a>
   </div>
-  <div v-else-if="type === 'tags'" class="type-bar s-card hover">
+  <div v-else-if="type === 'tags'" :class="['type-bar', 's-card', 'hover', { minimal: minimalMode }]">
     <div class="all-type">
       <a href="/" :class="['type-item', { choose: !currentTypeName }]">首页</a>
       <a
@@ -30,15 +30,16 @@
         <span class="num">{{ item.count }}</span>
       </a>
     </div>
-    <a href="/src/pages/tags" class="more-type">
+    <a href="/src/pages/tags" class="more-type" title="查看全部标签">
       <i class="iconfont icon-arrow-right" />
-      更多
+      <span v-if="!minimalMode">更多</span>
     </a>
   </div>
 </template>
 
 <script setup>
 const { theme, params } = useData();
+const minimalMode = computed(() => theme.value?.minimal?.enable ?? false);
 const props = defineProps({
   // 显示类别
   type: {
@@ -130,6 +131,34 @@ const currentTypeName = computed(() => {
     &:hover {
       .iconfont {
         color: var(--main-color);
+      }
+    }
+  }
+
+  &.minimal {
+    margin-left: auto;
+    margin-right: auto;
+    width: min(100%, 860px);
+    padding: 0.5rem 0.6rem;
+    border-radius: 10px;
+
+    .all-type {
+      margin-right: 8px;
+      mask: none;
+      .type-item {
+        height: 28px;
+        padding: 0.1rem 0.45rem;
+        margin-right: 4px;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+    }
+
+    .more-type {
+      margin-right: 0;
+      margin-left: 4px;
+      .iconfont {
+        margin-right: 0;
       }
     }
   }

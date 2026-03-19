@@ -104,7 +104,6 @@
                   {{ scrollData.percentage <= 90 ? scrollData.percentage : "返回顶部" }}
                 </span>
               </Transition>
-              <span v-if="minimalMode" class="num minimal-text">顶部</span>
               <i class="iconfont icon-up"></i>
             </div>
           </div>
@@ -584,10 +583,10 @@ const openSearch = inject('openSearch', () => {});
           width: 35px;
           .to-top-btn {
             width: 30px;
-          }
-          .num.minimal-text {
-            font-size: 11px;
-            opacity: 0.9;
+            height: 30px;
+            .num {
+              display: none;
+            }
           }
           .icon-up {
             opacity: 1;
@@ -617,9 +616,6 @@ const openSearch = inject('openSearch', () => {});
             .to-top-btn {
               width: 35px;
               height: 35px;
-            }
-            .num.minimal-text {
-              opacity: 0;
             }
           }
         }
