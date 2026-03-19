@@ -42,7 +42,7 @@
           {{ formatTimestamp(postMetaData.date) }}
         </span>
         <!-- 最后更新 -->
-        <span class="update meta">
+        <span v-if="!minimalMode" class="update meta">
           <i class="iconfont icon-time" />
           {{ formatTimestamp(page?.lastUpdated || postMetaData.lastModified) }}
         </span>
@@ -57,7 +57,7 @@
           <span id="twikoo_visitors" class="artalk-pv-count">0</span>
         </span>
         <!-- 评论数量 -->
-        <span class="chat meta hover" @click="commentRef?.scrollToComments">
+        <span v-if="!minimalMode" class="chat meta hover" @click="commentRef?.scrollToComments">
           <i class="iconfont icon-chat" />
           <span id="twikoo_comments" class="artalk-comment-count">0</span>
         </span>

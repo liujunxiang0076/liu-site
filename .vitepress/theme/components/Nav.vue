@@ -93,17 +93,18 @@
             :class="[
               'to-top',
               'menu-btn',
-              { hidden: scrollData.height === 0, long: scrollData.percentage > 90 },
+              { hidden: scrollData.height === 0, long: scrollData.percentage > 90, minimal: minimalMode },
             ]"
             title="返回顶部"
             @click="smoothScrolling"
           >
             <div class="to-top-btn">
-              <Transition name="fade" mode="out-in">
+              <Transition v-if="!minimalMode" name="fade" mode="out-in">
                 <span :key="scrollData.percentage > 90" class="num">
                   {{ scrollData.percentage <= 90 ? scrollData.percentage : "返回顶部" }}
                 </span>
               </Transition>
+              <span v-if="minimalMode" class="num minimal-text">顶部</span>
               <i class="iconfont icon-up"></i>
             </div>
           </div>
@@ -579,6 +580,19 @@ const openSearch = inject('openSearch', () => {});
             width: 70px;
           }
         }
+        &.minimal {
+          width: 35px;
+          .to-top-btn {
+            width: 30px;
+          }
+          .num.minimal-text {
+            font-size: 11px;
+            opacity: 0.9;
+          }
+          .icon-up {
+            opacity: 1;
+          }
+        }
         &:hover {
           .to-top-btn {
             width: 35px;
@@ -596,6 +610,16 @@ const openSearch = inject('openSearch', () => {});
             .to-top-btn {
               width: 80px;
               height: 35px;
+            }
+          }
+          &.minimal {
+            width: 35px;
+            .to-top-btn {
+              width: 35px;
+              height: 35px;
+            }
+            .num.minimal-text {
+              opacity: 0;
             }
           }
         }
