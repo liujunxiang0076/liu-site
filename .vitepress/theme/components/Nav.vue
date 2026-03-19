@@ -30,10 +30,15 @@
         </div>
         <!-- 导航栏菜单 -->
         <div class="nav-center">
-          <div class="site-menu">
-            <div v-for="(item, index) in theme.nav" :key="index" class="menu-item">
-              <span class="link-btn"> {{ item.text }}</span>
-              <div v-if="item.items" class="link-child">
+          <div :class="['site-menu', { minimal: minimalMode }]">
+            <div
+              v-for="(item, index) in theme.nav"
+              :key="index"
+              class="menu-item"
+              @click="handleTopNav(item)"
+            >
+              <span :class="['link-btn', { active: minimalMode && isNavActive(item) }]"> {{ item.text }}</span>
+              <div v-if="item.items && !minimalMode" class="link-child">
                 <span
                   v-for="(child, childIndex) in item.items"
                   :key="childIndex"
@@ -129,6 +134,7 @@ import { mainStore } from "../store/index";
 import { smoothScrolling, shufflePost } from "../utils/helper";
 
 const router = useRouter();
+const route = useRoute();
 const store = mainStore();
 const { scrollData } = storeToRefs(store);
 const { site, theme, frontmatter, page } = useData();
@@ -137,6 +143,31 @@ const navTitle = computed(() => {
   if (minimalMode.value) return site.value.description;
   return (frontmatter.value.home ? site.value.description : page.value.title) || site.value.description;
 });
+const currentPath = computed(() => decodeURIComponent(route.path || "").replace(/\/$/, ""));
+
+const normalizeLink = (link = "") => {
+  if (!link) return "";
+  const decoded = decodeURIComponent(link);
+  const withLeadingSlash = decoded.startsWith("/") ? decoded : `/${decoded}`;
+  return withLeadingSlash.replace(/\/$/, "");
+};
+
+const isNavActive = (item) => {
+  const targets = [];
+  if (item?.link) targets.push(normalizeLink(item.link));
+  if (Array.isArray(item?.items)) {
+    item.items.forEach((child) => {
+      if (child?.link) targets.push(normalizeLink(child.link));
+    });
+  }
+  return targets.some((target) => currentPath.value === target || currentPath.value.startsWith(`${target}/`));
+};
+
+const handleTopNav = (item) => {
+  if (!minimalMode.value) return;
+  const firstLink = item?.link || item?.items?.[0]?.link;
+  if (firstLink) router.go(firstLink);
+};
 
 // 获取打开搜索的方法
 const openSearch = inject('openSearch', () => {});
@@ -363,28 +394,32 @@ const openSearch = inject('openSearch', () => {});
             display: flex;
             align-items: center;
             justify-content: center;
-            letter-spacing: 0.2rem;
+            letter-spacing: 0.08rem;
             padding: 0 0.8rem 0 1rem;
-            font-weight: bold;
+            font-weight: 700;
             height: 35px;
             line-height: 35px;
             border-radius: 50px;
             transition:
               color 0.3s,
               background-color 0.3s;
+            &.active {
+              color: var(--main-color);
+              background-color: var(--main-color-bg);
+            }
           }
           .link-child {
             position: absolute;
-            top: 35px;
-            margin-top: 8px;
-            padding: 6px 2px;
+            top: 38px;
+            margin-top: 10px;
+            padding: 6px;
             display: flex;
             flex-direction: row;
             align-items: center;
             background-color: var(--main-card-background);
-            border: 1px solid var(--main-color);
-            box-shadow: 0 8px 12px -3px var(--main-color-bg);
-            border-radius: 50px;
+            border: 1px solid var(--main-card-border);
+            box-shadow: 0 10px 22px -14px var(--main-border-shadow);
+            border-radius: 14px;
             transform: translateY(-10px) scale(0.8);
             opacity: 0;
             visibility: hidden;
@@ -403,28 +438,22 @@ const openSearch = inject('openSearch', () => {});
             .link-child-btn {
               display: flex;
               align-items: center;
-              border-radius: 100px;
-              margin: 0 4px;
-              padding: 0.6rem 0.8rem;
+              border-radius: 10px;
+              margin: 0 2px;
+              padding: 0.46rem 0.72rem;
               white-space: nowrap;
+              font-weight: 600;
               transition:
                 color 0.3s,
-                padding 0.3s,
-                background-color 0.3s,
-                box-shadow 0.3s;
+                background-color 0.3s;
               .iconfont {
-                margin-right: 8px;
-                font-size: 20px;
+                margin-right: 6px;
+                font-size: 17px;
                 transition: color 0.3s;
               }
               &:hover {
-                color: var(--main-card-background);
-                background-color: var(--main-color);
-                box-shadow: 0 8px 12px -3px var(--main-color-bg);
-                padding: 0.6rem 1rem;
-                .iconfont {
-                  color: var(--main-card-background);
-                }
+                color: var(--main-color);
+                background-color: var(--main-color-bg);
               }
             }
           }
@@ -454,13 +483,32 @@ const openSearch = inject('openSearch', () => {});
           }
           &:hover {
             .link-btn {
-              color: var(--main-card-background);
-              background-color: var(--main-color);
+              color: var(--main-color);
+              background-color: var(--main-color-bg);
             }
             .link-child {
               transform: translateY(0) scale(1);
               opacity: 1;
               visibility: visible;
+            }
+          }
+        }
+
+        &.minimal {
+          .menu-item {
+            padding: 0 0.24rem;
+            .link-btn {
+              height: 34px;
+              line-height: 34px;
+              padding: 0 0.72rem;
+              letter-spacing: 0.02em;
+              font-weight: 600;
+            }
+            &:hover {
+              .link-btn {
+                color: var(--main-color);
+                background-color: var(--main-color-bg);
+              }
             }
           }
         }
