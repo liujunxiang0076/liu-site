@@ -351,14 +351,41 @@ const formatListDate = (timestamp) => {
     @media (max-width: 768px) {
       flex-direction: column;
       height: auto;
+      margin-bottom: var(--space-3);
 
       .post-cover {
         flex: none;
         width: 100%;
-        min-height: 160px;
+        min-height: 140px;
       }
       .post-content {
-        padding: 0.9rem 1rem;
+        gap: 10px;
+        padding: 0.9rem;
+        .post-title {
+          font-size: 1.08rem;
+          line-height: 1.4;
+          align-items: flex-start;
+          flex-wrap: wrap;
+        }
+        .post-desc {
+          font-size: 0.88rem;
+          line-height: 1.65;
+          -webkit-line-clamp: 2;
+        }
+        .post-desc-wrapper.password-protected {
+          .password-notice {
+            width: 100%;
+            padding: 7px 10px;
+            border-radius: 12px;
+            flex-wrap: wrap;
+          }
+        }
+        .post-meta {
+          padding-top: 8px;
+          .post-time {
+            font-size: 0.7rem;
+          }
+        }
       }
     }
 
@@ -401,6 +428,15 @@ const formatListDate = (timestamp) => {
       .post-meta {
         border-top: none;
         padding-top: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .post-item {
+        margin-bottom: var(--space-3);
+        .post-content {
+          padding: 0.9rem;
+        }
       }
     }
   }

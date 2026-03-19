@@ -339,15 +339,40 @@ onMounted(() => {
     }
   }
   @media (max-width: 768px) {
+    justify-content: center;
+    gap: 10px;
+    height: auto;
+    margin-top: 16px;
+
     .page-number {
       display: none;
     }
     .page-item {
-      &:first-child {
-        margin-right: 10px;
+      &.prev,
+      &.next {
+        position: static;
+        width: auto;
+        min-width: 88px;
+        height: 38px;
+        padding: 0 14px;
+
+        .page-text {
+          opacity: 1;
+          margin: 0;
+        }
       }
-      &:last-child {
-        margin-left: 10px;
+
+      &.prev {
+        .page-text {
+          margin-left: 6px;
+        }
+      }
+
+      &.next {
+        .page-text {
+          margin-right: 6px;
+          margin-left: 0;
+        }
       }
     }
   }

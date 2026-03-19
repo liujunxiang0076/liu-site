@@ -91,15 +91,14 @@ const pageJump = (url) => {
     top: 0;
     right: 0;
     height: 100%;
-    width: 100%;
-    max-width: 300px;
+    width: min(88vw, 340px);
     border-radius: 12px 0 0 12px;
-    padding: 20px;
+    padding: 18px 16px 20px;
     overflow: auto;
     .close-control {
       position: absolute;
       top: 10px;
-      right: 20px;
+      right: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -127,16 +126,17 @@ const pageJump = (url) => {
       }
     }
     .menu-list {
+      margin-top: 34px;
       margin-bottom: 20px;
       &:last-child {
         margin-bottom: 0;
       }
     }
     .menu-item {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       .link-title {
         font-size: 14px;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
         display: inline-block;
         color: var(--main-font-second-color);
       }
@@ -181,6 +181,21 @@ const pageJump = (url) => {
       margin: 1rem 0;
       opacity: 0.4;
       border: 1px dashed var(--main-font-second-color);
+    }
+  }
+
+  @media (max-width: 420px) {
+    .menu-content {
+      width: 100%;
+      max-width: none;
+      border-radius: 0;
+      padding-left: 14px;
+      padding-right: 14px;
+      .menu-item {
+        .link-child {
+          grid-template-columns: 1fr;
+        }
+      }
     }
   }
 }

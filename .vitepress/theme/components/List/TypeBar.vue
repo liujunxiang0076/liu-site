@@ -172,5 +172,34 @@ const currentTypeName = computed(() => {
       }
     }
   }
+
+  @media (max-width: 768px) {
+    margin-bottom: 0.6rem;
+    padding: 0.35rem 0.4rem;
+    border-radius: 8px;
+
+    .all-type {
+      margin-right: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      mask: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .type-item {
+        flex: 0 0 auto;
+        height: 26px;
+        font-size: 0.8rem;
+      }
+    }
+
+    .more-type {
+      display: none;
+    }
+  }
 }
 </style>

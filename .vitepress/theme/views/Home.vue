@@ -163,6 +163,18 @@ watch(
         display: none;
       }
     }
+
+    @media (max-width: 768px) {
+      .posts-content {
+        width: 100%;
+      }
+
+      &.minimal {
+        .posts-content {
+          width: 100%;
+        }
+      }
+    }
   }
 }
 </style>

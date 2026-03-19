@@ -757,26 +757,37 @@ const openSearch = inject('openSearch', () => {});
       }
     }
     @media (max-width: 768px) {
+      height: 56px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      padding: 1rem 1.5rem;
+      padding: 0 1rem;
       .left-nav,
       .right-nav {
         min-width: auto;
       }
-      .nav-center {
-        // display: none;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background-color: var(--main-card-background);
-        border-bottom: 1px solid var(--main-card-border);
-        z-index: 100;
-        .site-title {
-          font-size: 15px;
-          height: auto;
+      .left-nav {
+        max-width: calc(100vw - 168px);
+        .site-name {
+          height: 32px;
+          padding: 0 4px;
+          font-size: 16px;
+          max-width: 100%;
         }
+      }
+      .right-nav {
+        gap: 6px;
+        .menu-btn {
+          margin-left: 0;
+          width: 34px;
+          height: 34px;
+        }
+        .to-top {
+          display: none;
+        }
+      }
+      .nav-center {
+        display: none;
       }
     }
   }
@@ -802,6 +813,13 @@ const openSearch = inject('openSearch', () => {});
       .iconfont {
         color: var(--main-card-background);
       }
+    }
+  }
+
+  @media (max-width: 768px) {
+    height: 56px;
+    .main-nav {
+      height: 56px;
     }
   }
 }
