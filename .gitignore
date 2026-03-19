@@ -38,3 +38,4 @@ posts/*
 *.sw?
 
 .vercel
+.npm-cache/
