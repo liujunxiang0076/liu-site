@@ -159,13 +159,9 @@
             </div>
             <!-- 明暗模式 -->
             <div class="btn" @click.stop="store.changeThemeType">
-              <i
-                :class="`iconfont icon-${themeType === 'auto' ? 'dark' : themeType === 'dark' ? 'light' : 'auto'}`"
-              />
+              <i :class="`iconfont icon-${nextThemeIcon}`" />
               <span class="name">
-                {{
-                  themeType === "auto" ? "深色模式" : themeType === "dark" ? "浅色模式" : "跟随系统"
-                }}
+                {{ nextThemeText }}
               </span>
             </div>
           </div>
@@ -228,6 +224,12 @@ const store = mainStore();
 const { theme } = useData();
 const { useRightMenu, themeType, playerShow, playerVolume, playState, playerData } =
   storeToRefs(store);
+const nextThemeIcon = computed(() =>
+  themeType.value === "auto" ? "dark" : themeType.value === "dark" ? "light" : "style",
+);
+const nextThemeText = computed(() =>
+  themeType.value === "auto" ? "深色模式" : themeType.value === "dark" ? "浅色模式" : "跟随系统",
+);
 
 // 右键菜单数据
 const rightMenuX = ref(0);

@@ -14,7 +14,7 @@
           <!-- 功能菜单 -->
           <div class="menu">
             <div class="menu-item open" title="显示模式切换" @click.stop="store.changeThemeType">
-              <i :class="`iconfont icon-${store.themeType}`"></i>
+              <i :class="`iconfont icon-${controlThemeIcon}`"></i>
             </div>
             <div
               :class="['menu-item', { open: store.useRightMenu }]"
@@ -48,6 +48,7 @@
 import { mainStore } from "@/store";
 
 const store = mainStore();
+const controlThemeIcon = computed(() => (store.themeType === "auto" ? "style" : store.themeType));
 
 const closeControlRef = ref(null);
 
