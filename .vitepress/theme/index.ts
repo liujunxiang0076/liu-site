@@ -9,6 +9,7 @@ import App from "./MyApp.vue";
 import ScrollProgress from "./components/ScrollProgress.vue";
 import PasswordModal from "./components/PasswordModal.vue";
 import ProtectedContent from "./components/ProtectedContent.vue";
+import PdfPreview from "./components/PdfPreview.vue";
 // 全局样式
 import "./style/main.scss";
 import "./style/animations.scss";
@@ -44,6 +45,7 @@ export default {
     app.component("ScrollProgress", ScrollProgress);
     app.component("PasswordModal", PasswordModal);
     app.component("ProtectedContent", ProtectedContent);
+    app.component("PdfPreview", PdfPreview);
 
     // 挂载
     app.use(pinia);
