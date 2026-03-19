@@ -47,7 +47,8 @@
   "scripts": {
     "dev": "vitepress dev --host",
     "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview"
+    "docs:preview": "vitepress preview",
+    "sync:content": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/sync-content-from-main.ps1"
   },
   "dependencies": {
     "@types/node": "^22.15.18",
