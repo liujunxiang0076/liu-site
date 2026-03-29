@@ -1,5 +1,5 @@
 ---
-title: 05_agent
+title: AGENT.md 收集
 tags: [AGENT]
 categories: [技术分享]
 date: 2026-03-29
